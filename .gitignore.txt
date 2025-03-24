@@ -1,0 +1,9 @@
+# Ignore Node modules
+ui/node_modules
+
+# Ignore Angular build files
+ui/dist
+
+# Ignore .NET build files
+api/bin
+api/obj
