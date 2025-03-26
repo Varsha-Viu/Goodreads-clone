@@ -1,0 +1,54 @@
+<div>
+  <h1 class="text-[#553B08] font-bold text-xl mb-8">Books</h1>
+  <div class="flex items-center justify-end gap-5 mb-6">
+    <div>
+      <input
+        type="text"
+        name="search"
+        id="search"
+        placeholder="Search books"
+        class="bg-[#FFF7E7] rounded-md py-2.5 px-4 w-[300px] text-[#553B08] focus:outline-[#553B08] text-[14px] outline-2 outline-[#553B0850]"
+      />
+    </div>
+    <div>
+      <button
+        type="button"
+        class="bg-[#553B08] text-[#E8E0C6] px-4 py-2.5 rounded-md hover:text-white cursor-pointer"
+      >
+        Add New Book
+      </button>
+    </div>
+  </div>
+
+  <!-- data table -->
+  <div>
+    <ngx-datatable class="material container striped" [rows]="rows" [columnMode]="'flex'" [headerHeight]="50" [footerHeight]="50" rowHeight="auto">
+      <ngx-datatable-column name="#" [flexGrow]="0.5">
+          <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
+              {{(rowIndex + 1)}}
+          </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Name" [flexGrow]="2">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+              {{ row?.name | titlecase }}
+          </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Age" [flexGrow]="2">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+              {{row?.age}}
+          </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Town" [flexGrow]="2">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+              {{row?.town}}
+          </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="Country" [flexGrow]="2">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+              {{row?.country}}
+          </ng-template>
+      </ngx-datatable-column>
+
+  </ngx-datatable>
+  </div>
+</div>

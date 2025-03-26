@@ -1,0 +1,81 @@
+<div class="bg-[#FFF7E7] h-[100vh] flex items-center justify-center">
+  <div
+    class="login-container flex items-center w-[60%] h-[450px] rounded-lg shadow-lg"
+  >
+    <div
+      class="bg-[#553B08] h-full py-10 px-15 w-full flex flex-col gap-[20px] text-[#E8E0C6] rounded-s-lg"
+    >
+      <h1 class="text-3xl font-bold mb-[10px]">Discover & Read More</h1>
+      <p>
+        Join millions of book lovers sharing reviews, tracking their reading,
+        and finding great recommendations.
+      </p>
+      <div>
+        <img src="" alt="" />
+      </div>
+    </div>
+    <div
+      class="h-full bg-[#E8E0C6] w-full py-10 px-15 flex flex-col gap-[20px] rounded-e-lg"
+    >
+      <div class="logo flex items-center justify-center mb-[10px]">
+        <img src="/logo.png" alt="goodreads logo" class="max-w-full w-[50%]" />
+      </div>
+      <h2 class="text-2xl font-semibold text-[#553B08]">Login</h2>
+      <form
+        [formGroup]="loginForm"
+        class="flex flex-col gap-[20px]"
+        (submit)="onSubmit()"
+      >
+        <div class="flex flex-col gap-1">
+          <input
+            type="email"
+            name="email"
+            id="email"
+            placeholder="Enter your email"
+            formControlName="email"
+            class="bg-[#FFF7E7] rounded-md py-2.5 px-4 w-full text-[#553B08] focus:outline-none text-[14px]"
+          />
+          <div
+            *ngIf="isSubmitted && (f['email'].touched || f['email'].invalid)"
+            class="text-red-600 text-[12px]"
+          >
+            <div *ngIf="f['email'].errors && f['email'].errors['required']">
+              Email is required.
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-col gap-1">
+          <input
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Enter your password"
+            formControlName="password"
+            class="bg-[#FFF7E7] rounded-md py-2.5 px-4 w-full text-[#553B08] focus:outline-none text-[14px]"
+          />
+          <div
+            *ngIf="isSubmitted && (f['password'].touched || f['password'].invalid)"
+            class="text-red-600 text-[12px]"
+          >
+            <div *ngIf="f['password'].errors && f['password'].errors['required']">
+              Password is required.
+            </div>
+          </div>
+        </div>
+        <div class="flex justify-end">
+          <a href="" class="text-[#553B08] text-[14px] font-semibold"
+            >Forgot Password ?</a
+          >
+        </div>
+        <div class="flex items-center">
+          <button
+            type="submit"
+            class="bg-[#553B08] w-full p-2.5 rounded-md text-[#FFF7E7] cursor-pointer focus:outline-none focus:border-none"
+          >
+            Login
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

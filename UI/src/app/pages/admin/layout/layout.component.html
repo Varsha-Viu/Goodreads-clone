@@ -1,0 +1,94 @@
+<!-- navbar -->
+<nav
+  class="bg-[#E8E0C6] h-[60px] w-full flex items-center justify-between px-[25px] py-2 border-b-[1px] border-[#D3C0A250]"
+>
+  <div class="logo flex">
+    <img src="/logo.png" alt="goodreads logo" class="max-w-full w-[10%]" />
+  </div>
+  <div class="flex items-center gap-3">
+    <div>
+      <img
+        src="/images/avatar.jpg"
+        alt="avatar"
+        class="w-[35px] h-[35px] rounded-full"
+      />
+    </div>
+    <div class="flex flex-col text-[13px] capitalize">
+      <p class="font-semibold">{{ userName }}</p>
+      <p>{{ role }}</p>
+    </div>
+  </div>
+</nav>
+
+<!-- main content -->
+<div class="flex h-[calc(100vh-60px)]">
+  <!-- sidebar -->
+  <div class="sidebar bg-[#E8E0C6] w-[250px] h-[calc(100vh-60px)]">
+    <ul class="flex flex-col gap-3 mt-5">
+      <li
+        class="flex items-center gap-3 px-5 py-3 hover:bg-[#D3C0A2] hover:text-[#553B08] cursor-pointer text-[#553B08]"
+        routerLink="/dashboard"
+        routerLinkActive="font-semibold bg-[#553B08] text-[#D3C0A2]"
+      >
+        <img
+          src="/icons/dashboard-icon.png"
+          alt="dashbaord icon"
+          class="w-[18px] h-[18px]"
+        />
+        <span>Dashboard</span>
+      </li>
+      <li
+        class="flex items-center gap-3 px-5 py-3 hover:bg-[#D3C0A2] hover:text-[#553B08] cursor-pointer text-[#553B08]"
+        routerLink="/books"
+        routerLinkActive="font-semibold bg-[#553B08] text-[#D3C0A2]"
+      >
+        <img
+          src="/icons/book-icon.png"
+          alt="books icon"
+          class="w-[20px] h-[20px]"
+        />
+        <span>Books</span>
+      </li>
+      <li
+        class="flex items-center gap-3 px-5 py-3 hover:bg-[#D3C0A2] hover:text-[#553B08] cursor-pointer text-[#553B08]"
+        [routerLink]="['/admin/authors']"
+        routerLinkActive="font-semibold bg-[#553B08] text-[#D3C0A2]"
+      >
+        <img
+          src="/icons/author-icon.png"
+          alt="author icon"
+          class="w-[18px] h-[18px]"
+        />
+        <span>Authors</span>
+      </li>
+      <li
+        class="flex items-center gap-3 px-5 py-3 hover:bg-[#D3C0A2] hover:text-[#553B08] cursor-pointer text-[#553B08]"
+        [routerLink]="['/admin/categories']"
+        routerLinkActive="font-semibold bg-[#553B08] text-[#D3C0A2]"
+      >
+        <img
+          src="/icons/categories.png"
+          alt="categories icon"
+          class="w-[18px] h-[18px]"
+        />
+        <span>Categories</span>
+      </li>
+      <li
+        class="flex items-center gap-3 px-5 py-3 hover:bg-[#D3C0A2] hover:text-[#553B08] cursor-pointer text-[#553B08]"
+        [routerLink]="['/admin/users']"
+        routerLinkActive="font-semibold bg-[#553B08] text-[#D3C0A2]"
+      >
+        <img
+          src="/icons/users-icon.png"
+          alt="users icon"
+          class="w-[18px] h-[18px]"
+        />
+        <span>Users</span>
+      </li>
+    </ul>
+  </div>
+  <!-- main content -->
+  <div class="main-content w-full p-7 overflow-y-auto">
+    <router-outlet></router-outlet>
+  </div>
+</div>
