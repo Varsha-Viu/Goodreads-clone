@@ -1,0 +1,171 @@
+<div>
+    <h1 class="text-[#553B08] font-bold text-xl mb-8">Categories</h1>
+    <!-- buttons -->
+    <div class="flex items-center justify-between mb-6">
+      <div class="flex items-center">
+        <div>
+          <input
+            type="text"
+            name="search"
+            id="search"
+            placeholder="Search categories"
+            class="bg-[#FFF7E7] rounded-s-md py-2.5 px-4 w-[300px] text-[#553B08] focus:outline-[#553B08] text-[14px] outline-2 outline-[#553B0850]"
+          />
+        </div>
+        <div>
+          <button
+            type="button"
+            class="bg-[#553B08] text-[#E8E0C6] px-4 py-2.5 rounded-e-md hover:text-white cursor-pointer"
+          >
+            Search
+          </button>
+        </div>
+      </div>
+      <div>
+          <button
+            type="button"
+            class="bg-[#553B08] text-[#E8E0C6] px-4 py-2.5 rounded-md hover:text-white cursor-pointer"
+          >
+            Add new Category
+          </button>
+        </div>
+    </div>
+  
+    <!-- data table -->
+    <div class="bg-[#E8E0C6] rounded-md shadow-md">
+      <ngx-datatable
+        class="container striped border border-[#553B0850] rounded-md"
+        [rows]="rows"
+        [columnMode]="'flex'"
+        [headerHeight]="50"
+        [footerHeight]="30"
+        rowHeight="auto"
+        [count]="rows.length"
+        [limit]="pageSize"
+        [offset]="currentPage"
+        (page)="onPageChange($event)"
+      >
+        <!-- Table Header Styling -->
+        <ngx-datatable-column
+          name="#"
+          [flexGrow]="0.5"
+          headerClass="bg-[#553B08] text-white text-center px-4 py-3 border-e border-[#E8E0C6]"
+        >
+          <ng-template
+            let-rowIndex="rowIndex"
+            let-row="row"
+            ngx-datatable-cell-template
+          >
+            <span
+              class="block py-2 px-4 border-b border-e border-[#553B0850] text-center"
+              >{{ rowIndex + 1 }}</span
+            >
+          </ng-template>
+        </ngx-datatable-column>
+  
+        <ngx-datatable-column
+          name="Title"
+          [flexGrow]="2"
+          headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]"
+        >
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
+              row?.title | titlecase
+            }}</span>
+          </ng-template>
+        </ngx-datatable-column>
+  
+        <ngx-datatable-column
+          name="Author"
+          [flexGrow]="2"
+          headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]"
+        >
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
+              row?.author
+            }}</span>
+          </ng-template>
+        </ngx-datatable-column>
+  
+        <ngx-datatable-column
+          name="Genre"
+          [flexGrow]="2"
+          headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]"
+        >
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
+              row?.genre
+            }}</span>
+          </ng-template>
+        </ngx-datatable-column>
+  
+        <ngx-datatable-column
+          name="Publisher"
+          [flexGrow]="2"
+          headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]"
+        >
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
+              row?.publisher
+            }}</span>
+          </ng-template>
+        </ngx-datatable-column>
+  
+        <!-- Column: Actions -->
+        <ngx-datatable-column
+          name="Actions"
+          [flexGrow]="2"
+          headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]"
+        >
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <div
+              class="flex items-center gap-2 py-[11px] px-4 border-b border-e border-[#553B0850]"
+            >
+              <button class="cursor-pointer" (click)="editBook(row)">
+                <img
+                  src="/icons/edit-icon.png"
+                  alt="edit icon"
+                  class="w-[20px] h-[20px]"
+                />
+              </button>
+              <button class="cursor-pointer" (click)="deleteBook(row)">
+                <img
+                  src="/icons/trash-icon.png"
+                  alt="edit icon"
+                  class="w-[20px] h-[20px]"
+                />
+              </button>
+            </div>
+          </ng-template>
+        </ngx-datatable-column>
+      </ngx-datatable>
+  
+      <!-- Pagination Controls -->
+      <div class="flex justify-between items-center py-3 px-4">
+        <button
+          (click)="prevPage()"
+          [disabled]="currentPage === 0"
+          class="bg-transparent"
+        >
+        <img
+        src="/icons/previous-icon.png"
+        alt="previous icon"
+        class="w-[22px] h-[22px]"
+      />
+        </button>
+        <span class="text-[14px] text-[#553B08] font-semibold"> Page {{ currentPage + 1 }} of {{ totalPages }} </span>
+        <button
+          (click)="nextPage()"
+          [disabled]="(currentPage + 1) * pageSize >= rows.length"
+          class="bg-transparent"
+        >
+        <img
+        src="/icons/next-icon.png"
+        alt="next icon"
+        class="w-[22px] h-[22px]"
+      />
+        </button>
+      </div>
+    </div>
+  </div>
+  

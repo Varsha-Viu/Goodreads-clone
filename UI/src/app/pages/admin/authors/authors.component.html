@@ -1,5 +1,5 @@
 <div>
-  <h1 class="text-[#553B08] font-bold text-xl mb-8">Books</h1>
+  <h1 class="text-[#553B08] font-bold text-xl mb-8">Authors</h1>
   <!-- buttons -->
   <div class="flex items-center justify-between mb-6">
     <div class="flex items-center">
@@ -8,7 +8,7 @@
           type="text"
           name="search"
           id="search"
-          placeholder="Search books"
+          placeholder="Search authors"
           class="bg-[#FFF7E7] rounded-s-md py-2.5 px-4 w-[300px] text-[#553B08] focus:outline-[#553B08] text-[14px] outline-2 outline-[#553B0850]"
         />
       </div>
@@ -26,7 +26,7 @@
           type="button"
           class="bg-[#553B08] text-[#E8E0C6] px-4 py-2.5 rounded-md hover:text-white cursor-pointer"
         >
-          Add new Books
+          Add new Author
         </button>
       </div>
   </div>
@@ -64,7 +64,7 @@
       </ngx-datatable-column>
 
       <ngx-datatable-column
-        name="Title"
+        name="Author Name"
         [flexGrow]="2"
         headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]"
       >
@@ -76,7 +76,7 @@
       </ngx-datatable-column>
 
       <ngx-datatable-column
-        name="Author"
+        name="Email"
         [flexGrow]="2"
         headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]"
       >
@@ -88,25 +88,13 @@
       </ngx-datatable-column>
 
       <ngx-datatable-column
-        name="Genre"
+        name="Pen Name"
         [flexGrow]="2"
         headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]"
       >
         <ng-template let-row="row" ngx-datatable-cell-template>
           <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
             row?.genre
-          }}</span>
-        </ng-template>
-      </ngx-datatable-column>
-
-      <ngx-datatable-column
-        name="Publisher"
-        [flexGrow]="2"
-        headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]"
-      >
-        <ng-template let-row="row" ngx-datatable-cell-template>
-          <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
-            row?.publisher
           }}</span>
         </ng-template>
       </ngx-datatable-column>
@@ -145,25 +133,27 @@
       <button
         (click)="prevPage()"
         [disabled]="currentPage === 0"
-        class="bg-transparent"
+        class="bg-transparent cursor-pointer"
       >
-      <img
-      src="/icons/previous-icon.png"
-      alt="previous icon"
-      class="w-[22px] h-[22px]"
-    />
+        <img
+          src="/icons/previous-icon.png"
+          alt="previous icon"
+          class="w-[22px] h-[22px]"
+        />
       </button>
-      <span class="text-[14px] text-[#553B08] font-semibold"> Page {{ currentPage + 1 }} of {{ totalPages }} </span>
+      <span class="text-[14px] text-[#553B08] font-semibold">
+        Page {{ currentPage + 1 }} of {{ totalPages }}
+      </span>
       <button
         (click)="nextPage()"
         [disabled]="(currentPage + 1) * pageSize >= rows.length"
-        class="bg-transparent"
+        class="bg-transparent cursor-pointer"
       >
-      <img
-      src="/icons/next-icon.png"
-      alt="next icon"
-      class="w-[22px] h-[22px]"
-    />
+        <img
+          src="/icons/next-icon.png"
+          alt="next icon"
+          class="w-[22px] h-[22px]"
+        />
       </button>
     </div>
   </div>

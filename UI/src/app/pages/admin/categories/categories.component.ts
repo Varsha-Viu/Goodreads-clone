@@ -3,12 +3,12 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-books',
+  selector: 'app-categories',
   imports: [NgxDatatableModule, CommonModule],
-  templateUrl: './books.component.html',
-  styleUrl: './books.component.css'
+  templateUrl: './categories.component.html',
+  styleUrl: './categories.component.css'
 })
-export class BooksComponent {
+export class CategoriesComponent {
   rows = [
     { 
       title: "The Great Gatsby", 
@@ -16,7 +16,7 @@ export class BooksComponent {
       year: 1925, 
       genre: "Fiction", 
       pages: 180, 
-      publisher: "Scribner", 
+      publisher: "Scribner volume ", 
       rating: 4.3 
     },
     { 
