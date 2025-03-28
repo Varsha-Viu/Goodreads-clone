@@ -22,13 +22,14 @@
       </div>
     </div>
     <div>
-        <button
-          type="button"
-          class="bg-[#553B08] text-[#E8E0C6] px-4 py-2.5 rounded-md hover:text-white cursor-pointer"
-        >
-          Add new Books
-        </button>
-      </div>
+      <button
+        type="button"
+        class="bg-[#553B08] text-[#E8E0C6] px-4 py-2.5 rounded-md hover:text-white cursor-pointer"
+        (click)="openModal()"
+      >
+        Add new Books
+      </button>
+    </div>
   </div>
 
   <!-- data table -->
@@ -121,14 +122,14 @@
           <div
             class="flex items-center gap-2 py-[11px] px-4 border-b border-e border-[#553B0850]"
           >
-            <button class="cursor-pointer" (click)="editBook(row)">
+            <button class="cursor-pointer" (click)="openModal(row)">
               <img
                 src="/icons/edit-icon.png"
                 alt="edit icon"
                 class="w-[20px] h-[20px]"
               />
             </button>
-            <button class="cursor-pointer" (click)="deleteBook(row)">
+            <button class="cursor-pointer" (click)="openDeleteModal(row)">
               <img
                 src="/icons/trash-icon.png"
                 alt="edit icon"
@@ -147,23 +148,248 @@
         [disabled]="currentPage === 0"
         class="bg-transparent"
       >
-      <img
-      src="/icons/previous-icon.png"
-      alt="previous icon"
-      class="w-[22px] h-[22px]"
-    />
+        <img
+          src="/icons/previous-icon.png"
+          alt="previous icon"
+          class="w-[22px] h-[22px]"
+        />
       </button>
-      <span class="text-[14px] text-[#553B08] font-semibold"> Page {{ currentPage + 1 }} of {{ totalPages }} </span>
+      <span class="text-[14px] text-[#553B08] font-semibold">
+        Page {{ currentPage + 1 }} of {{ totalPages }}
+      </span>
       <button
         (click)="nextPage()"
         [disabled]="(currentPage + 1) * pageSize >= rows.length"
         class="bg-transparent"
       >
-      <img
-      src="/icons/next-icon.png"
-      alt="next icon"
-      class="w-[22px] h-[22px]"
-    />
+        <img
+          src="/icons/next-icon.png"
+          alt="next icon"
+          class="w-[22px] h-[22px]"
+        />
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- add / edit books modal  -->
+
+<!-- Modal Overlay -->
+<div
+  *ngIf="openAddEditModal"
+  class="fixed inset-0 bg-[#e8e0c67d] flex justify-center items-center"
+>
+  <!-- Modal Content -->
+  <div class="bg-white p-6 rounded-lg shadow-lg w-[50%] relative">
+    <h2 class="text-xl text-[#553B08] font-bold mb-4">
+      {{ modalTitle | titlecase }}
+    </h2>
+
+    <!-- Form -->
+    <form [formGroup]="bookForm" (ngSubmit)="submitForm()">
+      <!-- Title -->
+      <div class="flex gap-3 items-center mb-4">
+        <div class="w-full">
+          <label class="block text-sm font-medium text-[#553B08]">Title</label>
+          <input
+            type="text"
+            formControlName="title"
+            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
+          />
+          <p
+            class="text-red-500 text-xs"
+            *ngIf="isFormSubmitted &&  (f['title'].invalid && f['title'].touched)"
+          >
+            Title is required.
+          </p>
+        </div>
+        <!-- Subtitle -->
+        <div class="w-full">
+          <label class="block text-sm font-medium text-[#553B08]"
+            >Subtitle</label
+          >
+          <input
+            type="text"
+            formControlName="subtitle"
+            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
+          />
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-[#553B08]"
+          >Description</label
+        >
+        <textarea
+          formControlName="description"
+          class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
+        ></textarea>
+      </div>
+
+      <div class="flex items-center gap-3 mb-4">
+        <!-- ISBN -->
+        <div class="w-full">
+          <label class="block text-sm font-medium text-[#553B08]">ISBN</label>
+          <input
+            type="text"
+            formControlName="isbn"
+            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
+          />
+        </div>
+        <!-- Publication Year -->
+        <div class="w-full">
+          <label class="block text-sm font-medium text-[#553B08]"
+            >Publication Year</label
+          >
+          <input
+            type="number"
+            formControlName="publicationYear"
+            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
+          />
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3 mb-4">
+        <!-- Language -->
+        <div class="w-full">
+          <label class="block text-sm font-medium text-[#553B08]"
+            >Language</label
+          >
+          <input
+            type="text"
+            formControlName="language"
+            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
+          />
+        </div>
+        <!-- Number of Pages -->
+        <div class="w-full">
+          <label class="block text-sm font-medium text-[#553B08]"
+            >Number of Pages</label
+          >
+          <input
+            type="number"
+            formControlName="numberOfPages"
+            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
+          />
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3 mb-4">
+        <!-- Publisher -->
+        <div class="w-full">
+          <label class="block text-sm font-medium text-[#553B08]"
+            >Publisher</label
+          >
+          <input
+            type="text"
+            formControlName="publisher"
+            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
+          />
+        </div>
+        <!-- Authors -->
+        <div class="w-full">
+          <label class="block text-sm font-medium text-[#553B08]"
+            >Authors</label
+          >
+          <input
+            type="text"
+            formControlName="authors"
+            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
+          />
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3 mb-4">
+        <!-- Image Upload -->
+        <div class="w-full">
+          <label class="block text-sm font-medium text-[#553B08]"
+            >Book Cover</label
+          >
+          <div class="flex items-center space-x-4 mt-2">
+            <!-- Image Preview -->
+            <img
+              *ngIf="imagePreview"
+              [src]="imagePreview"
+              alt="Book Cover"
+              class="w-20 h-20 object-cover border rounded-md shadow-md"
+            />
+
+            <!-- File Input -->
+            <input
+              type="file"
+              (change)="onFileSelect($event)"
+              accept="image/*"
+              class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#553B0830] file:text-[#553B08] hover:file:bg-[#553B0850]"
+            />
+          </div>
+          <p class="text-red-500 text-xs mt-1" *ngIf="imageError">
+            {{ imageError }}
+          </p>
+        </div>
+        <!-- Genre -->
+        <div class="w-full">
+          <label class="block text-sm font-medium text-gray-700">Genre</label>
+          <input
+            type="text"
+            formControlName="genre"
+            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
+          />
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex justify-end gap-2">
+        <button
+          type="button"
+          (click)="closeModal()"
+          class="border bg-transparent border-[#553B08] text-[#553B08] px-4 py-1.5 rounded-md hover:bg-[#553B08] hover:text-white cursor-pointer"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="bg-[#553B08] text-[#E8E0C6] px-4 py-1.5 rounded-md hover:text-white cursor-pointer"
+        >
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<!-- delete books modal  -->
+
+<!-- Modal Overlay -->
+<div
+  *ngIf="DeleteModal"
+  class="fixed inset-0 bg-[#e8e0c67d] flex justify-center items-center"
+>
+  <!-- Modal Content -->
+  <div class="bg-white p-6 rounded-lg shadow-lg w-[30%] relative">
+    <h2 class="text-xl text-[#553B08] font-bold mb-2">
+      Delete book
+    </h2>
+    <div class="mb-8">
+      <p class="text-[#553B08] font-normal">Are you sure you want to delete this book?</p>
+
+    </div>
+    <!-- Buttons -->
+    <div class="flex justify-end gap-2">
+      <button
+        type="button"
+        (click)="closeDeleteModal()"
+        class="border bg-transparent border-[#553B08] text-[#553B08] px-4 py-1.5 rounded-md hover:bg-[#553B08] hover:text-white cursor-pointer"
+      >
+        Cancel
+      </button>
+      <button
+      (click)="closeDeleteModal()"
+        type="button"
+        class="bg-[#553B08] text-[#E8E0C6] px-4 py-1.5 rounded-md hover:text-white cursor-pointer"
+      >
+        Delete
       </button>
     </div>
   </div>

@@ -123,17 +123,17 @@
             class="flex items-center justify-center gap-2 py-[6.5px] border-b border-e border-[#553B0850]"
           >
             <button
-              *ngIf="!isBlocked"
+              *ngIf="!row.isBlocked"
               class="cursor-pointer text-[13px] bg-[#553B08] text-white px-4 py-1 rounded-sm"
-              (click)="editBook(row)"
+              (click)="blockUser(row)"
             >
               Block
             </button>
 
             <button
-              *ngIf="isBlocked"
+              *ngIf="row.isBlocked"
               class="cursor-pointer text-[13px] bg-[#553B08] text-white px-4 py-1 rounded-sm"
-              (click)="editBook(row)"
+              (click)="blockUser(row)"
             >
               Unblock
             </button>

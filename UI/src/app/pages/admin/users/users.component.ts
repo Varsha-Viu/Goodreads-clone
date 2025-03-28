@@ -18,7 +18,8 @@ export class UsersComponent {
       genre: "Fiction", 
       pages: 180, 
       publisher: "Scribner volume ", 
-      rating: 4.3 
+      rating: 4.3 ,
+      isBlocked: false
     },
     { 
       title: "To Kill a Mockingbird", 
@@ -27,7 +28,8 @@ export class UsersComponent {
       genre: "Drama", 
       pages: 281, 
       publisher: "J. B. Lippincott & Co.", 
-      rating: 4.8 
+      rating: 4.8,
+      isBlocked: true 
     },
     { 
       title: "1984", 
@@ -36,7 +38,8 @@ export class UsersComponent {
       genre: "Dystopian", 
       pages: 328, 
       publisher: "Secker & Warburg", 
-      rating: 4.6 
+      rating: 4.6 ,
+      isBlocked: false
     },
     { 
       title: "The Great Gatsby", 
@@ -45,7 +48,8 @@ export class UsersComponent {
       genre: "Fiction", 
       pages: 180, 
       publisher: "Scribner", 
-      rating: 4.3 
+      rating: 4.3  ,
+      isBlocked: false
     },
     { 
       title: "To Kill a Mockingbird", 
@@ -54,7 +58,8 @@ export class UsersComponent {
       genre: "Drama", 
       pages: 281, 
       publisher: "J. B. Lippincott & Co.", 
-      rating: 4.8 
+      rating: 4.8  ,
+      isBlocked: false
     },
     { 
       title: "1984", 
@@ -63,7 +68,8 @@ export class UsersComponent {
       genre: "Dystopian", 
       pages: 328, 
       publisher: "Secker & Warburg", 
-      rating: 4.6 
+      rating: 4.6  ,
+      isBlocked: false
     }
   ];
 
@@ -108,11 +114,7 @@ export class UsersComponent {
     return Math.ceil(this.rows.length / this.pageSize);
   }
 
-  editBook(row: any) {
-    console.log("Edit book:", row);
-  }
-
-  deleteBook(row: any) {
-    console.log("Delete book:", row);
-  }
+  blockUser(row: any) {
+    row.isBlocked = !row.isBlocked;
+  } 
 }
