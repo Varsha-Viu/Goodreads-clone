@@ -6,11 +6,13 @@ import { DashboardComponent } from './pages/admin/dashboard/dashboard.component'
 import { AuthorsComponent } from './pages/admin/authors/authors.component';
 import { UsersComponent } from './pages/admin/users/users.component';
 import { CategoriesComponent } from './pages/admin/categories/categories.component';
+import { LandingPageComponent } from './pages/user/landing-page/landing-page.component';
+import { UserLayoutComponent } from './pages/user/user-layout/user-layout.component';
 
 export const routes: Routes = [
     {
         path: '',
-        redirectTo: 'login',
+        redirectTo: 'landingPage',
         pathMatch: 'full'
     },
     {
@@ -18,7 +20,7 @@ export const routes: Routes = [
         component: LoginComponent
     },
     {
-        path: '',
+        path: 'admin',
         component: LayoutComponent,
         children: [
             {
@@ -40,6 +42,16 @@ export const routes: Routes = [
             {
                 path: 'users',
                 component: UsersComponent
+            }
+        ]
+    },
+    {
+        path: '',
+        component: UserLayoutComponent,
+        children: [
+            {
+                path: 'landingPage',
+                component: LandingPageComponent
             }
         ]
     }

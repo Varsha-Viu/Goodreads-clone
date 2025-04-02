@@ -1,0 +1,25 @@
+<div class="min-h-screen flex flex-col">
+  <!-- Navbar -->
+  <nav class="flex items-center justify-between px-[80px] py-4 bg-[#f4f2e9]">
+    <!-- Logo (Left) -->
+    <div class="logo">
+      <img src="/logo.png" alt="goodreads logo" class="max-w-full w-[120px]" />
+    </div>
+
+    <!-- Login Button (Right) -->
+    <button
+      type="button"
+      class="bg-[#553B08] text-[#E8E0C6] px-4 py-2 rounded-sm hover:text-white cursor-pointer"
+    >
+      Login
+    </button>
+  </nav>
+
+  <!-- main -->
+  <main class="flex-1">
+    <router-outlet></router-outlet>
+  </main>
+
+  <!-- footer -->
+  <app-footer></app-footer>
+</div>
