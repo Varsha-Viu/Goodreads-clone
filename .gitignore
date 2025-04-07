@@ -8,3 +8,9 @@
 /API/obj/Debug/net8.0/staticwebassets
 /API/obj/Debug/net8.0/refint
 /API/obj/Debug/net8.0/API.AssemblyInfo.cs
+/API/obj/API.csproj.nuget.dgspec.json
+/API/obj/API.csproj.nuget.g.props
+/API/obj/project.assets.json
+/API/obj/API.csproj.nuget.g.targets
+/API/obj/project.nuget.cache
+*.config
