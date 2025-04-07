@@ -27,10 +27,10 @@ namespace API.Controllers
         }
 
         // GET: api/Books/{id}
-        [HttpGet("getBookById/{id}")]
-        public async Task<IActionResult> GetBook(string id)
+        [HttpGet("getBookById/{bookId}")]
+        public async Task<IActionResult> GetBook(string bookId)
         {
-            var book = await _context.Books.FindAsync(id);
+            var book = await _context.Books.FindAsync(bookId);
 
             if (book == null)
                 return NotFound();
@@ -53,6 +53,10 @@ namespace API.Controllers
             if (existingAuthor == null)
                 return NotFound(new { message = "Author not found " });
 
+            var existingPublishers = await _context.Publishers.FindAsync(model.PublisherId);
+            if (existingPublishers == null)
+                return NotFound(new { message = "Publisher not found " });
+
             var imageUrl = "";
             if (model.CoverImageUrl.Length != 0)
             {
@@ -68,11 +72,11 @@ namespace API.Controllers
                 CoverImageUrl = imageUrl,
                 AuthorId = model.AuthorId,
                 GenreId = model.GenreId,
-                PublishedDate = model.PublishedDate,
                 PublicationYear = model.PublicationYear,
                 Language = model.Language,
                 PageCount = model.PageCount,
                 ISBN = model.ISBN,
+                PublisherId = model.PublisherId,
                 CreatedAt = DateTime.Now,
             };
 
@@ -83,10 +87,10 @@ namespace API.Controllers
         }
 
         // PUT: api/Books/{id}
-        [HttpPut("updateBooks/{id}")]
-        public async Task<IActionResult> UpdateBook(string id, [FromForm] CreateBooksModel model)
+        [HttpPut("updateBooks/{bookId}")]
+        public async Task<IActionResult> UpdateBook(string bookId, [FromForm] CreateBooksModel model)
         {
-            var existingBook = await _context.Books.FindAsync(id);
+            var existingBook = await _context.Books.FindAsync(bookId);
             if (existingBook == null)
                 return NotFound();
 
@@ -97,6 +101,10 @@ namespace API.Controllers
             var existingAuthor = await _context.Authors.FindAsync(model.AuthorId);
             if (existingAuthor == null)
                 return NotFound(new { message = "Author not found " });
+
+            var existingPublishers = await _context.Publishers.FindAsync(model.PublisherId);
+            if (existingPublishers == null)
+                return NotFound(new { message = "Publisher not found " });
 
             var imageUrl = "";
             if (model.CoverImageUrl.Length != 0)
@@ -109,12 +117,12 @@ namespace API.Controllers
             existingBook.Description = model.Description;
             existingBook.CoverImageUrl = imageUrl != "" ? imageUrl : existingBook.CoverImageUrl;
             existingBook.AuthorId = model.AuthorId;
-            existingBook.PublishedDate = model.PublishedDate;
             existingBook.Language = model.Language;
             existingBook.PublicationYear = model.PublicationYear;
             existingBook.PageCount = model.PageCount;
             existingBook.ISBN = model.ISBN;
             existingBook.GenreId = model.GenreId;
+            existingBook.PublisherId = model.PublisherId;
             existingBook.UpdatedAt = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
@@ -123,10 +131,10 @@ namespace API.Controllers
         }
 
         // DELETE: api/Books/{id}
-        [HttpDelete("deleteBook/{id}")]
-        public async Task<IActionResult> DeleteBook(string id)
+        [HttpDelete("deleteBook/{bookId}")]
+        public async Task<IActionResult> DeleteBook(string bookId)
         {
-            var book = await _context.Books.FindAsync(id);
+            var book = await _context.Books.FindAsync(bookId);
             if (book == null)
                 return NotFound();
 

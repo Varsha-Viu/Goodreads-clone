@@ -21,8 +21,6 @@ namespace API.Entities
         [Required]
         public string AuthorId { get; set; }
 
-        public DateTime? PublishedDate { get; set; }
-
         public string? Language { get; set; }
         public string? PublicationYear { get; set; }
 
@@ -31,6 +29,7 @@ namespace API.Entities
         public string? ISBN { get; set; }
         [Required]
         public string? GenreId { get; set; }
+        public string? PublisherId { get; set; }
 
         public DateTime? CreatedAt { get; set; } = DateTime.Now;
         public DateTime? UpdatedAt { get; set; } 

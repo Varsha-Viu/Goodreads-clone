@@ -1,4 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using System.Text;
 using API.Constants;
@@ -91,6 +92,38 @@ namespace API.Controllers
                 message = "Logged in successfully",
                 isSuccess = true
             });
+        }
+
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                return BadRequest("User not found or email not confirmed.");
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            // In production, you'd email this token instead of returning it
+            return Ok(new
+            {
+                message = "Password reset token generated.",
+                email = user.Email,
+                resetToken = token
+            });
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto model)
+        {
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+                return BadRequest("Invalid user.");
+
+            var result = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
+            if (!result.Succeeded)
+                return BadRequest(result.Errors);
+
+            return Ok(new { message = "Password reset successful!" });
         }
 
 

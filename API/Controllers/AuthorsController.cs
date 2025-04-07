@@ -28,10 +28,10 @@ namespace API.Controllers
             return Ok(authors);
         }
 
-        [HttpGet("getAuthorById/{id}")]
-        public async Task<IActionResult> GetAuthorById(string id)
+        [HttpGet("getAuthorById/{authorId}")]
+        public async Task<IActionResult> GetAuthorById(string authorId)
         {
-            var author = await _context.Authors.FindAsync(id);
+            var author = await _context.Authors.FindAsync(authorId);
             if (author == null) return NotFound();
 
             return Ok(author);
@@ -75,10 +75,10 @@ namespace API.Controllers
             return Ok(new {message = "Book added successfully"});
         }
 
-        [HttpPut("updateAuthor/{id}")]
-        public async Task<IActionResult> UpdateAuthor(string id, [FromForm] CreateAuthorModel updatedAuthor)
+        [HttpPut("updateAuthor/{authorId}")]
+        public async Task<IActionResult> UpdateAuthor(string authorId, [FromForm] CreateAuthorModel updatedAuthor)
         {
-            var existingAuthor = await _context.Authors.FindAsync(id);
+            var existingAuthor = await _context.Authors.FindAsync(authorId);
             if (existingAuthor == null) 
                 return NotFound();
 
@@ -108,11 +108,16 @@ namespace API.Controllers
             return Ok(new { message = "Author updated successfully" });
         }
 
-        [HttpDelete("deleteAuthor/{id}")]
-        public async Task<IActionResult> DeleteAuthor(string  id)
+        [HttpDelete("deleteAuthor/{authorId}")]
+        public async Task<IActionResult> DeleteAuthor(string authorId)
         {
-            var author = await _context.Authors.FindAsync(id);
+            var author = await _context.Authors.FindAsync(authorId);
             if (author == null) return NotFound();
+
+            var hasBooks = await _context.Books.AnyAsync(b => b.AuthorId == authorId);
+            if (hasBooks)
+                return BadRequest(new { message = "Cannot delete author. Books are associated with this author." });
+
 
             _context.Authors.Remove(author);
             await _context.SaveChangesAsync();

@@ -27,10 +27,10 @@ namespace API.Controllers
         }
 
         // GET: api/Genres/{id}
-        [HttpGet("getGenreById/{id}")]
-        public async Task<IActionResult> GetGenre(string id)
+        [HttpGet("getGenreById/{genreId}")]
+        public async Task<IActionResult> GetGenre(string genreId)
         {
-            var genre = await _context.Genres.FindAsync(id);
+            var genre = await _context.Genres.FindAsync(genreId);
 
             if (genre == null)
                 return NotFound();
@@ -64,15 +64,15 @@ namespace API.Controllers
         }
 
         // PUT: api/Genres/{id}
-        [HttpPut("updateGenre/{id}")]
-        public async Task<IActionResult> UpdateGenre(string id, [FromForm]CreateGenreModel model)
+        [HttpPut("updateGenre/{genreId}")]
+        public async Task<IActionResult> UpdateGenre(string genreId, [FromForm]CreateGenreModel model)
         {
-            var existingGenre = await _context.Genres.FindAsync(id);
+            var existingGenre = await _context.Genres.FindAsync(genreId);
             if (existingGenre == null)
                 return NotFound();
 
             var doesExists = await _context.Genres.FirstOrDefaultAsync(m => m.Name == model.Name);
-            if (doesExists != null && doesExists.GenreId != id)
+            if (doesExists != null && doesExists.GenreId != genreId)
                 return BadRequest(new { message = "Genre already exists" });
 
             existingGenre.Name = model.Name;
@@ -85,12 +85,17 @@ namespace API.Controllers
         }
 
         // DELETE: api/Genres/{id}
-        [HttpDelete("deleteGenre/{id}")]
-        public async Task<IActionResult> DeleteGenre(string id)
+        [HttpDelete("deleteGenre/{genreId}")]
+        public async Task<IActionResult> DeleteGenre(string genreId)
         {
-            var genre = await _context.Genres.FindAsync(id);
+            var genre = await _context.Genres.FindAsync(genreId);
             if (genre == null)
                 return NotFound();
+
+            var hasBooks = await _context.Books.AnyAsync(b => b.GenreId == genreId);
+            if (hasBooks)
+                return BadRequest(new { message = "Cannot delete Genre. Books are associated with this genre." });
+
 
             _context.Genres.Remove(genre);
             await _context.SaveChangesAsync();

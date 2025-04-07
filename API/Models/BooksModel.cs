@@ -20,12 +20,8 @@ namespace API.Models
 
         public IFormFile? CoverImageUrl { get; set; }
 
-
         [Required]
         public string AuthorId { get; set; }
-
-        public DateTime? PublishedDate { get; set; }
-
         public string? Language { get; set; }
         public string? PublicationYear { get; set; }
 
@@ -34,5 +30,31 @@ namespace API.Models
         public string? ISBN { get; set; }
         [Required]
         public string? GenreId { get; set; }
+        public string? PublisherId { get; set; }
+    }
+
+    public class CreatePublishersModel
+    {
+        [Required]
+        [MaxLength(255)]
+        public string Name { get; set; }
+
+        [MaxLength(255)]
+        public string? WebsiteUrl { get; set; }
+
+        [MaxLength(255)]
+        public string? Email { get; set; }
+
+        [MaxLength(20)]
+        public string? Phone { get; set; }
+
+        [MaxLength(500)]
+        public string? Address { get; set; }
+    }
+
+    public class WishListDto
+    {
+        public string BookId { get; set; }
+        public string UserId { get; set; }
     }
 }
