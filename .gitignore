@@ -14,3 +14,5 @@
 /API/obj/API.csproj.nuget.g.targets
 /API/obj/project.nuget.cache
 *.config
+/API/.vs/API/FileContentIndex
+/API/obj/Debug/net8.0
