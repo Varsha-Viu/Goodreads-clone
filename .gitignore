@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/API/bin/Debug/net8.0
+/API/obj/Debug/net8.0/EndpointInfo
+/API/obj/Debug/net8.0/ref
+/API/obj/Debug/net8.0/staticwebassets
+/API/obj/Debug/net8.0/refint
+/API/obj/Debug/net8.0/API.AssemblyInfo.cs
