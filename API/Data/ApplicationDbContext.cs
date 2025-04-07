@@ -10,5 +10,7 @@ namespace API.Data
 
         // Other DbSets if needed
         public DbSet<Authors> Authors { get; set; }
+        public DbSet<Books> Books { get; set; }
+        public DbSet<Genres> Genres { get; set; }
     }
 }

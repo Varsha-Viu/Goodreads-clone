@@ -72,10 +72,10 @@ namespace API.Controllers
             _context.Authors.Add(author);
             await _context.SaveChangesAsync();
 
-            return Ok(author);
+            return Ok(new {message = "Book added successfully"});
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("updateAuthor/{id}")]
         public async Task<IActionResult> UpdateAuthor(string id, [FromForm] CreateAuthorModel updatedAuthor)
         {
             var existingAuthor = await _context.Authors.FindAsync(id);
@@ -105,7 +105,7 @@ namespace API.Controllers
             existingAuthor.UpdatedAt = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
-            return Ok(existingAuthor);
+            return Ok(new { message = "Author updated successfully" });
         }
 
         [HttpDelete("deleteAuthor/{id}")]
