@@ -40,7 +40,7 @@
       [columnMode]="'flex'"
       [headerHeight]="50"
       [footerHeight]="30"
-      rowHeight="auto"
+      [rowHeight]="70"
       [count]="rows.length"
       [limit]="pageSize"
       [offset]="currentPage"
@@ -83,7 +83,7 @@
       >
         <ng-template let-row="row" ngx-datatable-cell-template>
           <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
-            row?.author
+            row?.authorName
           }}</span>
         </ng-template>
       </ngx-datatable-column>
@@ -95,19 +95,31 @@
       >
         <ng-template let-row="row" ngx-datatable-cell-template>
           <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
-            row?.genre
+            row?.genreName
           }}</span>
         </ng-template>
       </ngx-datatable-column>
 
       <ngx-datatable-column
-        name="Publisher"
+        name="Publication Year"
         [flexGrow]="2"
         headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]"
       >
         <ng-template let-row="row" ngx-datatable-cell-template>
           <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
-            row?.publisher
+            row?.publicationYear
+          }}</span>
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column
+        name="Language"
+        [flexGrow]="2"
+        headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]"
+      >
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
+            row?.language | titlecase
           }}</span>
         </ng-template>
       </ngx-datatable-column>
@@ -206,11 +218,11 @@
         <!-- Subtitle -->
         <div class="w-full">
           <label class="block text-sm font-medium text-[#553B08]"
-            >Subtitle</label
+            >Authors</label
           >
           <input
             type="text"
-            formControlName="subtitle"
+            formControlName="authorName"
             class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
           />
         </div>
@@ -269,7 +281,7 @@
           >
           <input
             type="number"
-            formControlName="numberOfPages"
+            formControlName="pageCount"
             class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
           />
         </div>
@@ -283,18 +295,18 @@
           >
           <input
             type="text"
-            formControlName="publisher"
+            formControlName="publisherName"
             class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
           />
         </div>
         <!-- Authors -->
         <div class="w-full">
           <label class="block text-sm font-medium text-[#553B08]"
-            >Authors</label
+            >Genre Name</label
           >
           <input
             type="text"
-            formControlName="authors"
+            formControlName="genreName"
             class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
           />
         </div>
@@ -326,15 +338,6 @@
           <p class="text-red-500 text-xs mt-1" *ngIf="imageError">
             {{ imageError }}
           </p>
-        </div>
-        <!-- Genre -->
-        <div class="w-full">
-          <label class="block text-sm font-medium text-gray-700">Genre</label>
-          <input
-            type="text"
-            formControlName="genre"
-            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
-          />
         </div>
       </div>
 

@@ -20,11 +20,37 @@ namespace API.Controllers
 
         // GET: api/Books
         [HttpGet("getAllBooks")]
+        [HttpGet("books")]
         public async Task<IActionResult> GetBooks()
         {
-            var booksList =  await _context.Books.ToListAsync();
+            var booksList = await (from book in _context.Books
+                                   join author in _context.Authors on book.AuthorId equals author.AuthorId
+                                   join genre in _context.Genres on book.GenreId equals genre.GenreId
+                                   join publisher in _context.Publishers on book.PublisherId equals publisher.PublisherId into pubJoin
+                                   from publisher in pubJoin.DefaultIfEmpty() // In case Publisher is null
+                                   select new
+                                   {
+                                       book.BookId,
+                                       book.Title,
+                                       book.Description,
+                                       book.CoverImageUrl,
+                                       book.Language,
+                                       book.PublicationYear,
+                                       book.PageCount,
+                                       book.ISBN,
+                                       book.CreatedAt,
+                                       book.UpdatedAt,
+                                       AuthorId = book.AuthorId,
+                                       AuthorName = author.FirstName,
+                                       GenreId = book.GenreId,
+                                       GenreName = genre.Name,
+                                       PublisherId = book.PublisherId,
+                                       PublisherName = publisher != null ? publisher.Name : null
+                                   }).ToListAsync();
+
             return Ok(booksList);
         }
+
 
         // GET: api/Books/{id}
         [HttpGet("getBookById/{bookId}")]

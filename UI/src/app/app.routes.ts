@@ -8,15 +8,20 @@ import { UsersComponent } from './pages/admin/users/users.component';
 import { CategoriesComponent } from './pages/admin/categories/categories.component';
 import { LandingPageComponent } from './pages/user/landing-page/landing-page.component';
 import { UserLayoutComponent } from './pages/user/user-layout/user-layout.component';
+import { AuthGuard } from './shared/guards/auth.guard';
+import { RoleGuard } from './shared/guards/role.guard';
 
 export const routes: Routes = [
     {
         path: '',
-        redirectTo: 'landingPage',
-        pathMatch: 'full'
+        component: UserLayoutComponent,
+        children: [
+            { path: '', redirectTo: 'landingPage', pathMatch: 'full' },
+            { path: 'landingPage', component: LandingPageComponent }
+        ]
     },
     {
-        path: 'login',
+        path: 'admin-login',
         component: LoginComponent
     },
     {
@@ -25,34 +30,36 @@ export const routes: Routes = [
         children: [
             {
                 path: 'dashboard',
-                component: DashboardComponent
+                component: DashboardComponent,
+                canActivate: [AuthGuard, RoleGuard],
+                data: { role: 'Admin' }
             },
             {
                 path: 'books',
-                component: BooksComponent
+                component: BooksComponent,
+                canActivate: [AuthGuard, RoleGuard],
+                data: { role: 'Admin' }
             },
             {
                 path: 'authors',
-                component: AuthorsComponent
+                component: AuthorsComponent,
+                canActivate: [AuthGuard, RoleGuard],
+                data: { role: 'Admin' }
             },
             {
                 path: 'categories',
-                component: CategoriesComponent
+                component: CategoriesComponent,
+                canActivate: [AuthGuard, RoleGuard],
+                data: { role: 'Admin' }
             },
             {
                 path: 'users',
-                component: UsersComponent
+                component: UsersComponent,
+                canActivate: [AuthGuard, RoleGuard],
+                data: { role: 'Admin' }
             }
         ]
     },
-    {
-        path: '',
-        component: UserLayoutComponent,
-        children: [
-            {
-                path: 'landingPage',
-                component: LandingPageComponent
-            }
-        ]
-    }
+    { path: '**', redirectTo: 'landingPage', pathMatch: 'full' }
 ];
+

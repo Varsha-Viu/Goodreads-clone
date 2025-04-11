@@ -60,6 +60,7 @@ namespace API.Controllers
             user.LastName = model.LastName;
             user.Address = model.Address;
             user.PhoneNumber = model.PhoneNumber;
+            user.UpdatedAt = DateTime.Now;
 
             var result = await _userManager.UpdateAsync(user);
 
@@ -84,10 +85,58 @@ namespace API.Controllers
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Address = user.Address,
-                PhoneNumber = user.PhoneNumber
+                PhoneNumber = user.PhoneNumber,
+                IsUserActive = user.IsUserActive
             });
 
             return Ok(result);
+        }
+
+        [HttpPost("toggle-status/{id}")]
+        public async Task<IActionResult> ToggleUserStatus(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+                return NotFound("User not found");
+
+            user.IsUserActive = !user.IsUserActive;
+
+            var result = await _userManager.UpdateAsync(user);
+
+
+            if (!result.Succeeded)
+                return BadRequest("Failed to update user status");
+
+            var message = user.IsUserActive ? "User unblocked" : "User blocked";
+            return Ok(new
+            {
+                message = message + " successfully",
+                isSuccess = true
+            });
+        }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchUsers([FromQuery] string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+                return BadRequest("Search query is required");
+
+            var users = await _userManager.Users
+                .Where(u => u.UserName.Contains(query) || u.Email.Contains(query))
+                .Select(u => new
+                {
+                    u.Id,
+                    u.FirstName,
+                    u.LastName,
+                    u.UserName,
+                    u.Email,
+                    u.PhoneNumber,
+                    u.IsUserActive
+                })
+                .ToListAsync();
+
+            return Ok(new { data = users });
         }
 
     }

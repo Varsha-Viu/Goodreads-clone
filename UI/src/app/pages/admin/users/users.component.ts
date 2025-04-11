@@ -1,89 +1,48 @@
 import { Component } from '@angular/core';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { CommonModule } from '@angular/common';
+import { UserService } from '../../../shared/services/user.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-users',
-  imports: [NgxDatatableModule, CommonModule],
+  imports: [NgxDatatableModule, CommonModule, FormsModule],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css'
 })
 export class UsersComponent {
-  isBlocked:boolean = false;
-  rows = [
-    { 
-      title: "The Great Gatsby", 
-      author: "F. Scott Fitzgerald", 
-      year: 1925, 
-      genre: "Fiction", 
-      pages: 180, 
-      publisher: "Scribner volume ", 
-      rating: 4.3 ,
-      isBlocked: false
-    },
-    { 
-      title: "To Kill a Mockingbird", 
-      author: "Harper Lee", 
-      year: 1960, 
-      genre: "Drama", 
-      pages: 281, 
-      publisher: "J. B. Lippincott & Co.", 
-      rating: 4.8,
-      isBlocked: true 
-    },
-    { 
-      title: "1984", 
-      author: "George Orwell", 
-      year: 1949, 
-      genre: "Dystopian", 
-      pages: 328, 
-      publisher: "Secker & Warburg", 
-      rating: 4.6 ,
-      isBlocked: false
-    },
-    { 
-      title: "The Great Gatsby", 
-      author: "F. Scott Fitzgerald", 
-      year: 1925, 
-      genre: "Fiction", 
-      pages: 180, 
-      publisher: "Scribner", 
-      rating: 4.3  ,
-      isBlocked: false
-    },
-    { 
-      title: "To Kill a Mockingbird", 
-      author: "Harper Lee", 
-      year: 1960, 
-      genre: "Drama", 
-      pages: 281, 
-      publisher: "J. B. Lippincott & Co.", 
-      rating: 4.8  ,
-      isBlocked: false
-    },
-    { 
-      title: "1984", 
-      author: "George Orwell", 
-      year: 1949, 
-      genre: "Dystopian", 
-      pages: 328, 
-      publisher: "Secker & Warburg", 
-      rating: 4.6  ,
-      isBlocked: false
-    }
-  ];
-
+  isBlocked: boolean = false;
+  rows: any;
   pageSize = 5;  // Number of items per page
   currentPage = 0;
-  displayedRows: { 
-    title: string; 
-    author: string; 
-    year: number; 
-    genre: string; 
-    pages: number; 
-    publisher: string; 
-    rating: number; 
+  displayedRows: {
+    userName: string;
+    firstName: string;
+    lastName: number;
+    Email: string;
+    phoneNumber: number;
+    address: string;
+    isActive: number;
   }[] = [];
+
+  searchTerm: string = '';
+
+  constructor(private userService: UserService) {
+
+ }
+
+ ngOnInit(): void {
+  this.getAllUsers();
+ }
+
+  getAllUsers() {
+    this.userService.getAllUsers().subscribe((res: any) => {
+      this.rows = res;
+    },
+      (err: any) => {
+        console.log(err);
+      })
+  }
 
   updateDisplayedRows() {
     const start = this.currentPage * this.pageSize;
@@ -115,6 +74,30 @@ export class UsersComponent {
   }
 
   blockUser(row: any) {
-    row.isBlocked = !row.isBlocked;
-  } 
+    this.userService.toggleUserStatus(row.id).subscribe((res: any) => {
+      if (res.isSuccess) {
+        this.getAllUsers();
+      }
+    },
+      (err: any) => {
+        console.log(err);
+      }
+    );
+  }
+
+  searchUsers() {
+    this.userService.searchUsers(this.searchTerm).subscribe((res: any) => {
+      this.rows = res.data;
+      this.updateDisplayedRows();
+    },
+      (err: any) => {
+        console.log(err);
+      }
+    );
+  }
+
+  clearSearch() {
+    this.searchTerm = '';
+    this.getAllUsers(); // or re-fetch default user list if needed
+  }
 }

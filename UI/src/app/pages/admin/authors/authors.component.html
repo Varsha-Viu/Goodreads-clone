@@ -3,19 +3,30 @@
   <!-- buttons -->
   <div class="flex items-center justify-between mb-6">
     <div class="flex items-center">
-      <div>
+      <div class="relative">
         <input
           type="text"
           name="search"
           id="search"
           placeholder="Search author"
+          [(ngModel)]="searchTerm"
           class="bg-[#FFF7E7] rounded-s-md py-2.5 px-4 w-[300px] text-[#553B08] focus:outline-[#553B08] text-[14px] outline-2 outline-[#553B0850]"
         />
+
+        <button
+        *ngIf="searchTerm"
+        type="button"
+        (click)="clearSearch()"
+        class="absolute right-2 top-1/2 -translate-y-1/2 text-[#553B08] text-[25px] font-semibold hover:text-red-500 focus:outline-none"
+      >
+        &times;
+      </button>
       </div>
       <div>
         <button
           type="button"
           class="bg-[#553B08] text-[#E8E0C6] px-4 py-2.5 rounded-e-md hover:text-white cursor-pointer"
+          (click)="searchAuthors()"
         >
           Search
         </button>
@@ -40,7 +51,7 @@
       [columnMode]="'flex'"
       [headerHeight]="50"
       [footerHeight]="30"
-      rowHeight="auto"
+      [rowHeight]="50"
       [count]="rows.length"
       [limit]="pageSize"
       [offset]="currentPage"
@@ -65,49 +76,49 @@
       </ngx-datatable-column>
 
       <ngx-datatable-column
-        name="Title"
+        name="Author Name"
         [flexGrow]="2"
         headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]"
       >
         <ng-template let-row="row" ngx-datatable-cell-template>
           <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
-            row?.title | titlecase
+            row?.fullName | titlecase
           }}</span>
         </ng-template>
       </ngx-datatable-column>
 
       <ngx-datatable-column
-        name="Author"
+        name="Pen Name"
         [flexGrow]="2"
         headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]"
       >
         <ng-template let-row="row" ngx-datatable-cell-template>
           <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
-            row?.author
+            row?.penName
           }}</span>
         </ng-template>
       </ngx-datatable-column>
 
       <ngx-datatable-column
-        name="Genre"
+        name="Email"
         [flexGrow]="2"
         headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]"
       >
         <ng-template let-row="row" ngx-datatable-cell-template>
           <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
-            row?.genre
+            row?.email
           }}</span>
         </ng-template>
       </ngx-datatable-column>
 
       <ngx-datatable-column
-        name="Publisher"
+        name="Website"
         [flexGrow]="2"
         headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]"
       >
         <ng-template let-row="row" ngx-datatable-cell-template>
           <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
-            row?.publisher
+            row?.website
           }}</span>
         </ng-template>
       </ngx-datatable-column>
@@ -146,7 +157,7 @@
       <button
         (click)="prevPage()"
         [disabled]="currentPage === 0"
-        class="bg-transparent"
+        class="bg-transparent cursor-pointer"
       >
         <img
           src="/icons/previous-icon.png"
@@ -160,7 +171,7 @@
       <button
         (click)="nextPage()"
         [disabled]="(currentPage + 1) * pageSize >= rows.length"
-        class="bg-transparent"
+        class="bg-transparent cursor-pointer"
       >
         <img
           src="/icons/next-icon.png"
@@ -173,7 +184,6 @@
 </div>
 
 <!-- add / edit books modal  -->
-
 <!-- Modal Overlay -->
 <div
   *ngIf="openAddEditModal"
@@ -187,116 +197,100 @@
 
     <!-- Form -->
     <form [formGroup]="authorForm" (ngSubmit)="submitForm()">
-      <!-- Title -->
+      <!-- first name -->
       <div class="flex gap-3 items-center mb-4">
         <div class="w-full">
-          <label class="block text-sm font-medium text-[#553B08]">Title</label>
+          <label class="block text-sm font-medium text-[#553B08]"
+            >First Name</label
+          >
           <input
             type="text"
-            formControlName="title"
+            formControlName="firstName"
             class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
           />
           <p
             class="text-red-500 text-xs"
-            *ngIf="isFormSubmitted &&  (f['title'].invalid && f['title'].touched)"
+            *ngIf="
+              isFormSubmitted &&
+              f['firstName'].invalid &&
+              f['firstName'].touched
+            "
           >
-            Title is required.
+            First Name is required.
           </p>
         </div>
-        <!-- Subtitle -->
+        <!-- last name -->
         <div class="w-full">
           <label class="block text-sm font-medium text-[#553B08]"
-            >Subtitle</label
+            >Last Name</label
           >
           <input
             type="text"
-            formControlName="subtitle"
+            formControlName="lastName"
             class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
           />
         </div>
       </div>
 
-      <!-- Description -->
+      <div class="flex items-center gap-3 mb-4">
+        <!-- pen name -->
+        <div class="w-full">
+          <label class="block text-sm font-medium text-[#553B08]"
+            >Pen Name</label
+          >
+          <input
+            type="text"
+            formControlName="penName"
+            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
+          />
+        </div>
+        <!-- email -->
+        <div class="w-full">
+          <label class="block text-sm font-medium text-[#553B08]">Email</label>
+          <input
+            type="email"
+            formControlName="email"
+            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
+          />
+        </div>
+      </div>
+      <!-- biography -->
       <div class="mb-4">
         <label class="block text-sm font-medium text-[#553B08]"
-          >Description</label
+          >Biography</label
         >
         <textarea
-          formControlName="description"
+          formControlName="biography"
           class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
         ></textarea>
       </div>
 
       <div class="flex items-center gap-3 mb-4">
-        <!-- ISBN -->
-        <div class="w-full">
-          <label class="block text-sm font-medium text-[#553B08]">ISBN</label>
-          <input
-            type="text"
-            formControlName="isbn"
-            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
-          />
-        </div>
-        <!-- Publication Year -->
+        <!-- website -->
         <div class="w-full">
           <label class="block text-sm font-medium text-[#553B08]"
-            >Publication Year</label
-          >
-          <input
-            type="number"
-            formControlName="publicationYear"
-            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
-          />
-        </div>
-      </div>
-
-      <div class="flex items-center gap-3 mb-4">
-        <!-- Language -->
-        <div class="w-full">
-          <label class="block text-sm font-medium text-[#553B08]"
-            >Language</label
+            >Website</label
           >
           <input
             type="text"
-            formControlName="language"
+            formControlName="website"
             class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
           />
         </div>
-        <!-- Number of Pages -->
+        <!-- socialLinks -->
         <div class="w-full">
           <label class="block text-sm font-medium text-[#553B08]"
-            >Number of Pages</label
+            >Social Links</label
           >
-          <input
-            type="number"
-            formControlName="numberOfPages"
+          <select
+            formControlName="socialLinks"
             class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
-          />
-        </div>
-      </div>
-
-      <div class="flex items-center gap-3 mb-4">
-        <!-- Publisher -->
-        <div class="w-full">
-          <label class="block text-sm font-medium text-[#553B08]"
-            >Publisher</label
           >
-          <input
-            type="text"
-            formControlName="publisher"
-            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
-          />
-        </div>
-        <!-- Authors -->
-        <div class="w-full">
-          <label class="block text-sm font-medium text-[#553B08]"
-            >Authors</label
-          >
-          <input
-            type="text"
-            formControlName="authors"
-            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
-          />
+            <option value="" disabled selected>Select a social platform</option>
+            <option value="Instagram">Instagram</option>
+            <option value="Linkedin">LinkedIn</option>
+            <option value="Facebook">Facebook</option>
+          </select>
         </div>
       </div>
 
@@ -304,21 +298,31 @@
         <!-- Image Upload -->
         <div class="w-full">
           <label class="block text-sm font-medium text-[#553B08]"
-            >Book Cover</label
+            >Author Profile Image</label
           >
           <div class="flex items-center space-x-4 mt-2">
             <!-- Image Preview -->
-            <img
-              *ngIf="imagePreview"
-              [src]="imagePreview"
-              alt="Book Cover"
-              class="w-20 h-20 object-cover border rounded-md shadow-md"
-            />
+            <div *ngIf="imagePreview" class="flex flex-col items-center space-y-2">
+              <img
+                [src]="imagePreview"
+                alt="Author Profile Image"
+                class="w-20 h-20 object-cover border rounded-md shadow-md"
+              />
+          
+              <!-- Remove Button -->
+              <button
+                type="button"
+                (click)="removeImage()"
+                class="text-red-600 text-sm underline hover:text-red-800 transition"
+              >
+                Remove Image
+              </button>
+            </div>
 
             <!-- File Input -->
             <input
               type="file"
-              (change)="onFileSelect($event)"
+              (change)="onFileSelected($event)"
               accept="image/*"
               class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#553B0830] file:text-[#553B08] hover:file:bg-[#553B0850]"
             />
@@ -326,15 +330,6 @@
           <p class="text-red-500 text-xs mt-1" *ngIf="imageError">
             {{ imageError }}
           </p>
-        </div>
-        <!-- Genre -->
-        <div class="w-full">
-          <label class="block text-sm font-medium text-gray-700">Genre</label>
-          <input
-            type="text"
-            formControlName="genre"
-            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
-          />
         </div>
       </div>
 
@@ -358,9 +353,7 @@
   </div>
 </div>
 
-
 <!-- delete books modal  -->
-
 <!-- Modal Overlay -->
 <div
   *ngIf="DeleteModal"
@@ -368,12 +361,11 @@
 >
   <!-- Modal Content -->
   <div class="bg-white p-6 rounded-lg shadow-lg w-[30%] relative">
-    <h2 class="text-xl text-[#553B08] font-bold mb-2">
-      Delete book
-    </h2>
+    <h2 class="text-xl text-[#553B08] font-bold mb-2">Delete book</h2>
     <div class="mb-8">
-      <p class="text-[#553B08] font-normal">Are you sure you want to delete this book?</p>
-
+      <p class="text-[#553B08] font-normal">
+        Are you sure you want to delete this book?
+      </p>
     </div>
     <!-- Buttons -->
     <div class="flex justify-end gap-2">
@@ -385,7 +377,7 @@
         Cancel
       </button>
       <button
-      (click)="closeDeleteModal()"
+        (click)="DeleteAuthor()"
         type="button"
         class="bg-[#553B08] text-[#E8E0C6] px-4 py-1.5 rounded-md hover:text-white cursor-pointer"
       >

@@ -40,7 +40,7 @@
       [columnMode]="'flex'"
       [headerHeight]="50"
       [footerHeight]="30"
-      rowHeight="auto"
+      [rowHeight]="50"
       [count]="rows.length"
       [limit]="pageSize"
       [offset]="currentPage"
@@ -65,49 +65,25 @@
       </ngx-datatable-column>
 
       <ngx-datatable-column
-        name="Title"
+        name="Genre Name"
         [flexGrow]="2"
         headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]"
       >
         <ng-template let-row="row" ngx-datatable-cell-template>
           <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
-            row?.title | titlecase
+            row?.name | titlecase
           }}</span>
         </ng-template>
       </ngx-datatable-column>
 
       <ngx-datatable-column
-        name="Author"
+        name="Description"
         [flexGrow]="2"
         headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]"
       >
         <ng-template let-row="row" ngx-datatable-cell-template>
           <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
-            row?.author
-          }}</span>
-        </ng-template>
-      </ngx-datatable-column>
-
-      <ngx-datatable-column
-        name="Genre"
-        [flexGrow]="2"
-        headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]"
-      >
-        <ng-template let-row="row" ngx-datatable-cell-template>
-          <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
-            row?.genre
-          }}</span>
-        </ng-template>
-      </ngx-datatable-column>
-
-      <ngx-datatable-column
-        name="Publisher"
-        [flexGrow]="2"
-        headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]"
-      >
-        <ng-template let-row="row" ngx-datatable-cell-template>
-          <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
-            row?.publisher
+            row?.description
           }}</span>
         </ng-template>
       </ngx-datatable-column>
@@ -188,155 +164,33 @@
     <!-- Form -->
     <form [formGroup]="authorForm" (ngSubmit)="submitForm()">
       <!-- Title -->
-      <div class="flex gap-3 items-center mb-4">
+      <div class="flex gap-3 flex-col items-center mb-4">
         <div class="w-full">
-          <label class="block text-sm font-medium text-[#553B08]">Title</label>
+          <label class="block text-sm font-medium text-[#553B08]">Name</label>
           <input
             type="text"
-            formControlName="title"
+            formControlName="name"
             class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
           />
           <p
             class="text-red-500 text-xs"
-            *ngIf="isFormSubmitted &&  (f['title'].invalid && f['title'].touched)"
+            *ngIf="isFormSubmitted &&  (f['name'].invalid && f['name'].touched)"
           >
-            Title is required.
+            Genre Name is required.
           </p>
         </div>
         <!-- Subtitle -->
-        <div class="w-full">
+        <div class="w-full mb-4">
           <label class="block text-sm font-medium text-[#553B08]"
-            >Subtitle</label
+            >Description</label
           >
-          <input
-            type="text"
-            formControlName="subtitle"
+          <textarea
+            formControlName="description"
             class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
-          />
+          ></textarea>
         </div>
       </div>
 
-      <!-- Description -->
-      <div class="mb-4">
-        <label class="block text-sm font-medium text-[#553B08]"
-          >Description</label
-        >
-        <textarea
-          formControlName="description"
-          class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
-        ></textarea>
-      </div>
-
-      <div class="flex items-center gap-3 mb-4">
-        <!-- ISBN -->
-        <div class="w-full">
-          <label class="block text-sm font-medium text-[#553B08]">ISBN</label>
-          <input
-            type="text"
-            formControlName="isbn"
-            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
-          />
-        </div>
-        <!-- Publication Year -->
-        <div class="w-full">
-          <label class="block text-sm font-medium text-[#553B08]"
-            >Publication Year</label
-          >
-          <input
-            type="number"
-            formControlName="publicationYear"
-            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
-          />
-        </div>
-      </div>
-
-      <div class="flex items-center gap-3 mb-4">
-        <!-- Language -->
-        <div class="w-full">
-          <label class="block text-sm font-medium text-[#553B08]"
-            >Language</label
-          >
-          <input
-            type="text"
-            formControlName="language"
-            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
-          />
-        </div>
-        <!-- Number of Pages -->
-        <div class="w-full">
-          <label class="block text-sm font-medium text-[#553B08]"
-            >Number of Pages</label
-          >
-          <input
-            type="number"
-            formControlName="numberOfPages"
-            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
-          />
-        </div>
-      </div>
-
-      <div class="flex items-center gap-3 mb-4">
-        <!-- Publisher -->
-        <div class="w-full">
-          <label class="block text-sm font-medium text-[#553B08]"
-            >Publisher</label
-          >
-          <input
-            type="text"
-            formControlName="publisher"
-            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
-          />
-        </div>
-        <!-- Authors -->
-        <div class="w-full">
-          <label class="block text-sm font-medium text-[#553B08]"
-            >Authors</label
-          >
-          <input
-            type="text"
-            formControlName="authors"
-            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
-          />
-        </div>
-      </div>
-
-      <div class="flex items-center gap-3 mb-4">
-        <!-- Image Upload -->
-        <div class="w-full">
-          <label class="block text-sm font-medium text-[#553B08]"
-            >Book Cover</label
-          >
-          <div class="flex items-center space-x-4 mt-2">
-            <!-- Image Preview -->
-            <img
-              *ngIf="imagePreview"
-              [src]="imagePreview"
-              alt="Book Cover"
-              class="w-20 h-20 object-cover border rounded-md shadow-md"
-            />
-
-            <!-- File Input -->
-            <input
-              type="file"
-              (change)="onFileSelect($event)"
-              accept="image/*"
-              class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#553B0830] file:text-[#553B08] hover:file:bg-[#553B0850]"
-            />
-          </div>
-          <p class="text-red-500 text-xs mt-1" *ngIf="imageError">
-            {{ imageError }}
-          </p>
-        </div>
-        <!-- Genre -->
-        <div class="w-full">
-          <label class="block text-sm font-medium text-gray-700">Genre</label>
-          <input
-            type="text"
-            formControlName="genre"
-            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
-          />
-        </div>
-      </div>
 
       <!-- Buttons -->
       <div class="flex justify-end gap-2">
@@ -385,7 +239,7 @@
         Cancel
       </button>
       <button
-      (click)="closeDeleteModal()"
+      (click)="deleteGenre()"
         type="button"
         class="bg-[#553B08] text-[#E8E0C6] px-4 py-1.5 rounded-md hover:text-white cursor-pointer"
       >

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { BooksService } from '../../../shared/services/books.service';
 
 @Component({
   selector: 'app-books',
@@ -14,79 +15,7 @@ export class BooksComponent {
   modalTitle: string = "Add Book";
   isFormSubmitted: boolean = false;
   rowToDelete: any = null;
-
-  constructor(private fb: FormBuilder) {
-    this.bookForm = this.fb.group({
-      title: ['', [Validators.required]],
-      subtitle: [''],
-      description: [''],
-      isbn: [''],
-      publicationYear: [''],
-      language: [''],
-      numberOfPages: [''],
-      publisher: [''],
-      authors: [''],
-      genre: [''],
-      bookCover: [null]
-    });
-  }
-  rows = [
-    { 
-      title: "The Great Gatsby", 
-      author: "F. Scott Fitzgerald", 
-      year: 1925, 
-      genre: "Fiction", 
-      pages: 180, 
-      publisher: "Scribner", 
-      rating: 4.3 
-    },
-    { 
-      title: "To Kill a Mockingbird", 
-      author: "Harper Lee", 
-      year: 1960, 
-      genre: "Drama", 
-      pages: 281, 
-      publisher: "J. B. Lippincott & Co.", 
-      rating: 4.8 
-    },
-    { 
-      title: "1984", 
-      author: "George Orwell", 
-      year: 1949, 
-      genre: "Dystopian", 
-      pages: 328, 
-      publisher: "Secker & Warburg", 
-      rating: 4.6 
-    },
-    { 
-      title: "The Great Gatsby", 
-      author: "F. Scott Fitzgerald", 
-      year: 1925, 
-      genre: "Fiction", 
-      pages: 180, 
-      publisher: "Scribner", 
-      rating: 4.3 
-    },
-    { 
-      title: "To Kill a Mockingbird", 
-      author: "Harper Lee", 
-      year: 1960, 
-      genre: "Drama", 
-      pages: 281, 
-      publisher: "J. B. Lippincott & Co.", 
-      rating: 4.8 
-    },
-    { 
-      title: "1984", 
-      author: "George Orwell", 
-      year: 1949, 
-      genre: "Dystopian", 
-      pages: 328, 
-      publisher: "Secker & Warburg", 
-      rating: 4.6 
-    }
-  ];
-
+  rows: any;
   pageSize = 5;  // Number of items per page
   currentPage = 0;
   displayedRows: { 
@@ -103,6 +32,34 @@ export class BooksComponent {
   imagePreview: string | null = null;
   imageError: string | null = null;
 
+  constructor(private fb: FormBuilder, private bookService: BooksService) {
+    this.bookForm = this.fb.group({
+      title: ['', [Validators.required]],
+      publicationYear: [''],
+      description: [''],
+      isbn: [''],
+      language: [''],
+      pageCount: [''],
+      publisherName: [''],
+      authorName: [''],
+      genreName: [''],
+      bookCover: [null]
+    });
+  }
+
+  ngOnInit(): void {
+    this.getAllBooks();
+  }
+
+  getAllBooks() {
+    this.bookService.getAllBooks().subscribe((res: any) => {
+      this.rows = res || [];
+      this.updateDisplayedRows();
+    }, (err: any) => {
+      console.error(err);
+    });
+  }
+  
   get f() {
     return this.bookForm.controls;
   }

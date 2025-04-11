@@ -1,19 +1,30 @@
 <div>
   <h1 class="text-[#553B08] font-bold text-xl mb-8">Users</h1>
   <div class="flex items-center justify-end mb-6">
-    <div>
+    <div class="relative">
       <input
         type="text"
         name="search"
         id="search"
         placeholder="Search users"
+        [(ngModel)]="searchTerm"
         class="bg-[#FFF7E7] rounded-s-md py-2.5 px-4 w-[300px] text-[#553B08] focus:outline-[#553B08] text-[14px] outline-2 outline-[#553B0850]"
       />
+
+      <button
+        *ngIf="searchTerm"
+        type="button"
+        (click)="clearSearch()"
+        class="absolute right-2 top-1/2 -translate-y-1/2 text-[#553B08] text-[25px] font-semibold hover:text-red-500 focus:outline-none"
+      >
+        &times;
+      </button>
     </div>
     <div>
       <button
         type="button"
         class="bg-[#553B08] text-[#E8E0C6] px-4 py-2.5 rounded-e-md hover:text-white cursor-pointer"
+        (click)="searchUsers()"
       >
         Search
       </button>
@@ -59,7 +70,7 @@
       >
         <ng-template let-row="row" ngx-datatable-cell-template>
           <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
-            row?.title | titlecase
+            row?.userName | titlecase
           }}</span>
         </ng-template>
       </ngx-datatable-column>
@@ -71,7 +82,7 @@
       >
         <ng-template let-row="row" ngx-datatable-cell-template>
           <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
-            row?.author
+            row?.firstName
           }}</span>
         </ng-template>
       </ngx-datatable-column>
@@ -83,7 +94,7 @@
       >
         <ng-template let-row="row" ngx-datatable-cell-template>
           <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
-            row?.genre
+            row?.lastName
           }}</span>
         </ng-template>
       </ngx-datatable-column>
@@ -95,7 +106,7 @@
       >
         <ng-template let-row="row" ngx-datatable-cell-template>
           <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
-            row?.publisher
+            row?.email
           }}</span>
         </ng-template>
       </ngx-datatable-column>
@@ -107,7 +118,19 @@
       >
         <ng-template let-row="row" ngx-datatable-cell-template>
           <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
-            row?.publisher
+            row?.phoneNumber
+          }}</span>
+        </ng-template>
+      </ngx-datatable-column>
+
+      <ngx-datatable-column
+        name="Is Active"
+        [flexGrow]="2"
+        headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]"
+      >
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
+            row?.isUserActive ? "Active" : "Inactive"
           }}</span>
         </ng-template>
       </ngx-datatable-column>
@@ -123,19 +146,10 @@
             class="flex items-center justify-center gap-2 py-[6.5px] border-b border-e border-[#553B0850]"
           >
             <button
-              *ngIf="!row.isBlocked"
               class="cursor-pointer text-[13px] bg-[#553B08] text-white px-4 py-1 rounded-sm"
               (click)="blockUser(row)"
             >
-              Block
-            </button>
-
-            <button
-              *ngIf="row.isBlocked"
-              class="cursor-pointer text-[13px] bg-[#553B08] text-white px-4 py-1 rounded-sm"
-              (click)="blockUser(row)"
-            >
-              Unblock
+              {{ row?.isUserActive ? "Block" : "Unblock" }}
             </button>
           </div>
         </ng-template>

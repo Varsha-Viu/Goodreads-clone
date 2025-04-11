@@ -44,7 +44,7 @@ namespace API.Controllers
                 return BadRequest(ModelState);
 
             var imageUrl = ""; 
-            if(model.ProfileImageUrl.Length != 0)
+            if(model.ProfileImageUrl != null)
             {
                 imageUrl = await UploadImage(model.ProfileImageUrl);
 
@@ -124,6 +124,22 @@ namespace API.Controllers
 
             return Ok(new { message = "Author deleted successfully." });
         }
+
+        [HttpGet("search-authors")]
+        public async Task<IActionResult> SearchAuthors([FromQuery] string searchTerm)
+        {
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                return BadRequest(new { success = false, message = "Search term cannot be empty" });
+            }
+
+            var authors = await _context.Authors
+                .Where(a => a.FirstName.Contains(searchTerm))
+                .ToListAsync();
+
+            return Ok(new { success = true, data = authors });
+        }
+
 
 
         private async Task<string> UploadImage(IFormFile authorprofile)

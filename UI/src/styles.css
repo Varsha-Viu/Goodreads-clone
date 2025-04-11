@@ -8,3 +8,7 @@
     color: #553B08;
     font-weight: bold;
 }
+
+textarea {
+    resize: none;
+  }

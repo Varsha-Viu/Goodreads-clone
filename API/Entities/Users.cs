@@ -8,5 +8,8 @@ namespace API.Entities
         public string? LastName { get; set; }
         public string? FullName => $"{FirstName} {LastName}";
         public string? Address { get; set; }
+        public bool IsUserActive { get; set; }
+        public DateTime? CreatedAt { get; set; } = DateTime.Now;
+        public DateTime? UpdatedAt { get; set; }
     }
 }

@@ -50,7 +50,8 @@ namespace API.Controllers
                 PhoneNumberConfirmed = true,
                 TwoFactorEnabled = false,
                 LockoutEnabled = false,
-                AccessFailedCount = 0
+                AccessFailedCount = 0,
+                IsUserActive = true,
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
@@ -67,21 +68,29 @@ namespace API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginModel model)
+        public async Task<IActionResult> Login([FromForm] LoginModel model)
         {
             if (!ModelState.IsValid) 
                 return BadRequest(ModelState);
 
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null) 
-                return Unauthorized("Invalid email or password.");
+                return BadRequest("Email is not registered.");
 
             var passwordValid = await _userManager.CheckPasswordAsync(user, model.Password);
             if (!passwordValid) 
-                return Unauthorized("Invalid email or password.");
+                return BadRequest("Invalid password.");
+
+            if(!user.IsUserActive)
+                return BadRequest("You are not an active user.");
 
             // Get user roles
+            var isUser = true;
             var roles = await _userManager.GetRolesAsync(user);
+            if (roles.Contains("Admin"))
+            {
+                isUser = false;
+            }
 
             // Generate JWT token
             var token = GenerateJwtToken(user, roles);
@@ -90,7 +99,8 @@ namespace API.Controllers
             {
                 token,
                 message = "Logged in successfully",
-                isSuccess = true
+                isSuccess = true,
+                isUser = isUser
             });
         }
 

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { GenreService } from '../../../shared/services/genre.service';
 
 @Component({
   selector: 'app-categories',
@@ -11,81 +12,10 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 })
 export class CategoriesComponent {
   authorForm: FormGroup;
-  modalTitle: string = "Add Author";
+  modalTitle: string = "Add new genre";
   isFormSubmitted: boolean = false;
   rowToDelete: any = null;
-
-  constructor(private fb: FormBuilder) {
-    this.authorForm = this.fb.group({
-      title: ['', [Validators.required]],
-      subtitle: [''],
-      description: [''],
-      isbn: [''],
-      publicationYear: [''],
-      language: [''],
-      numberOfPages: [''],
-      publisher: [''],
-      authors: [''],
-      genre: [''],
-      bookCover: [null]
-    });
-  }
-  rows = [
-    { 
-      title: "The Great Gatsby", 
-      author: "F. Scott Fitzgerald", 
-      year: 1925, 
-      genre: "Fiction", 
-      pages: 180, 
-      publisher: "Scribner", 
-      rating: 4.3 
-    },
-    { 
-      title: "To Kill a Mockingbird", 
-      author: "Harper Lee", 
-      year: 1960, 
-      genre: "Drama", 
-      pages: 281, 
-      publisher: "J. B. Lippincott & Co.", 
-      rating: 4.8 
-    },
-    { 
-      title: "1984", 
-      author: "George Orwell", 
-      year: 1949, 
-      genre: "Dystopian", 
-      pages: 328, 
-      publisher: "Secker & Warburg", 
-      rating: 4.6 
-    },
-    { 
-      title: "The Great Gatsby", 
-      author: "F. Scott Fitzgerald", 
-      year: 1925, 
-      genre: "Fiction", 
-      pages: 180, 
-      publisher: "Scribner", 
-      rating: 4.3 
-    },
-    { 
-      title: "To Kill a Mockingbird", 
-      author: "Harper Lee", 
-      year: 1960, 
-      genre: "Drama", 
-      pages: 281, 
-      publisher: "J. B. Lippincott & Co.", 
-      rating: 4.8 
-    },
-    { 
-      title: "1984", 
-      author: "George Orwell", 
-      year: 1949, 
-      genre: "Dystopian", 
-      pages: 328, 
-      publisher: "Secker & Warburg", 
-      rating: 4.6 
-    }
-  ];
+  rows:any;
 
   pageSize = 5;  // Number of items per page
   currentPage = 0;
@@ -102,9 +32,28 @@ export class CategoriesComponent {
   DeleteModal = false;
   imagePreview: string | null = null;
   imageError: string | null = null;
+  selectedGenreId: string = '';
+
+  constructor(private fb: FormBuilder, private genreService: GenreService) {
+    this.authorForm = this.fb.group({
+      name: ['', [Validators.required]],
+      description: [''],
+    });
+  }
+
+  ngOnInit() {
+    this.getAllGenres();
+  }
 
   get f() {
     return this.authorForm.controls;
+  }
+
+  getAllGenres() {
+    this.genreService.getAllGenres().subscribe((res: any) => {
+      this.rows = res || [];
+      this.updateDisplayedRows();
+    });
   }
 
   updateDisplayedRows() {
@@ -167,19 +116,13 @@ export class CategoriesComponent {
     }
   }
 
-  editBook(row: any) {
-    console.log("Edit book:", row);
-  }
 
-  deleteBook() {
-    console.log(this.rowToDelete);
-  }
-
-  openModal(book: any = null) {
+  openModal(row: any = null) {
     this.openAddEditModal = true;
-    if(book) {
-      this.modalTitle = "Edit Author";
-      this.authorForm.patchValue(book);
+    if(row) {
+      this.modalTitle = "Edit genre";
+      this.authorForm.patchValue(row);
+      this.selectedGenreId = row.genreId;
     }
   }
 
@@ -188,6 +131,8 @@ export class CategoriesComponent {
     this.authorForm.reset();
     this.imagePreview = null;
     this.imageError = null;
+    this.selectedGenreId = '';
+    this.isFormSubmitted = false;
   }
 
   openDeleteModal(row: any) {
@@ -204,7 +149,46 @@ export class CategoriesComponent {
     if(this.authorForm.invalid) {
       return;
     }
+    const formData = new FormData();
+    const formValue = this.authorForm.value;
+      formData.append('name', formValue.name || '');
+      formData.append('description', formValue.description || '');
+  
+      
+    if(this.selectedGenreId) {
+      this.genreService.updateGenre(this.selectedGenreId, formData).subscribe((res: any) => { 
+        console.log(res);
+        this.getAllGenres();
+        this.closeModal();
+      }
+      , (err: any) => {
+        console.error(err);
+      });
+    }
+    else {
+      this.genreService.createGenre(formData).subscribe((res: any) => { 
+        console.log(res);
+        this.getAllGenres();
+        this.closeModal();
+      }
+      , (err: any) => {
+        console.error(err);
+      });
+    }
     console.log(this.authorForm.value);
-    // this.closeModal();
+    this.closeModal();
+  }
+
+  deleteGenre() {
+    if (this.rowToDelete) {
+      this.genreService.deleteGenre(this.rowToDelete.genreId).subscribe((res: any) => { 
+        console.log(res);
+        this.getAllGenres();
+        this.closeDeleteModal();
+      }
+      , (err: any) => {
+        console.error(err);
+      });
+    } 
   }
 }
