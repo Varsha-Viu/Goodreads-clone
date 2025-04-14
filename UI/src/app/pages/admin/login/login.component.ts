@@ -17,7 +17,8 @@ export class LoginComponent {
   constructor(private fb: FormBuilder, private router: Router, private auth: AuthService, private toastr: ToastrService) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required]],
-      password: ['', [Validators.required]]
+      password: ['', [Validators.required]],
+      rememberMe: [false]
     });
 
   }
@@ -42,8 +43,8 @@ export class LoginComponent {
           this.toastr.error('You are not an admin', 'Error');
           return;
         }
-        localStorage.setItem('token', res.token);
-        localStorage.setItem('isUser', res.isUser);
+        sessionStorage.setItem('token', res.token);
+        sessionStorage.setItem('isUser', res.isUser);
         this.toastr.success(res.message, 'Success');
         this.router.navigateByUrl('/admin/dashboard')
       }

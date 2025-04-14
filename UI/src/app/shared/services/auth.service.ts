@@ -16,13 +16,13 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('isUser');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('isUser');
   }
 
   isAuthenticated(): boolean {
-    var token = localStorage.getItem('token');
-    var isUser = localStorage.getItem('isUser');
+    var token = sessionStorage.getItem('token');
+    var isUser = sessionStorage.getItem('isUser');
     if (!token) {
       return false;
     }
@@ -30,7 +30,7 @@ export class AuthService {
   }
 
   DecodedToken(): any {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (!token) return null;
     try {
       return jwtDecode(token);

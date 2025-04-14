@@ -1,23 +1,80 @@
 <div class="bg-[#FFFFFF] h-[100vh]">
   <div class="flex items-center h-full">
-
     <!-- login form div -->
     <div
       class="bg-[#FFFFFF] w-full flex items-center justify-center flex-1 py-10 px-15"
     >
       <div class="w-[404px] flex flex-col gap-[30px]">
         <div class="mb-4">
-          <h1 class="text-3xl font-bold text-[#000000] mb-2">Welcome Back!</h1>
-          <p class="text-[14px]">
-            Enter your Credentials to access your account
-          </p>
+          <h1 class="text-3xl font-bold text-[#000000] mb-2">
+            Get Started Now
+          </h1>
         </div>
         <div>
           <form
-            [formGroup]="loginForm"
+            [formGroup]="signupForm"
             class="flex flex-col gap-[20px]"
             (submit)="onSubmit()"
           >
+            <div class="flex items-center gap-5">
+              <!-- first name input -->
+              <div class="flex flex-col gap-1 w-full">
+                <label for="firstName" class="text-[14px] mb-1"
+                  >First Name</label
+                >
+                <input
+                  type="text"
+                  name="firstName"
+                  id="firstName"
+                  placeholder="Enter your first name"
+                  formControlName="firstName"
+                  class="bg-transparent rounded-[4px] py-2.5 px-4 w-full text-[#000] focus:outline-none text-[12px] border border-[#D9D9D9]"
+                />
+                <div
+                  *ngIf="
+                    isSubmitted &&
+                    (f['firstName'].touched || f['firstName'].invalid)
+                  "
+                  class="text-red-600 text-[12px]"
+                >
+                  <div
+                    *ngIf="
+                      f['firstName'].errors && f['firstName'].errors['required']
+                    "
+                  >
+                    First Name is required.
+                  </div>
+                </div>
+              </div>
+              <!-- last name input -->
+              <div class="flex flex-col gap-1 w-full">
+                <label for="lastName" class="text-[14px] mb-1">Last Name</label>
+                <input
+                  type="text"
+                  name="lastName"
+                  id="lastName"
+                  placeholder="Enter your last name"
+                  formControlName="lastName"
+                  class="bg-transparent rounded-[4px] py-2.5 px-4 w-full text-[#000] focus:outline-none text-[12px] border border-[#D9D9D9]"
+                />
+                <div
+                  *ngIf="
+                    isSubmitted &&
+                    (f['lastName'].touched || f['lastName'].invalid)
+                  "
+                  class="text-red-600 text-[12px]"
+                >
+                  <div
+                    *ngIf="
+                      f['lastName'].errors && f['lastName'].errors['required']
+                    "
+                  >
+                    Last Name is required.
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <!-- email input -->
             <div class="flex flex-col gap-1">
               <label for="email" class="text-[14px] mb-1">Email Address</label>
@@ -43,12 +100,8 @@
 
             <!-- password input -->
             <div class="flex flex-col gap-1">
-              <div class="flex items-center justify-between">
-                <label for="password" class="text-[14px] mb-1">Password</label>
-                <a href="" class="text-[#0F3DDE] text-[14px] lowercase font-light">
-                  Forgot Password
-                </a>
-              </div>
+              <label for="password" class="text-[14px] mb-1">Password</label>
+
               <input
                 type="password"
                 name="password"
@@ -74,23 +127,8 @@
               </div>
             </div>
 
-            <!-- remember me checkbox -->
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  name="rememberMe"
-                  id="rememberMe"
-                  formControlName="rememberMe"
-                  class="w-4 h-4 text-[#0F3DDE] border border-[#D9D9D9] rounded focus:ring-0 focus:outline-none cursor-pointer"
-                />
-                <label for="rememberMe" class="text-[14px] font-light">Remember me</label>
-              </div>
-              
-            </div>
-
-            <!-- login button -->
-            <div class="flex items-center">
+            <!-- signup button -->
+            <div class="flex items-center mt-3">
               <button
                 type="submit"
                 class="bg-[#875C1A] w-full p-2.5 rounded-md text-[#FFF7E7] cursor-pointer focus:outline-none focus:border-none"
@@ -101,8 +139,10 @@
           </form>
         </div>
         <div class="flex items-center justify-center gap-2">
-          <p class="text-[14px] font-medium">Don't have an account?</p>
-          <a href="/signup" class="text-[#0F3DDE] text-[14px] font-medium">Sign up</a>
+          <p class="text-[14px] font-medium">Have an account</p>
+          <a href="/login" class="text-[#0F3DDE] text-[14px] font-medium"
+            >Sign in</a
+          >
         </div>
       </div>
     </div>
@@ -112,7 +152,7 @@
       class="bg-[#F3D2A1] w-full h-full flex items-center justify-center flex-1 py-10 px-15 rounded-s-2xl"
     >
       <div class="w-full flex items-center justify-center">
-        <img src="/images/login-bookshelf.png" alt="login-bookshelf">
+        <img src="/images/login-bookshelf.png" alt="login-bookshelf" />
       </div>
     </div>
   </div>

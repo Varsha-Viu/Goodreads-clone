@@ -38,7 +38,8 @@ namespace API.Controllers
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Address = user.Address,
-                PhoneNumber = user.PhoneNumber
+                PhoneNumber = user.PhoneNumber,
+                IsUserActive = user.IsUserActive
             };
 
             return Ok(profile);

@@ -26,6 +26,8 @@ export class UsersComponent {
   }[] = [];
 
   searchTerm: string = '';
+  isViewUserModalOpen: boolean = false;
+  selectedUser: any;
 
   constructor(private userService: UserService) {
 
@@ -100,4 +102,15 @@ export class UsersComponent {
     this.searchTerm = '';
     this.getAllUsers(); // or re-fetch default user list if needed
   }
+
+  viewUser(row: any) {
+    this.isViewUserModalOpen = true;
+this.selectedUser = row; // Store the selected user details
+    // Logic to view user details
+    //console.log('View user:', row);
+  }
+  closeViewUserModal() {
+    this.isViewUserModalOpen = false;
+  }
+
 }

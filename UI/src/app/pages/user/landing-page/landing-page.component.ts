@@ -1,10 +1,13 @@
+import { BooksService } from './../../../shared/services/books.service';
 import { Component } from '@angular/core';
 import { GenreGradientService } from '../../../shared/genre-gradient.service';
 import { CommonModule } from '@angular/common';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-landing-page',
-  imports: [CommonModule],
+  imports: [CommonModule, SlickCarouselModule],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.css'
 })
@@ -19,6 +22,34 @@ export class LandingPageComponent {
     "Self Help", "Sports", "Thriller", "Travel", "Young Adult"
   ];
   genres = this.allGenres.slice(0, 8);
+  testimonials = [
+    { message: 'Discovering reading list on Goodreads has completely reshaped my TBR pile. Their reviews are insightful, honest, and super relatable.', author: 'Alice' },
+    { message: 'Every 5-star rating here points to a must-read. The taste is absolutely on point.', author: 'Bob' },
+    { message: 'What stands out is the perfect blend of literary insight and genuine emotion. Feels like a thoughtful conversation over coffee.', author: 'Charlie' },
+  ];
+
+ 
+
+  testimonialSlideConfig = {
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 4000,
+    dots: true,
+    arrows: false,
+    infinite: true,
+    centerMode: true,
+    centerPadding: '0px' // Ensures the centered slide takes full width
+  };
+  
+  slideConfig = {
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 4000,
+    dots: true,
+    arrows: true,
+  };  
 
   // Define gradient colors
   genreGradients: { [key: string]: string } = {
@@ -53,14 +84,29 @@ export class LandingPageComponent {
     "Young Adult": "linear-gradient(to right, #FF9A9E, #FFDDE1)"
   };
 
-  constructor() {}
+  booksList: any[] = [];
+  constructor(private router: Router, private bookService: BooksService) {
+    
+  }
 
   ngOnInit(): void {
     //this.backgroundGradient = this.genreGradient.getGradient(this.genre);
+    this.getAllBooks();
   }
 
   // Function to get gradient
   getGradient(genre: string): string {
     return this.genreGradients[genre] || "linear-gradient(to right, #ffffff, #cccccc)"; // Default gradient
+  }
+
+  gotToBookListing() {
+    this.router.navigate(['/book-listing']);
+  }
+
+  getAllBooks() {
+    this.bookService.getAllBooks().subscribe((response: any) => {
+     this.booksList = response;
+      // this.booksList.push(response);
+    });
   }
 }

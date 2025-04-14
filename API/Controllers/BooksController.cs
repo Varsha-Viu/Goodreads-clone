@@ -24,10 +24,15 @@ namespace API.Controllers
         public async Task<IActionResult> GetBooks()
         {
             var booksList = await (from book in _context.Books
-                                   join author in _context.Authors on book.AuthorId equals author.AuthorId
-                                   join genre in _context.Genres on book.GenreId equals genre.GenreId
+                                   join author in _context.Authors on book.AuthorId equals author.AuthorId into authorJoin
+                                   from author in authorJoin.DefaultIfEmpty()
+
+                                   join genre in _context.Genres on book.GenreId equals genre.GenreId into genreJoin
+                                   from genre in genreJoin.DefaultIfEmpty()
+
                                    join publisher in _context.Publishers on book.PublisherId equals publisher.PublisherId into pubJoin
-                                   from publisher in pubJoin.DefaultIfEmpty() // In case Publisher is null
+                                   from publisher in pubJoin.DefaultIfEmpty()
+
                                    select new
                                    {
                                        book.BookId,
@@ -41,12 +46,13 @@ namespace API.Controllers
                                        book.CreatedAt,
                                        book.UpdatedAt,
                                        AuthorId = book.AuthorId,
-                                       AuthorName = author.FirstName,
+                                       AuthorName = author != null ? author.PenName : null,
                                        GenreId = book.GenreId,
-                                       GenreName = genre.Name,
+                                       GenreName = genre != null ? genre.Name : null,
                                        PublisherId = book.PublisherId,
                                        PublisherName = publisher != null ? publisher.Name : null
                                    }).ToListAsync();
+
 
             return Ok(booksList);
         }

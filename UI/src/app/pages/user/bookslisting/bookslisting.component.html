@@ -1,0 +1,177 @@
+<div class="py-6 px-10 grid grid-cols-[250px_1fr] gap-10">
+  <!-- filter options -->
+  <div>
+    <div class="flex items-center justify-between mb-10">
+      <h4 class="text-sm md:text-base font-semibold">Filter Option</h4>
+      <button
+        href=""
+        class="text-[#875C1A] text-[12px] hover:underline"
+        (click)="clearAllFilters()"
+      >
+        Reset all
+      </button>
+    </div>
+
+    <!-- filters -->
+    <div class="flex flex-col gap-8">
+      <!-- author filter  -->
+      <div>
+        <div
+          class="bg-[#875C1A] flex items-center gap-5 px-3 py-2 mb-4 rounded-sm"
+        >
+          <img
+            src="/icons/author-white-icon.png"
+            alt="category-white"
+            class="w-5 h-5"
+          />
+          <p class="text-white">Authors</p>
+        </div>
+        <!-- author search -->
+        <div>
+          <div class="space-y-3 w-full max-w-sm">
+            <!-- Input Field -->
+            <div class="flex items-center space-x-2">
+              <input
+                type="text"
+                [(ngModel)]="authorInput"
+                (keyup.enter)="addAuthorFilter()"
+                placeholder="Author's Name"
+                class="border-2 border-gray-300 rounded-md w-full h-10 px-3 focus:outline-none focus:border-[#875C1A] text-[12px]"
+              />
+            </div>
+
+            <!-- Author Filter Chips -->
+            <div class="grid grid-cols-3 gap-2">
+              <div
+                *ngFor="let author of selectedAuthors; let i = index"
+                class="flex items-center bg-[#F7E8D1] text-[#875C1A] text-xs px-3 py-1 rounded-full break-all"
+              >
+                {{ author }}
+                <button
+                  (click)="removeAuthor(i)"
+                  class="ml-2 focus:outline-none cursor-pointer"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- categories filter  -->
+      <div>
+        <div
+          class="bg-[#875C1A] flex items-center gap-5 px-3 py-2 mb-4 rounded-sm"
+        >
+          <img
+            src="/icons/category-white.png"
+            alt="category-white"
+            class="w-5 h-5"
+          />
+          <p class="text-white">Categories</p>
+        </div>
+        <!-- category list -->
+        <div>
+          <div class="space-y-3 ps-5 w-full max-w-sm">
+            <div class="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id="all"
+                class="accent-[#875C1A] w-4 h-4 rounded cursor-pointer"
+                [checked]="selectedGenres.length === 0"
+                (change)="clearGenres()"
+              />
+              <label for="all" class="text-sm text-gray-700 font-medium"
+                >All</label
+              >
+            </div>
+            <div
+              *ngFor="let item of genres"
+              class="flex items-center space-x-2"
+            >
+              <input
+                type="checkbox"
+                [id]="item.name"
+                [checked]="selectedGenres.includes(item.name)"
+                (change)="toggleGenre(item.name)"
+                class="accent-[#875C1A] w-4 h-4 rounded cursor-pointer"
+              />
+              <label [for]="item.name" class="text-sm text-gray-700">{{
+                item.name
+              }}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- books list  -->
+  <div>
+    <div class="flex items-center justify-between mb-10">
+      <h4 class="text-sm md:text-base font-semibold">Books</h4>
+      <a href="" class="text-[#875C1A] text-[12px] hover:underline">
+        {{ filtered.length || 0 }} Books found
+      </a>
+    </div>
+
+    <!-- books list -->
+    <div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+        <ng-container
+          *ngFor="
+            let book of filtered
+              | paginate : { itemsPerPage: 16, currentPage: page }
+          "
+        >
+          <div class="bg-white shadow-md rounded-lg p-4 flex flex-col gap-2">
+            <div class="relative">
+              <button
+                (click)="toggleWishlist(book)"
+                class="absolute top-2 right-2 bg-white p-1 rounded-full shadow-md z-10 cursor-pointer"
+              >
+                <img
+                  *ngIf="!book.isWishlisted"
+                  src="/icons/heart-icon-outline.png"
+                  alt="wishlist"
+                  class="w-5 h-5"
+                />
+                <img
+                  *ngIf="book.isWishlisted"
+                  src="/icons/heart-icon-filled.png"
+                  alt="added"
+                  class="w-5 h-5"
+                />
+              </button>
+              <img
+                [src]="book.coverImageUrl"
+                alt="book-cover"
+                class="w-full h-38 object-cover rounded-md mb-2 border border-gray-200"
+              />
+            </div>
+            <!-- <img src="/books-img/funny-story-cover.jpg" alt="book-cover" class=" h-38 object-cover rounded-md mb-2"> -->
+            <h5 class="text-lg font-semibold">{{ book.title }}</h5>
+            <p class="text-sm text-gray-600">{{ book.authorName }}</p>
+            <p class="text-sm text-gray-500">{{ book.genreName }}</p>
+          </div>
+        </ng-container>
+      </div>
+      <div
+        *ngIf="filtered.length === 0"
+        class="text-sm text-gray-500 italic mb-6"
+      >
+        No books match the selected author(s).
+      </div>
+      <pagination-controls
+        (pageChange)="page = $event"
+        class="pt-4"
+        previousLabel="←"
+        nextLabel="→"
+        [directionLinks]="true"
+        [autoHide]="false"
+      >
+      </pagination-controls>
+    </div>
+  </div>
+</div>

@@ -10,6 +10,8 @@ import { LandingPageComponent } from './pages/user/landing-page/landing-page.com
 import { UserLayoutComponent } from './pages/user/user-layout/user-layout.component';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { RoleGuard } from './shared/guards/role.guard';
+import { SignupComponent } from './pages/admin/signup/signup.component';
+import { BookslistingComponent } from './pages/user/bookslisting/bookslisting.component';
 
 export const routes: Routes = [
     {
@@ -17,12 +19,17 @@ export const routes: Routes = [
         component: UserLayoutComponent,
         children: [
             { path: '', redirectTo: 'landingPage', pathMatch: 'full' },
-            { path: 'landingPage', component: LandingPageComponent }
+            { path: 'landingPage', component: LandingPageComponent },
+            { path: 'book-listing', component: BookslistingComponent },
         ]
     },
     {
-        path: 'admin-login',
+        path: 'login',
         component: LoginComponent
+    },
+    {
+        path: 'signup',
+        component: SignupComponent
     },
     {
         path: 'admin',

@@ -2,16 +2,28 @@
 <nav
   class="bg-[#E8E0C6] h-[60px] w-full flex items-center justify-between px-[25px] py-2 border-b-[1px] border-[#D3C0A250]"
 >
-  <div class="logo flex">
+  <div class="logo flex cursor-pointer">
     <img src="/logo.png" alt="goodreads logo" class="max-w-full w-[10%]" />
   </div>
   <div class="flex items-center gap-3">
-    <div>
+    <div class="relative logo flex cursor-pointer" (click)="toggleDropdown()">
       <img
         src="/images/avatar.jpg"
         alt="avatar"
         class="w-[35px] h-[35px] rounded-full"
       />
+      <!-- Dropdown -->
+      <div
+        *ngIf="isDropdownOpen"
+        class="absolute top-full left-0 mt-2 w-40 bg-white shadow-lg rounded-lg py-2 z-50"
+      >
+        <a
+          (click)="logout()"
+          class="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+        >
+          Logout
+        </a>
+      </div>
     </div>
     <div class="flex flex-col text-[13px] capitalize">
       <p class="font-semibold">{{ userName }}</p>
