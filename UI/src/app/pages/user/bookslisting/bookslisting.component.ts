@@ -5,10 +5,13 @@ import { BooksService } from '../../../shared/services/books.service';
 import { NgxPaginationModule } from 'ngx-pagination'; // <-- import the module
 import { FormsModule } from '@angular/forms';
 import { SearchService } from '../../../shared/search.service';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-bookslisting',
-  imports: [CommonModule, NgxPaginationModule, FormsModule],
+  imports: [CommonModule, NgxPaginationModule, FormsModule, RouterLink],
   templateUrl: './bookslisting.component.html',
   styleUrl: './bookslisting.component.css'
 })
@@ -23,14 +26,29 @@ export class BookslistingComponent {
   searchText: string = '';
   filtered: any[] = [];
 
-  constructor(private genreService: GenreService, private bookService: BooksService, private searchService: SearchService) {
+  constructor(private genreService: GenreService, private bookService: BooksService, private searchService: SearchService, private toastr: ToastrService, private router: Router, private authService: AuthService) {
+
+  }
+
+  ngOnInit(): void {
+    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    //Add 'implements OnInit' to the class.
     this.getAllGenres();
-    this.getAllbooks();
+    this.getAllBooks();
     this.clearAllFilters();
-    this.searchService.currentSearch.subscribe((term) => {
-      this.searchText = term;
-      this.filterBooks(); // Apply filter when text changes
-    });
+    this.searchBook();
+    
+  }
+
+  searchBook() {
+    if (this.searchService.currentSearch != null) {
+      this.searchService.currentSearch.subscribe((term) => {
+        if (term && term.trim() !== '') {
+          this.searchText = term;
+          this.filterBooks(); // Apply filter only when term is not empty
+        }
+      });
+    }
   }
 
   getAllGenres() {
@@ -40,13 +58,17 @@ export class BookslistingComponent {
     });
   }
 
-  getAllbooks() {
-    this.bookService.getAllBooks().subscribe((response) => {
+  getAllBooks() {
+    const userId = this.authService.getUserId();
+    const uid = userId ? userId : null;
+  
+    this.bookService.getAllBooks(uid).subscribe((response) => {
       this.books = response;
       this.totalBooksCount = this.books.length;
-      this.filterBooks();    
+      this.filterBooks();
     });
   }
+  
 
   addAuthorFilter() {
     const trimmed = this.authorInput.trim();
@@ -59,7 +81,7 @@ export class BookslistingComponent {
 
   filterBooks() {
     let filtered = this.books;
-  
+
     // Author filter
     if (this.selectedAuthors.length > 0) {
       filtered = filtered.filter((book: any) =>
@@ -68,21 +90,21 @@ export class BookslistingComponent {
         )
       );
     }
-  
+
     // Genre filter
     if (this.selectedGenres.length > 0) {
       filtered = filtered.filter((book: any) =>
         this.selectedGenres.includes(book.genreName)
       );
     }
-  
+
     // Book title search filter
     if (this.searchText.trim() !== '') {
       filtered = filtered.filter((book: any) =>
         this.normalize(book.title ?? '').includes(this.normalize(this.searchText))
       );
     }
-  
+
     this.filtered = filtered;
   }
 
@@ -119,7 +141,27 @@ export class BookslistingComponent {
   }
 
   toggleWishlist(book: any) {
-    book.isWishlisted = !book.isWishlisted;
-    // Optionally: trigger some service or store logic here
+    const token = sessionStorage.getItem('token');
+    if (!token) {
+      sessionStorage.setItem('redirectAfterLogin', this.router.url); // save current path
+      this.toastr.info('Login to add the book to wishlist');
+      this.router.navigate(['/login']);
+      return;
+    }
+    const userId = this.authService.getUserId();
+    if (userId) {
+      if (!book.isWishlisted) {
+        this.bookService.AddtoWishlist(userId, book.bookId).subscribe(() => {
+          book.isWishlisted = true;
+          this.toastr.success('Added to wishlist');
+        });
+      } else {
+        this.bookService.removeFromWishlist(userId, book.bookId).subscribe(() => {
+          book.isWishlisted = false;
+          this.toastr.success('Removed from wishlist');
+        });
+      }
+    }
+
   }
 }

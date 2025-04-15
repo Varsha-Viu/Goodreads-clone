@@ -1,0 +1,130 @@
+<div class="py-6 px-[5rem]">
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-[32px] font-semibold">
+            {{bookDetails?.title}}
+        </h1>
+        <div class="flex items-center gap-2 cursor-pointer" (click)="navigateBack()">
+            <img src="/icons/left-arrow-black.png" alt="left icon" class="w-4 h-4">
+            <p class="text-[12px] hover:underline hover:text-[#875C1A]">Back to listing</p>
+          </div>
+    </div>
+    <!-- reviews / save later  -->
+    <div class="flex items-center justify-between mb-7">
+        <p>1234 reviews</p>
+        <div class="flex items-center gap-1 cursor-pointer">
+            <img src="/icons/heart-icon-outline.png" alt="wishlist" class="w-4 h-4" />
+            <p class="text-[14px] font-medium">Save to your shelf</p>
+        </div>
+    </div>
+
+    <!-- book image details -->
+    <div class="h-[400px] bg-blue-500 rounded-[4px] w-full flex items-center justify-center mb-10">
+        <!-- <img [src]="bookDetails?.coverImageUrl" alt="book-cover" class="" /> -->
+        <img src="/books-img/funny-story-cover.jpg" alt="book-cover" class="h-[250px]" />
+    </div>
+
+    <!-- description div -->
+    <div class="grid grid-cols-[2fr_1fr] gap-[30px]">
+        <!-- book details -->
+        <div>
+            <h2 class="text-[24px] font-semibold mb-5">Description</h2>
+
+            <p class="mb-4 text-[16px] leading-[30px]">
+                {{bookDetails.description}}
+            </p>
+
+            <!-- author/publisher/year div -->
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-[#9DA0A7] text-[14px]">
+                        Written By
+                    </p>
+                    <p class="font-semibold text-[14px]">
+                        {{bookDetails.authorName}}
+                    </p>
+                </div>
+                <div>
+                    <p class="text-[#9DA0A7] text-[14px]">
+                        Publisher
+                    </p>
+                    <p class="font-semibold text-[14px]">
+                        {{bookDetails.authorName}}
+                    </p>
+                </div>
+                <div>
+                    <p class="text-[#9DA0A7] text-[14px]">
+                        Publication years
+                    </p>
+                    <p class="font-semibold text-[14px]">
+                        {{bookDetails.publicationYear}}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- read div -->
+        <div>
+            <div class="bg-white shadow-lg p-10 rounded-md flex flex-col gap-4">
+                <p class="text-center text-[14px] font-light">6576 reviews</p>
+                <div class="bg-[#875C1A] text-[#FFFFFF] px-4 py-2 rounded-[4px] text-center hover:text-white cursor-pointer flex items-center gap-3 justify-center"
+                    (click)="openCategoryModal(bookDetails.bookId)">
+                    <p>Want to Read</p>
+                    <img src="/icons/greater-than-white.png" alt="greater than sign"
+                        class="w-4 h-4 inline-block ml-2" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal backdrop -->
+<div class="fixed inset-0 bg-[#e8e0c6c6] bg-opacity-40 flex items-center justify-center z-50" *ngIf="showCategoryModal">
+    <!-- Modal container -->
+    <div class="bg-white shadow-lg w-[640px] p-10 relative">
+        <div class="flex items-start mb-8 gap-8">
+            <div>
+                <img src="/icons/book-open-text.png" alt="">
+            </div>
+            <div>
+                <h2 class="text-lg font-semibold mb-2">Save to your bookshelf</h2>
+                <p class="text-[12px] font-normal">Choose the bookshelf you wanna add to :</p>
+            </div>
+        </div>
+
+        <form (ngSubmit)="submitCategory()" class="flex flex-col gap-4">
+            <div class="flex flex-col gap-5">
+                <label class="flex items-center gap-4">
+                    <input type="radio" name="bookCategory" value="currentlyReading" [(ngModel)]="selectedCategory"
+                        class="accent-[#875C1A] cursor-pointer" />
+                    All
+                </label>
+                <label class="flex items-center gap-4">
+                    <input type="radio" name="bookCategory" value="currentlyReading" [(ngModel)]="selectedCategory"
+                        class="accent-[#875C1A] cursor-pointer" />
+                    Currently Reading
+                </label>
+                <label class="flex items-center gap-4">
+                    <input type="radio" name="bookCategory" value="wantToRead" [(ngModel)]="selectedCategory"
+                        class="accent-[#875C1A] cursor-pointer" />
+                    Want to Read
+                </label>
+                <label class="flex items-center gap-4">
+                    <input type="radio" name="bookCategory" value="finished" [(ngModel)]="selectedCategory"
+                        class="accent-[#875C1A] cursor-pointer" />
+                    Finished
+                </label>
+            </div>
+
+            <div class="flex items-center justify-end gap-3">
+                <button type="button" class="mt-4 text-[#875C1A] text-[12px] bg-white px-4 py-2 w-fit cursor-pointer"
+                    (click)="closeCategoryModal()">
+                    Back
+                </button>
+                <button type="submit" class="mt-4 bg-[#875C1A] text-white text-[12px] px-4 py-2 w-fit cursor-pointer">
+                    Save Category
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

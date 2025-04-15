@@ -4,10 +4,11 @@ import { FooterComponent } from '../footer/footer.component';
 import { SearchService } from '../../../shared/search.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { HeaderComponent } from "../header/header.component";
 
 @Component({
   selector: 'app-user-layout',
-  imports: [RouterOutlet, FooterComponent, FormsModule, CommonModule],
+  imports: [RouterOutlet, FooterComponent, FormsModule, CommonModule, HeaderComponent],
   templateUrl: './user-layout.component.html',
   styleUrl: './user-layout.component.css'
 })

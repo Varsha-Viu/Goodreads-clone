@@ -39,19 +39,31 @@ export class LoginComponent {
 
     this.auth.login(formData).subscribe((res: any) => {
       if (res.isSuccess) {
-        if (res.isUser) {
-          this.toastr.error('You are not an admin', 'Error');
-          return;
-        }
         sessionStorage.setItem('token', res.token);
         sessionStorage.setItem('isUser', res.isUser);
+
+        const redirectPath = sessionStorage.getItem('redirectAfterLogin');
+        if (res.isUser) {
+          if (redirectPath) {
+            sessionStorage.removeItem('redirectAfterLogin');
+            this.router.navigateByUrl(redirectPath);
+          } else {
+            this.router.navigate(['/book-listing']);
+          }
+        }
+        else {
+          this.router.navigateByUrl('/admin/dashboard');
+        }
         this.toastr.success(res.message, 'Success');
-        this.router.navigateByUrl('/admin/dashboard')
       }
     },
       (err: any) => {
         this.toastr.error(err.error, 'Error');
       }
     );
+  }
+
+  navigateToHome() {
+    this.router.navigate(['/landingPage']);
   }
 }

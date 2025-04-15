@@ -30,3 +30,7 @@ textarea {
   display: block !important;
   z-index: 10;
 }
+
+.ngx-pagination .current {
+  background-color: #875C1A !important;
+}

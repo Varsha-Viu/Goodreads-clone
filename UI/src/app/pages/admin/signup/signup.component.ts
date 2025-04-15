@@ -29,6 +29,10 @@ export class SignupComponent {
     return this.signupForm.controls;
   }
 
+  navigateToHome() {
+    this.router.navigate(['/landingPage']);
+  }
+
   onSubmit() {
     // this.isSubmitted = true;
     // if (this.loginForm.invalid) {

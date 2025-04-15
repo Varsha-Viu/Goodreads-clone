@@ -57,4 +57,12 @@ namespace API.Models
         public string BookId { get; set; }
         public string UserId { get; set; }
     }
+
+    public class AssignCategoriesDto
+    {
+        public string UserId { get; set; }
+        public string BookId { get; set; }
+        public List<string> Categories { get; set; }
+    }
+
 }

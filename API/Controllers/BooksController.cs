@@ -20,8 +20,7 @@ namespace API.Controllers
 
         // GET: api/Books
         [HttpGet("getAllBooks")]
-        [HttpGet("books")]
-        public async Task<IActionResult> GetBooks()
+        public async Task<IActionResult> GetBooks([FromQuery] string? userId = null)
         {
             var booksList = await (from book in _context.Books
                                    join author in _context.Authors on book.AuthorId equals author.AuthorId into authorJoin
@@ -50,9 +49,10 @@ namespace API.Controllers
                                        GenreId = book.GenreId,
                                        GenreName = genre != null ? genre.Name : null,
                                        PublisherId = book.PublisherId,
-                                       PublisherName = publisher != null ? publisher.Name : null
+                                       PublisherName = publisher != null ? publisher.Name : null,
+                                       IsWishlisted = userId != null && _context.WishList
+                                            .Any(w => w.BookId == book.BookId && w.UserId == userId)
                                    }).ToListAsync();
-
 
             return Ok(booksList);
         }
@@ -60,9 +60,25 @@ namespace API.Controllers
 
         // GET: api/Books/{id}
         [HttpGet("getBookById/{bookId}")]
-        public async Task<IActionResult> GetBook(string bookId)
+        public async Task<IActionResult> GetBookById(string bookId)
         {
-            var book = await _context.Books.FindAsync(bookId);
+            var book = await (from b in _context.Books
+                              where b.BookId == bookId
+                              join author in _context.Authors on b.AuthorId equals author.AuthorId into aJoin
+                              from author in aJoin.DefaultIfEmpty()
+                              select new
+                              {
+                                  b.BookId,
+                                  b.Title,
+                                  b.Description,
+                                  b.CoverImageUrl,
+                                  b.Language,
+                                  b.PublicationYear,
+                                  b.PageCount,
+                                  b.ISBN,
+                                  AuthorName = author != null ? author.PenName : null,
+                                  b.GenreId
+                              }).FirstOrDefaultAsync();
 
             if (book == null)
                 return NotFound();
@@ -79,7 +95,7 @@ namespace API.Controllers
 
             var genre = await _context.Genres.FindAsync(model.GenreId);
             if (genre == null)
-                return NotFound(new {message = "Genre not found "});
+                return NotFound(new { message = "Genre not found " });
 
             var existingAuthor = await _context.Authors.FindAsync(model.AuthorId);
             if (existingAuthor == null)
@@ -115,7 +131,7 @@ namespace API.Controllers
             _context.Books.Add(book);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetBook), new { id = book.BookId }, book);
+            return Ok(new {message = "book created successfully", isSuccess = true});
         }
 
         // PUT: api/Books/{id}

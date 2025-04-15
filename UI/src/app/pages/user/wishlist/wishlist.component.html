@@ -1,0 +1,67 @@
+<div class="py-6 px-[5rem]">
+    <div class="flex items-center justify-between mb-10">
+        <h4 class="text-sm md:text-xl font-semibold">My Books</h4>
+        <div class="relative bg-[#F2F2F2] rounded-[8px] flex items-center">
+            <img src="/icons/search-icon.png" alt="search icon" class="px-4 py-2 h-8" />
+
+            <input type="text" name="search" [(ngModel)]="searchInput" (keyup.enter)="searchBook()"
+                placeholder="search books"
+                class="bg-transparent py-2 px-3 w-[400px] text-[#000] focus:outline-none text-[12px]" />
+
+            <!-- Clear Icon (X) -->
+            <button *ngIf="searchInput" (click)="clearSearch()"
+                class="absolute right-4 text-gray-500 hover:text-gray-700 text-sm focus:outline-none cursor-pointer">
+                ✕
+            </button>
+        </div>
+    </div>
+
+    <!-- bookshelf -->
+    <div class="grid grid-cols-[250px_1fr] gap-10">
+        <div>
+            <h4 class="text-sm md:text-base font-semibold mb-3">Bookshelves</h4>
+            <ul class="flex flex-col gap-2">
+                <li
+                  *ngFor="let tag of ['all', 'currentlyReading', 'wantToRead', 'finished', 'wishlist']"
+                  class="py-1 text-sm rounded-md cursor-pointer hover:text-[#875C1A] hover:underline"
+                  [class.text-[#875C1A]]="activeTag === tag"
+                  (click)="setActiveTag(tag)"
+                >
+                  {{ tagLabels[tag] }}
+                </li>
+              </ul>
+        </div>
+
+        <div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-6">
+                <ng-container *ngFor="
+                  let book of filteredBooks
+                    | paginate : { itemsPerPage: 8, currentPage: page }
+                ">
+                    <div class="bg-white shadow-md rounded-lg p-4 flex flex-col gap-2">
+                        <div class="relative">
+                            <!-- <button (click)="toggleWishlist(book)"
+                      class="absolute top-2 right-2 bg-white p-1 rounded-full shadow-md z-10 cursor-pointer">
+                      <img *ngIf="!book.isWishlisted" src="/icons/heart-icon-outline.png" alt="wishlist" class="w-5 h-5" />
+                      <img *ngIf="book.isWishlisted" src="/icons/heart-icon-filled.png" alt="added" class="w-5 h-5" />
+                    </button> -->
+                            <img [src]="book.coverImageUrl" alt="book-cover"
+                                class="w-full h-38 object-cover rounded-md mb-2 border border-gray-200" />
+                        </div>
+                        <!-- <img src="/books-img/funny-story-cover.jpg" alt="book-cover" class=" h-38 object-cover rounded-md mb-2"> -->
+                        <a [routerLink]="['/book-details', book.bookId]"
+                            class="text-lg font-semibold hover:underline cursor-pointer">{{ book.title }}</a>
+                        <p class="text-sm text-gray-600">{{ book.authorName }}</p>
+                        <p class="text-sm text-gray-500">{{ book.genreName }}</p>
+                    </div>
+                </ng-container>
+            </div>
+            <div *ngIf="filteredBooks.length === 0" class="text-sm text-gray-500 italic mb-6">
+                No books found.
+            </div>
+            <pagination-controls (pageChange)="page = $event" class="pt-4 flex items-center justify-center"
+                previousLabel="←" nextLabel="→" [directionLinks]="true" [autoHide]="false">
+            </pagination-controls>
+        </div>
+    </div>
+</div>

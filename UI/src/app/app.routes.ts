@@ -12,6 +12,8 @@ import { AuthGuard } from './shared/guards/auth.guard';
 import { RoleGuard } from './shared/guards/role.guard';
 import { SignupComponent } from './pages/admin/signup/signup.component';
 import { BookslistingComponent } from './pages/user/bookslisting/bookslisting.component';
+import { BookDetailComponent } from './pages/user/book-detail/book-detail.component';
+import { WishlistComponent } from './pages/user/wishlist/wishlist.component';
 
 export const routes: Routes = [
     {
@@ -21,6 +23,8 @@ export const routes: Routes = [
             { path: '', redirectTo: 'landingPage', pathMatch: 'full' },
             { path: 'landingPage', component: LandingPageComponent },
             { path: 'book-listing', component: BookslistingComponent },
+            { path: 'book-details/:bookId', component: BookDetailComponent },
+            { path: 'bookshelf', component: WishlistComponent },
         ]
     },
     {

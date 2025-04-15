@@ -4,6 +4,7 @@ import { GenreGradientService } from '../../../shared/genre-gradient.service';
 import { CommonModule } from '@angular/common';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { Router } from '@angular/router';
+import { GenreService } from '../../../shared/services/genre.service';
 
 @Component({
   selector: 'app-landing-page',
@@ -14,14 +15,15 @@ import { Router } from '@angular/router';
 export class LandingPageComponent {
 
   backgroundGradient: string = "";
-  allGenres: string[] = [
-    "Art", "Biography", "Business", "Children's", "Christian", "Classics",
-    "Comics", "Cookbooks", "Ebooks", "Fantasy", "Fiction", "Graphic Novels",
-    "Historical Fiction", "History", "Horror", "Memoir", "Music", "Mystery",
-    "Nonfiction", "Poetry", "Psychology", "Romance", "Science", "Science Fiction",
-    "Self Help", "Sports", "Thriller", "Travel", "Young Adult"
-  ];
-  genres = this.allGenres.slice(0, 8);
+  // allGenres: string[] = [
+  //   "Art", "Biography", "Business", "Children's", "Christian", "Classics",
+  //   "Comics", "Cookbooks", "Ebooks", "Fantasy", "Fiction", "Graphic Novels",
+  //   "Historical Fiction", "History", "Horror", "Memoir", "Music", "Mystery",
+  //   "Nonfiction", "Poetry", "Psychology", "Romance", "Science", "Science Fiction",
+  //   "Self Help", "Sports", "Thriller", "Travel", "Young Adult"
+  // ];
+  allGenres: any;
+  genres: any; //this.allGenres.slice(0, 8);
   testimonials = [
     { message: 'Discovering reading list on Goodreads has completely reshaped my TBR pile. Their reviews are insightful, honest, and super relatable.', author: 'Alice' },
     { message: 'Every 5-star rating here points to a must-read. The taste is absolutely on point.', author: 'Bob' },
@@ -85,13 +87,13 @@ export class LandingPageComponent {
   };
 
   booksList: any[] = [];
-  constructor(private router: Router, private bookService: BooksService) {
+  constructor(private router: Router, private bookService: BooksService, private genreService: GenreService) {
     
   }
 
   ngOnInit(): void {
-    //this.backgroundGradient = this.genreGradient.getGradient(this.genre);
     this.getAllBooks();
+    this.getAllGenres();
   }
 
   // Function to get gradient
@@ -106,7 +108,13 @@ export class LandingPageComponent {
   getAllBooks() {
     this.bookService.getAllBooks().subscribe((response: any) => {
      this.booksList = response;
-      // this.booksList.push(response);
+    });
+  }
+
+  getAllGenres() {
+    this.genreService.getAllGenres().subscribe((response: any) => {
+      this.allGenres = response;
+      this.genres = this.allGenres.slice(0, 8);
     });
   }
 }

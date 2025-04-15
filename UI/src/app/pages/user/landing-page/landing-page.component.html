@@ -1,6 +1,4 @@
-<div
-  class="flex items-center justify-start bg-white h-[550px] background-img mb-10"
->
+<div class="flex items-center justify-start bg-white h-[550px] background-img mb-10">
   <div class="flex flex-col items-start justify-center pl-[10rem]">
     <div class="flex gap-2 mb-[40px] flex-col">
       <h1 class="text-[45px] font-bold">
@@ -17,25 +15,17 @@
         Explore Now
       </a>
       <div class="bg-[#875C1A] py-3 px-4">
-        <img
-          src="/icons/right-arrow-white.png"
-          alt="search icon"
-          class="w-[20px] h-[20px]"
-        />
+        <img src="/icons/right-arrow-white.png" alt="search icon" class="w-[20px] h-[20px]" />
       </div>
     </div>
   </div>
 </div>
 
 <!-- explore now cards -->
-<ngx-slick-carousel
-  class="w-full max-w-6xl mx-auto py-8"
-  [config]="slideConfig"
->
+<ngx-slick-carousel class="w-full max-w-6xl mx-auto py-8" [config]="slideConfig">
   <div ngxSlickItem class="px-4">
     <div
-      class="bg-[#FFF2DE] p-6 md:p-8 max-w-5xl mx-auto min-h-[250px] gap-20 flex items-center justify-center text-center transition-transform duration-300 hover:-translate-y-1"
-    >
+      class="bg-[#FFF2DE] p-6 md:p-8 max-w-5xl mx-auto min-h-[250px] gap-20 flex items-center justify-center text-center transition-transform duration-300 hover:-translate-y-1">
       <div>
         <h4 class="text-sm md:text-base font-semibold mb-4">
           Explore our collection of <br />
@@ -46,78 +36,43 @@
             Explore Now
           </button>
           <div class="py-3 px-4">
-            <img
-              src="/icons/right-arrow-white.png"
-              alt="search icon"
-              class="w-[20px] h-[20px]"
-            />
+            <img src="/icons/right-arrow-white.png" alt="search icon" class="w-[20px] h-[20px]" />
           </div>
         </div>
       </div>
       <div class="flex items-center gap-6">
-        <img
-          src="/books-img/funny-story-cover.jpg"
-          alt="book image"
-          class="w-[100px] h-[130px] rounded-md mt-4"
-        />
-        <img
-          src="/books-img/funny-story-cover.jpg"
-          alt="book image"
-          class="w-[100px] h-[130px] rounded-md mt-4"
-        />
-        <img
-          src="/books-img/funny-story-cover.jpg"
-          alt="book image"
-          class="w-[100px] h-[130px] rounded-md mt-4"
-        />
-        <img
-          src="/books-img/funny-story-cover.jpg"
-          alt="book image"
-          class="w-[100px] h-[130px] rounded-md mt-4"
-        />
+        <img src="/books-img/funny-story-cover.jpg" alt="book image" class="w-[100px] h-[130px] rounded-md mt-4" />
+        <img src="/books-img/funny-story-cover.jpg" alt="book image" class="w-[100px] h-[130px] rounded-md mt-4" />
+        <img src="/books-img/funny-story-cover.jpg" alt="book image" class="w-[100px] h-[130px] rounded-md mt-4" />
+        <img src="/books-img/funny-story-cover.jpg" alt="book image" class="w-[100px] h-[130px] rounded-md mt-4" />
       </div>
     </div>
   </div>
 
-  
+
   <div ngxSlickItem class="px-4">
     <div
-      class="bg-[#FFF2DE] max-w-5xl mx-auto min-h-[250px] gap-20 flex items-center justify-evenly text-center transition-transform duration-300 hover:-translate-y-1"
-    >
-    <div class="flex items-center gap-6">
-      <img
-        src="/books-img/funny-story-cover.jpg"
-        alt="book image"
-        class="w-[100px] h-[130px] rounded-md mt-4"
-      />
-      <img
-        src="/books-img/funny-story-cover.jpg"
-        alt="book image"
-        class="w-[100px] h-[130px] rounded-md mt-4"
-      />
-      
-    </div>
+      class="bg-[#FFF2DE] max-w-5xl mx-auto min-h-[250px] gap-20 flex items-center justify-evenly text-center transition-transform duration-300 hover:-translate-y-1">
+      <div class="flex items-center gap-6">
+        <img src="/books-img/funny-story-cover.jpg" alt="book image" class="w-[100px] h-[130px] rounded-md mt-4" />
+        <img src="/books-img/funny-story-cover.jpg" alt="book image" class="w-[100px] h-[130px] rounded-md mt-4" />
+
+      </div>
       <div class="flex items-center flex-col gap-6">
         <p class="text-sm md:text-base font-semibold mb-4">
           New books waiting for you to discover ! <br />
         </p>
         <div class="flex items-center gap-2">
           <!-- sign in Button -->
-          <a
-            type="button"
+          <a type="button"
             class="bg-[#875C1A] text-[#FFFFFF] px-4 py-2 rounded-[4px] text-center hover:text-white cursor-pointer"
-            href="/login"
-            >
+            href="/login">
             Log in
-        </a>
+          </a>
           <!-- sign up button -->
-          <a
-            type="button"
-            class="text-[#875C1A] px-4 py-2 text-center cursor-pointer"
-            href="/signup"
-          >
+          <a type="button" class="text-[#875C1A] px-4 py-2 text-center cursor-pointer" href="/signup">
             Sign up
-      </a>
+          </a>
         </div>
       </div>
     </div>
@@ -126,9 +81,7 @@
 
 <!-- populars  -->
 <div class="flex items-center justify-center">
-  <div
-    class="w-[85%] h-full px-8 py-[90px] grid grid-cols-[2fr_1fr] gap-8"
-  >
+  <div class="w-[85%] h-full px-8 py-[90px] grid grid-cols-[2fr_1fr] gap-8">
     <!-- Popular Books (60%) -->
     <div class="w-full">
       <div class="flex items-center justify-between mb-[50px]">
@@ -137,19 +90,13 @@
           Show all
         </a>
       </div>
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10" >
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
         <div class="flex gap-8 items-center bg-[#FFF2DE] p-5 flex-1" *ngFor="let book of booksList | slice:0:2">
           <div>
-            <img
-              src="/books-img/funny-story-cover.jpg"
-              alt="book image"
-              class="w-[100px] h-[130px] rounded-md"
-            />
+            <img src="/books-img/funny-story-cover.jpg" alt="book image" class="w-[100px] h-[130px] rounded-md" />
           </div>
           <div class="flex flex-col gap-0.5">
-            <small class="block uppercase text-[#d35b38] text-semibold"
-              >best seller</small
-            >
+            <small class="block uppercase text-[#d35b38] text-semibold">best seller</small>
             <p class="text-[18px] font-semibold"> {{book.title}} </p>
             <small class="text-[#d35b38] text-semibold" *ngIf="book.authorName">by {{book.authorName}}</small>
           </div>
@@ -185,56 +132,38 @@
       <div class="flex flex-col gap-4 items-center bg-[#FFF2DE] p-5">
         <div class="flex gap-8 items-center border-b border-b-[#553B0850] py-2">
           <div>
-            <img
-              src="/images/avatar.jpg"
-              alt="author image avatar"
-              class="w-[50px] h-[50px] rounded-full"
-            />
+            <img src="/images/avatar.jpg" alt="author image avatar" class="w-[50px] h-[50px] rounded-full" />
           </div>
           <div>
             <p>Emily Henry</p>
             <small>2563 reads this week</small>
           </div>
           <div>
-            <a href="" class="bg-[#875C1A] py-2 px-3 rounded-sm text-white"
-              >Follow</a
-            >
+            <a href="" class="bg-[#875C1A] py-2 px-3 rounded-sm text-white">Follow</a>
           </div>
         </div>
         <div class="flex gap-8 items-center border-b border-b-[#553B0850] py-2">
           <div>
-            <img
-              src="/images/avatar.jpg"
-              alt="author image avatar"
-              class="w-[50px] h-[50px] rounded-full"
-            />
+            <img src="/images/avatar.jpg" alt="author image avatar" class="w-[50px] h-[50px] rounded-full" />
           </div>
           <div>
             <p>Emily Henry</p>
             <small>2563 reads this week</small>
           </div>
           <div>
-            <a href="" class="bg-[#875C1A] py-2 px-3 rounded-sm text-white"
-              >Follow</a
-            >
+            <a href="" class="bg-[#875C1A] py-2 px-3 rounded-sm text-white">Follow</a>
           </div>
         </div>
         <div class="flex gap-8 items-center border-b border-b-[#553B0850] py-2">
           <div>
-            <img
-              src="/images/avatar.jpg"
-              alt="author image avatar"
-              class="w-[50px] h-[50px] rounded-full"
-            />
+            <img src="/images/avatar.jpg" alt="author image avatar" class="w-[50px] h-[50px] rounded-full" />
           </div>
           <div>
             <p>Emily Henry</p>
             <small>2563 reads this week</small>
           </div>
           <div>
-            <a href="" class="bg-[#875C1A] py-2 px-3 rounded-sm text-white"
-              >Follow</a
-            >
+            <a href="" class="bg-[#875C1A] py-2 px-3 rounded-sm text-white">Follow</a>
           </div>
         </div>
       </div>
@@ -247,50 +176,11 @@
   <div class="w-[85%] h-full px-8 py-[90px]">
     <div class="mb-[50px] flex items-center justify-between">
       <h2 class="text-xl text-[#553B08] font-bold">Genre</h2>
-      <a href="" class="bg-[#875C1A] py-2 px-3 rounded-sm text-white"
-        >Show all</a
-      >
+      <a href="" class="bg-[#875C1A] py-2 px-3 rounded-sm text-white">Show all</a>
     </div>
-    <div class="flex items-center gap-10">
-      <div
-        class="h-[180px] w-[130px] bg-red-500 flex items-center justify-center"
-      >
-        <p>Fantasy</p>
-      </div>
-      <div
-        class="h-[180px] w-[130px] bg-red-500 flex items-center justify-center"
-      >
-        <p>Fiction</p>
-      </div>
-      <div
-        class="h-[180px] w-[130px] bg-red-500 flex items-center justify-center"
-      >
-        <p>Horror</p>
-      </div>
-      <div
-        class="h-[180px] w-[130px] bg-red-500 flex items-center justify-center"
-      >
-        <p>Psychology</p>
-      </div>
-      <div
-        class="h-[180px] w-[130px] bg-red-500 flex items-center justify-center"
-      >
-        <p>Romance</p>
-      </div>
-      <div
-        class="h-[180px] w-[130px] bg-red-500 flex items-center justify-center"
-      >
-        <p>Science Fiction</p>
-      </div>
-      <div
-        class="h-[180px] w-[130px] bg-red-500 flex items-center justify-center"
-      >
-        <p>Thriller</p>
-      </div>
-      <div
-        class="h-[180px] w-[130px] bg-red-500 flex items-center justify-center"
-      >
-        <p>Self-Help</p>
+    <div class="flex items-center gap-10" >
+      <div class="h-[180px] w-[130px] bg-red-500 flex items-center justify-center" *ngFor="let genre of genres">
+        <p class="text-center">{{ genre.name }}</p>
       </div>
     </div>
   </div>
@@ -299,14 +189,10 @@
 <!-- testimonies  -->
 
 <!-- testimonials.component.html -->
-<ngx-slick-carousel
-  class="w-full max-w-6xl mx-auto py-8"
-  [config]="testimonialSlideConfig"
->
+<ngx-slick-carousel class="w-full max-w-6xl mx-auto py-8" [config]="testimonialSlideConfig">
   <div ngxSlickItem *ngFor="let testimonial of testimonials" class="px-4">
     <div
-      class="bg-white p-6 md:p-8 rounded-2xl max-w-xl mx-auto min-h-[250px] flex flex-col justify-center text-center transition-transform duration-300 hover:-translate-y-1"
-    >
+      class="bg-white p-6 md:p-8 rounded-2xl max-w-xl mx-auto min-h-[250px] flex flex-col justify-center text-center transition-transform duration-300 hover:-translate-y-1">
       <p class="text-lg md:text-xl italic text-gray-700 mb-6">
         “{{ testimonial.message }}”
       </p>

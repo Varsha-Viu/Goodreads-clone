@@ -20,7 +20,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddToWishList([FromBody] WishListDto dto)
+        public async Task<IActionResult> AddToWishList([FromForm] WishListDto dto)
         {
 
             var exists = await _context.WishList
@@ -28,6 +28,14 @@ namespace API.Controllers
 
             if (exists)
                 return BadRequest("Book already in wish list.");
+
+            var isBookIdExist = await _context.Books.AnyAsync(m => m.BookId == dto.BookId);
+            if(!isBookIdExist)
+                return BadRequest("Book does not exist");
+
+            var isUserIdExist = await _context.Users.AnyAsync(m => m.Id == dto.UserId);
+            if (!isUserIdExist)
+                return BadRequest("User does not exist");
 
             var wish = new WishList
             {
@@ -57,7 +65,7 @@ namespace API.Controllers
             return Ok(wishList);
         }
 
-        [HttpDelete("{bookId}")]
+        [HttpDelete("removeFromWishlist")]
         public async Task<IActionResult> RemoveFromWishList(string bookId, string userId)
         {
             var wish = await _context.WishList
