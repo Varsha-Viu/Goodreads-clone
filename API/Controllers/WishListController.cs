@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using API.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace API.Controllers
 {
@@ -37,13 +38,13 @@ namespace API.Controllers
             if (!isUserIdExist)
                 return BadRequest("User does not exist");
 
-            var wish = new WishList
+            var wishlist = new WishList
             {
                 UserId = dto.UserId,
                 BookId = dto.BookId
             };
 
-            await _context.WishList.AddAsync(wish);
+            await _context.WishList.AddAsync(wishlist);
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Book added to wish list!" });

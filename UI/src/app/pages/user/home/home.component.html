@@ -1,0 +1,54 @@
+<div class="py-6 px-[5rem]">
+    <!-- ifuser has current reading -->
+    <div *ngIf="currentBooksCount > 0; else elseTemplate"
+        class="bg-[#FFF2DE] p-6 md:p-8 max-w-6xl mx-auto min-h-[250px] gap-20 flex items-center justify-center text-center transition-transform duration-300 hover:-translate-y-1">
+        <div>
+            <h4 class="text-sm md:text-base font-semibold mb-7">
+                Currently Reading Books ({{currentBooksCount}})
+            </h4>
+            <div class="flex items-center justify-center bg-[#875C1A] cursor-pointer" (click)="gotToBookListing()">
+                <button type="button" class="py-3 px-4 bg-transparent ps-4 cursor-pointer text-white">
+                    Add books
+                </button>
+            </div>
+
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div *ngFor="let book of currentlyReadingBooks.slice(0, 4)" class="bg-white p-3 shadow rounded">
+                <img [src]="book.coverImageUrl" alt="{{ book.title }}" class="w-full h-[130px] object-cover rounded">
+                <a [routerLink]="['/book-details', book.bookId]"
+              class=" font-semibold hover:underline cursor-pointer mt-2">{{ book.title }}</a>
+                <p class="text-sm text-gray-500">by {{ book.authorName || 'Unknown Author' }}</p>
+            </div>
+        </div>
+    </div>
+
+    <ng-template #elseTemplate>
+        <div 
+        class="bg-[#FFF2DE] p-6 md:p-8 max-w-6xl mx-auto min-h-[250px] gap-20 flex items-center justify-center text-center transition-transform duration-300 hover:-translate-y-1">
+        <div>
+            <h4 class="text-sm md:text-base font-semibold mb-7">
+                Your 'Currently Reading' shelf is empty. Start reading something new!
+            </h4>
+            <div class="flex items-center justify-center bg-[#875C1A] cursor-pointer" (click)="gotToBookListing()">
+                <button type="button" class="bg-transparent ps-4 cursor-pointer text-white">
+                    Explore now
+                </button>
+                <div class="py-3 px-4">
+                    <img src="/icons/right-arrow-white.png" alt="search icon" class="w-[20px] h-[20px]" />
+                </div>
+            </div>
+
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div *ngFor="let book of books.slice(0, 4)" class="bg-white p-3 shadow rounded">
+                <img [src]="book.coverImageUrl" alt="{{ book.title }}" class="w-full h-[130px] object-cover rounded">
+                <a [routerLink]="['/book-details', book.bookId]"
+              class=" font-semibold hover:underline cursor-pointer mt-2">{{ book.title }}</a>
+                <p class="text-sm text-gray-500">by {{ book.authorName || 'Unknown Author' }}</p>
+            </div>
+        </div>
+    </div>
+    </ng-template>
+
+</div>

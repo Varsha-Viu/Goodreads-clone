@@ -6,15 +6,20 @@
         <div class="flex items-center gap-2 cursor-pointer" (click)="navigateBack()">
             <img src="/icons/left-arrow-black.png" alt="left icon" class="w-4 h-4">
             <p class="text-[12px] hover:underline hover:text-[#875C1A]">Back to listing</p>
-          </div>
+        </div>
     </div>
     <!-- reviews / save later  -->
     <div class="flex items-center justify-between mb-7">
         <p>1234 reviews</p>
-        <div class="flex items-center gap-1 cursor-pointer">
-            <img src="/icons/heart-icon-outline.png" alt="wishlist" class="w-4 h-4" />
+        <button (click)="toggleWishlist(bookDetails)" *ngIf="!bookDetails.isWishlisted"
+            class="flex items-center gap-1 cursor-pointer">
+            <img src="/icons/heart-icon-outline.png" alt="wishlist" class="w-5 h-5" />
             <p class="text-[14px] font-medium">Save to your shelf</p>
-        </div>
+        </button>
+        <button *ngIf="bookDetails.isWishlisted || bookDetails.categoryName" class="flex items-center gap-1">
+            <img src="/icons/heart-icon-filled.png" alt="added" class="w-5 h-5" />
+            <p class="text-[14px] font-medium">Already in your shelf</p>
+        </button>
     </div>
 
     <!-- book image details -->
@@ -48,7 +53,7 @@
                         Publisher
                     </p>
                     <p class="font-semibold text-[14px]">
-                        {{bookDetails.authorName}}
+                        {{bookDetails.publisherName}}
                     </p>
                 </div>
                 <div>
@@ -64,7 +69,8 @@
 
         <!-- read div -->
         <div>
-            <div class="bg-white shadow-lg p-10 rounded-md flex flex-col gap-4">
+            <div class="bg-white shadow-lg p-10 rounded-md flex flex-col gap-4 h-full"
+                *ngIf="bookDetails.categoryName == null; else progress">
                 <p class="text-center text-[14px] font-light">6576 reviews</p>
                 <div class="bg-[#875C1A] text-[#FFFFFF] px-4 py-2 rounded-[4px] text-center hover:text-white cursor-pointer flex items-center gap-3 justify-center"
                     (click)="openCategoryModal(bookDetails.bookId)">
@@ -73,6 +79,28 @@
                         class="w-4 h-4 inline-block ml-2" />
                 </div>
             </div>
+            <ng-template #progress>
+                <div class="bg-white shadow-lg p-10 rounded-md flex flex-col gap-4 h-full">
+                    <p class="text-center">Update Progress</p>
+                    <div class="flex gap-4 items-center justify-center">
+                        <span>Currently on </span>
+                        <input type="number" name="bookProgress" id="bookProgress" placeholder="0" [(ngModel)]="bookProgress"
+                            class="bg-transparent rounded-[4px] py-2 px-4 w-[20%] text-[#000] focus:outline-none text-[14px] border border-[#D9D9D9]" />
+                        <p>
+                            of {{bookDetails.pageCount}}
+                            <span *ngIf="bookProgressPercent > 0">({{bookProgressPercent}}%)</span>
+                        </p>
+                    </div>
+                    <div class="flex items-end justify-end">
+                        <button type="button"
+                        (click)="updateBookProgress(bookDetails.pageCount)"
+                            class="bg-[#875C1A] p-2 rounded-xs text-[#FFF7E7] text-xs cursor-pointer focus:outline-none focus:border-none">
+                            Update Progress
+                        </button>
+                    </div>
+                </div>
+            </ng-template>
+
         </div>
     </div>
 </div>

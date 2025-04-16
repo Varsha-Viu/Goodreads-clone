@@ -17,6 +17,8 @@ export class BookDetailComponent {
   bookDetails: any;
   showCategoryModal = false;
   selectedBookId: number | null = null;
+  bookProgress: any;
+  bookProgressPercent: number = 0;
 
   categorySelections = {
     all: false,
@@ -35,8 +37,10 @@ export class BookDetailComponent {
 
   getBookDetail() {
     const bookId = this.route.snapshot.paramMap.get('bookId');
+    const userId = this.authService.getUserId();
+    const uid = userId ? userId : null;
     if (bookId) {
-      this.bookService.getBookById(bookId).subscribe((res: any) => {
+      this.bookService.getBookById(bookId, uid).subscribe((res: any) => {
         console.log(res);
         this.bookDetails = res;
       });
@@ -44,6 +48,15 @@ export class BookDetailComponent {
   }
 
   openCategoryModal(bookId: number) {
+    const userId = this.authService.getUserId(); // make sure it fetches from session or token
+
+    if (!userId) {
+      sessionStorage.setItem('redirectPath', this.router.url);
+      this.router.navigate(['/login']);
+      this.toastr.info('Please login to create bookshelf.', 'Info');
+      return;
+    }
+
     this.selectedBookId = bookId;
     this.showCategoryModal = true;
     this.resetCategorySelections(); // Reset previous selections
@@ -66,13 +79,6 @@ export class BookDetailComponent {
   submitCategory() {
     const userId = this.authService.getUserId(); // make sure it fetches from session or token
 
-    if (!userId) {
-      sessionStorage.setItem('redirectPath', this.router.url);
-      this.router.navigate(['/login']);
-      this.toastr.info('Please login to assign categories.', 'Info');
-      return;
-    }
-
     const payload = {
       userId: userId,
       bookId: this.selectedBookId,
@@ -88,6 +94,55 @@ export class BookDetailComponent {
       },
       error: err => console.error(err)
     });
+  }
+
+  toggleWishlist(book: any) {
+    const token = sessionStorage.getItem('token');
+    if (!token) {
+      sessionStorage.setItem('redirectAfterLogin', this.router.url); // save current path
+      this.toastr.info('Login to add the book to wishlist');
+      this.router.navigate(['/login']);
+      return;
+    }
+    const userId = this.authService.getUserId();
+    if (userId) {
+      if (!book.isWishlisted) {
+        this.bookService.AddtoWishlist(userId, book.bookId).subscribe({
+          next: (res) => {
+            // Success: maybe show a toast or update UI
+            this.toastr.success('Added to wishlist');
+            book.isWishlisted = true; // update local UI if needed
+          },
+          error: (err) => {
+            if (err.status === 400) {
+              this.toastr.warning(err.error); // will show "Book already in wish list."
+            } else {
+              this.toastr.error('Something went wrong');
+            }
+          }
+        });
+      } else {
+        this.bookService.removeFromWishlist(userId, book.bookId).subscribe({
+          next: (res: any) => {
+            // Success: maybe show a toast or update UI
+            this.toastr.success('Removed from wishlist');
+            book.isWishlisted = true; // update local UI if needed
+          },
+          error: (err: any) => {
+            if (err.status === 400) {
+              this.toastr.warning(err.error); // will show "Book already in wish list."
+            } else {
+              this.toastr.error('Something went wrong');
+            }
+          }
+        });
+      }
+    }
+
+  }
+
+  updateBookProgress(totalPage: any) {
+    this.bookProgressPercent = Math.round((this.bookProgress / totalPage) * 100);
   }
 
   navigateBack() {

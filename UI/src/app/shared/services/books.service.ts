@@ -25,8 +25,8 @@ export class BooksService {
     return this.http.get<any[]>(`${this.apiUrl}/getAllBooks`, { params });
   }
 
-  getBookById(bookId: string) {
-    return this.http.get(`${this.apiUrl}/getBookById/${bookId}`);
+  getBookById(bookId: string, uid: any) {
+    return this.http.get(`${this.apiUrl}/getBookById/${bookId}?userId=${uid}`);
   }
 
   createBook(data: FormData) {
@@ -53,7 +53,7 @@ export class BooksService {
   }
 
   removeFromWishlist(userId: string, bookId: string) {
-    return this.http.delete(`${this.wishlistUrl}/remove/${userId}/${bookId}`);
+    return this.http.delete(`${this.wishlistUrl}/removeFromWishlist?bookId=${bookId}&userId=${userId}`);
   }
 
   assignCategory(payload: any): Observable<any> {
@@ -64,4 +64,8 @@ export class BooksService {
     return this.http.get(`${this.AssignCategoryUrl}/getUserBookShelf/${userId}`);
   }
 
+  getCurrentlyReadingBooks(userId: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.AssignCategoryUrl}/currently-reading/${userId}`);
+  }
+  
 }

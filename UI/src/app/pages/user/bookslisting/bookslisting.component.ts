@@ -151,14 +151,34 @@ export class BookslistingComponent {
     const userId = this.authService.getUserId();
     if (userId) {
       if (!book.isWishlisted) {
-        this.bookService.AddtoWishlist(userId, book.bookId).subscribe(() => {
-          book.isWishlisted = true;
-          this.toastr.success('Added to wishlist');
+        this.bookService.AddtoWishlist(userId, book.bookId).subscribe({
+          next: (res) => {
+            // Success: maybe show a toast or update UI
+            this.toastr.success('Added to wishlist');
+            book.isWishlisted = true; // update local UI if needed
+          },
+          error: (err) => {
+            if (err.status === 400) {
+              this.toastr.warning(err.error); // will show "Book already in wish list."
+            } else {
+              this.toastr.error('Something went wrong');
+            }
+          }
         });
       } else {
-        this.bookService.removeFromWishlist(userId, book.bookId).subscribe(() => {
-          book.isWishlisted = false;
-          this.toastr.success('Removed from wishlist');
+        this.bookService.removeFromWishlist(userId, book.bookId).subscribe({
+          next: (res: any) => {
+            // Success: maybe show a toast or update UI
+            this.toastr.success('Removed from wishlist');
+            book.isWishlisted = false; // update local UI if needed
+          },
+          error: (err: any) => {
+            if (err.status === 400) {
+              this.toastr.warning(err.error); // will show "Book already in wish list."
+            } else {
+              this.toastr.error('Something went wrong');
+            }
+          }
         });
       }
     }

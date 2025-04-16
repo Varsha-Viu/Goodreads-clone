@@ -1,3 +1,4 @@
+import { HomeComponent } from './pages/user/home/home.component';
 import { BooksComponent } from './pages/admin/books/books.component';
 import { Routes } from '@angular/router';
 import { LoginComponent } from './pages/admin/login/login.component';
@@ -25,6 +26,7 @@ export const routes: Routes = [
             { path: 'book-listing', component: BookslistingComponent },
             { path: 'book-details/:bookId', component: BookDetailComponent },
             { path: 'bookshelf', component: WishlistComponent },
+            { path: 'home', component: HomeComponent },
         ]
     },
     {

@@ -31,6 +31,15 @@ namespace API.Controllers
 
             _context.UserBookCategories.RemoveRange(existing);
 
+
+            var wish = await _context.WishList
+                .FirstOrDefaultAsync(w => w.BookId == dto.BookId && w.UserId == dto.UserId);
+            if (wish != null)
+            {
+                _context.WishList.Remove(wish);
+                await _context.SaveChangesAsync();
+            }
+
             // Add new selections
             var newAssignments = dto.Categories.Select(cat => new UserBookCategory
             {
@@ -104,5 +113,30 @@ namespace API.Controllers
                 wishlist = wishlist
             });
         }
+
+        [HttpGet("currently-reading/{userId}")]
+        public async Task<IActionResult> GetCurrentlyReadingBooks(string userId)
+        {
+            var books = await (from ubc in _context.UserBookCategories
+                               where ubc.UserId == userId && ubc.CategoryName == "currentlyReading"
+                               join book in _context.Books on ubc.BookId equals book.BookId
+                               join author in _context.Authors on book.AuthorId equals author.AuthorId into authorJoin
+                               from author in authorJoin.DefaultIfEmpty()
+                               select new
+                               {
+                                   book.BookId,
+                                   book.Title,
+                                   book.Description,
+                                   book.CoverImageUrl,
+                                   book.Language,
+                                   book.PublicationYear,
+                                   book.PageCount,
+                                   book.ISBN,
+                                   AuthorName = author != null ? author.PenName : null
+                               }).ToListAsync();
+
+            return Ok(books);
+        }
+
     }
 }

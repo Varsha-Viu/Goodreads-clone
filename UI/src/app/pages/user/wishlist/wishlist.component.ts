@@ -91,11 +91,22 @@ export class WishlistComponent {
 
   clearSearch() {
     this.searchInput = '';
+    this.getUserBookShelf();
   }
 
   searchBook() {
-    // Implement search functionality here
-    console.log('Searching for:', this.searchInput);
+    const searchTerm = this.searchInput.toLowerCase().trim();
+  
+    if (!searchTerm) {
+      this.filteredBooks = this.allBooks;
+      return;
+    }
+  
+    this.filteredBooks = this.allBooks.filter(book =>
+      book.title.toLowerCase().includes(searchTerm) ||
+      (book.authorName && book.authorName.toLowerCase().includes(searchTerm))
+    );
   }
+  
 
 }
