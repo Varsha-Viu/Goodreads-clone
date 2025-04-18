@@ -3,19 +3,20 @@
   <!-- buttons -->
   <div class="flex items-center justify-between mb-6">
     <div class="flex items-center">
-      <div>
-        <input
-          type="text"
-          name="search"
-          id="search"
-          placeholder="Search books"
-          class="bg-[#FFF7E7] rounded-s-md py-2.5 px-4 w-[300px] text-[#553B08] focus:outline-[#553B08] text-[14px] outline-2 outline-[#553B0850]"
-        />
+      <div class="relative">
+        <input type="text" name="search" id="search" placeholder="Search author" [(ngModel)]="searchInput"
+          class="bg-[#FFF7E7] rounded-s-md py-2.5 px-4 w-[300px] text-[#553B08] focus:outline-[#553B08] text-[14px] outline-2 outline-[#553B0850]" />
+
+        <button *ngIf="searchInput" type="button" (click)="clearSearch()"
+          class="absolute right-2 top-1/2 -translate-y-1/2 text-[#553B08] text-[25px] font-semibold hover:text-red-500 focus:outline-none">
+          &times;
+        </button>
       </div>
       <div>
         <button
           type="button"
           class="bg-[#553B08] text-[#E8E0C6] px-4 py-2.5 rounded-e-md hover:text-white cursor-pointer"
+          (click)="searchBooks()"
         >
           Search
         </button>
@@ -58,7 +59,7 @@
           ngx-datatable-cell-template
         >
           <span
-            class="block py-2 px-4 border-b border-e border-[#553B0850] text-center"
+            class="block py-2 px-4 border-b border-e border-[#553B0850] text-center min-h-[42px]"
             >{{ rowIndex + 1 }}</span
           >
         </ng-template>
@@ -70,7 +71,7 @@
         headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]"
       >
         <ng-template let-row="row" ngx-datatable-cell-template>
-          <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
+          <span class="block py-2 px-4 border-b border-e border-[#553B0850] min-h-[42px]">{{
             row?.title | titlecase
           }}</span>
         </ng-template>
@@ -82,7 +83,7 @@
         headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]"
       >
         <ng-template let-row="row" ngx-datatable-cell-template>
-          <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
+          <span class="block py-2 px-4 border-b border-e border-[#553B0850] min-h-[42px]">{{
             row?.authorName
           }}</span>
         </ng-template>
@@ -94,7 +95,7 @@
         headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]"
       >
         <ng-template let-row="row" ngx-datatable-cell-template>
-          <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
+          <span class="block py-2 px-4 border-b border-e border-[#553B0850] min-h-[42px]">{{
             row?.genreName
           }}</span>
         </ng-template>
@@ -106,7 +107,7 @@
         headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]"
       >
         <ng-template let-row="row" ngx-datatable-cell-template>
-          <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
+          <span class="block py-2 px-4 border-b border-e border-[#553B0850] min-h-[42px]">{{
             row?.publicationYear
           }}</span>
         </ng-template>
@@ -118,7 +119,7 @@
         headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]"
       >
         <ng-template let-row="row" ngx-datatable-cell-template>
-          <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
+          <span class="block py-2 px-4 border-b border-e border-[#553B0850] min-h-[42px]">{{
             row?.language | titlecase
           }}</span>
         </ng-template>
@@ -132,7 +133,7 @@
       >
         <ng-template let-row="row" ngx-datatable-cell-template>
           <div
-            class="flex items-center gap-2 py-[11px] px-4 border-b border-e border-[#553B0850]"
+            class="flex items-center gap-2 py-[11px] px-4 border-b border-e border-[#553B0850] min-h-[42px]"
           >
             <button class="cursor-pointer" (click)="openModal(row)">
               <img
@@ -215,17 +216,21 @@
             Title is required.
           </p>
         </div>
-        <!-- Subtitle -->
+
+        <!-- author -->
         <div class="w-full">
-          <label class="block text-sm font-medium text-[#553B08]"
-            >Authors</label
-          >
-          <input
-            type="text"
-            formControlName="authorName"
+          <label class="block text-sm font-medium text-[#553B08]">Authors</label>
+          <select
+            formControlName="authorId"
             class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
-          />
+          >
+            <option value="">Select an author</option>
+            <option *ngFor="let author of authors" [value]="author.authorId">
+              {{ author.penName != null ? author.penName : author.firstName +' ' + author.lastName }}
+            </option>
+          </select>
         </div>
+        
       </div>
 
       <!-- Description -->
@@ -293,22 +298,30 @@
           <label class="block text-sm font-medium text-[#553B08]"
             >Publisher</label
           >
-          <input
-            type="text"
-            formControlName="publisherName"
+          <select
+            formControlName="publisherId"
             class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
-          />
+          >
+            <option value="">Select a Publishers</option>
+            <option *ngFor="let item of publishers" [value]="item.publisherId">
+              {{ item.name }}
+            </option>
+          </select>
         </div>
         <!-- Authors -->
         <div class="w-full">
           <label class="block text-sm font-medium text-[#553B08]"
             >Genre Name</label
           >
-          <input
-            type="text"
-            formControlName="genreName"
+          <select
+            formControlName="genreId"
             class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
-          />
+          >
+            <option value="">Select a genre</option>
+            <option *ngFor="let genre of genres" [value]="genre.genreId">
+              {{ genre.name }}
+            </option>
+          </select>
         </div>
       </div>
 
@@ -388,7 +401,7 @@
         Cancel
       </button>
       <button
-      (click)="closeDeleteModal()"
+      (click)="DeleteBook()"
         type="button"
         class="bg-[#553B08] text-[#E8E0C6] px-4 py-1.5 rounded-md hover:text-white cursor-pointer"
       >

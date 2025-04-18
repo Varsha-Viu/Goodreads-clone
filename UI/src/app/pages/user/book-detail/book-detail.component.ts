@@ -89,7 +89,8 @@ export class BookDetailComponent {
       next: () => {
         this.toastr.success('Added to bookshelf', 'Success');
         this.closeCategoryModal();
-        console.log("Category saved!");
+        // console.log("Category saved!");
+        this.getBookDetail();
         // Optionally close modal or show toast
       },
       error: err => console.error(err)
@@ -142,7 +143,14 @@ export class BookDetailComponent {
   }
 
   updateBookProgress(totalPage: any) {
+    if(this.bookProgress > totalPage){
+      this.toastr.error("Pages cannot be greater than total page count", "Error");
+      this.bookProgress = 0;
+      this.bookProgressPercent = 0;
+      return;
+    }
     this.bookProgressPercent = Math.round((this.bookProgress / totalPage) * 100);
+    
   }
 
   navigateBack() {

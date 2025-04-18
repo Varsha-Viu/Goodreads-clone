@@ -3,6 +3,9 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BooksService } from '../../../shared/services/books.service';
+import { AuthorService } from '../../../shared/services/author.service';
+import { GenreService } from '../../../shared/services/genre.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-books',
@@ -31,8 +34,14 @@ export class BooksComponent {
   DeleteModal = false;
   imagePreview: string | null = null;
   imageError: string | null = null;
+  authors: any;
+  genres: any;
+  publishers: any;
+  selectedBookId = '';
+  searchInput: string = '';
 
-  constructor(private fb: FormBuilder, private bookService: BooksService) {
+
+  constructor(private fb: FormBuilder, private bookService: BooksService, private authorService: AuthorService, private genreService: GenreService, private toastr: ToastrService ) {
     this.bookForm = this.fb.group({
       title: ['', [Validators.required]],
       publicationYear: [''],
@@ -40,15 +49,18 @@ export class BooksComponent {
       isbn: [''],
       language: [''],
       pageCount: [''],
-      publisherName: [''],
-      authorName: [''],
-      genreName: [''],
+      publisherId: [''],
+      authorId: [''],
+      genreId: [''],
       bookCover: [null]
     });
   }
 
   ngOnInit(): void {
     this.getAllBooks();
+    this.getAllAuthors();
+    this.getAllGenres();
+    this.getAllPublishers();
   }
 
   getAllBooks() {
@@ -58,6 +70,31 @@ export class BooksComponent {
     }, (err: any) => {
       console.error(err);
     });
+  }
+
+  getAllAuthors() {
+    this.authorService.getAllAuthors().subscribe(
+      (res:any) => {
+        this.authors = res;
+      },
+      (err: any) => {
+        console.log(err);
+      }
+    )
+  }
+
+  getAllGenres() {
+    this.genreService.getAllGenres().subscribe(
+      (res: any) => this.genres = res,
+      (err: any) => console.log(err)
+    );
+  }
+
+  getAllPublishers() {
+    this.authorService.getAllPublishers().subscribe(
+      (res: any) => this.publishers = res,
+      (err: any) => console.log(err)
+    );
   }
   
   get f() {
@@ -135,8 +172,19 @@ export class BooksComponent {
   openModal(book: any = null) {
     this.openAddEditModal = true;
     if(book) {
+      this.selectedBookId = book.bookId;
       this.modalTitle = "Edit Book";
-      this.bookForm.patchValue(book);
+      this.bookForm.patchValue({
+        title: book.title,
+        publicationYear: book.publicationYear,
+        description: book.description,
+        isbn: book.isbn,
+        language: book.language,
+        pageCount: book.pageCount,
+        publisherId: book.publisherId,
+        authorId: book.authorId,
+        genreId: book.genreId
+      });
     }
   }
 
@@ -148,20 +196,92 @@ export class BooksComponent {
   }
 
   openDeleteModal(row: any) {
-    console.log(row);
+    // console.log(row);
     this.rowToDelete = row;
     this.DeleteModal = true;
   }
   closeDeleteModal() {
     this.DeleteModal = false;
+    this.rowToDelete = [];
+  }
+  DeleteBook() {
+    this.bookService.deleteBook(this.rowToDelete.bookId).subscribe((res: any) => {
+      console.log(res);
+      this.getAllBooks();
+      this.closeDeleteModal();
+    }, (err: any) => {
+      console.error(err);
+      this.toastr.error(err)
+    });
   }
 
   submitForm() {
     this.isFormSubmitted = true;
-    if(this.bookForm.invalid) {
+  
+    if (this.bookForm.invalid) {
       return;
     }
-    console.log(this.bookForm.value);
-    // this.closeModal();
+  
+    const formValues = this.bookForm.value;
+    const formData = new FormData();
+  
+    formData.append('title', formValues.title);
+    formData.append('publicationYear', formValues.publicationYear || '');
+    formData.append('description', formValues.description || '');
+    formData.append('isbn', formValues.isbn || '');
+    formData.append('language', formValues.language || '');
+    formData.append('pageCount', formValues.pageCount || '');
+  
+    // These should match backend parameter expectations
+    formData.append('publisherId', formValues.publisherId || '');
+    formData.append('authorId', formValues.authorId || '');
+    formData.append('genreId', formValues.genreId || '');
+  
+    if (formValues.bookCover) {
+      formData.append('bookCover', formValues.bookCover);
+    }
+  
+    if (this.selectedBookId) {
+      // Update book
+      this.bookService.updateBook(this.selectedBookId, formData).subscribe(
+        (res) => {
+          this.toastr.success('Book updated successfully:', "Error");
+          this.closeModal();
+          this.getAllBooks();
+        },
+        (err) => {
+          console.error('Error updating book:', err);
+        }
+      );
+    } else {
+      // Create new book
+      this.bookService.createBook(formData).subscribe(
+        (res) => {
+          this.toastr.success('Book created successfully:', "Success");
+          this.closeModal();
+        },
+        (err) => {
+          console.error('Error creating book:', err);
+        }
+      );
+    }
   }
+  
+  clearSearch() {
+    this.searchInput = '';
+    this.getAllBooks(); // or re-fetch default user list if needed
+  }
+
+  searchBooks() {
+    const term = this.searchInput?.trim();
+    if (!term) return;
+  
+    this.bookService.searchBooks(term).subscribe((res: any) => {
+      this.rows = res || [];
+      this.updateDisplayedRows();
+    }, err => {
+      console.error('Search error:', err);
+    });
+  }
+  
 }

@@ -10,12 +10,9 @@ export class BooksService {
   apiUrl = `${environment.apiUrl}/Books`;
   wishlistUrl = `${environment.apiUrl}/WishList`;
   AssignCategoryUrl = `${environment.apiUrl}/UserBookCategories`;
+  BookProgressUrl = `${environment.apiUrl}/BookProgress`;
 
   constructor(private http: HttpClient) { }
-
-  getAllBooks1() {
-    return this.http.get(`${this.apiUrl}/getAllBooks`);
-  }
 
   getAllBooks(userId?: any) {
     let params = new HttpParams();
@@ -37,9 +34,14 @@ export class BooksService {
     return this.http.put(`${this.apiUrl}/updateBooks/${bookId}`, data);
   }
 
-  deleteAuthor(authorId: string) {
-    return this.http.delete(`${this.apiUrl}/deleteBook/${authorId}`);
+  deleteBook(bookId: string) {
+    return this.http.delete(`${this.apiUrl}/deleteBook/${bookId}`);
   }
+
+  searchBooks(term: string) {
+    return this.http.get(`${this.apiUrl}/searchBooks?searchTerm=${encodeURIComponent(term)}`);
+  }
+  
 
   searchAuthors(searchTerm: string) {
     return this.http.get(`${this.apiUrl}/search-authors?searchTerm=${searchTerm}`);
@@ -67,5 +69,10 @@ export class BooksService {
   getCurrentlyReadingBooks(userId: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.AssignCategoryUrl}/currently-reading/${userId}`);
   }
+
+  addBookProgress(data: FormData) {
+    return this.http.post(`${this.BookProgressUrl}`, data);
+  }
+  
   
 }

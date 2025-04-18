@@ -14,6 +14,14 @@ apiUrl = `${environment.apiUrl}/Users`;
     return this.http.get(`${this.apiUrl}/allUsers`);
   }
 
+  getUserProfile(userId: any) {
+    return this.http.get(`${this.apiUrl}/profile?userId=${userId}`);
+  }
+
+  UpdateUser(userId: any, data: FormData) {
+    return this.http.put(`${this.apiUrl}/update/${userId}`, data);
+  }
+
   toggleUserStatus(userId: string) {
     return this.http.post(`${this.apiUrl}/toggle-status/${userId}`, null);
   }
@@ -21,4 +29,6 @@ apiUrl = `${environment.apiUrl}/Users`;
   searchUsers(searchTerm: string) {
     return this.http.get(`${this.apiUrl}/search?query=${searchTerm}`);
   }
+
+
 }

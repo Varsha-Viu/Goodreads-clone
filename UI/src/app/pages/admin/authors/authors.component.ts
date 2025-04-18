@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-authors',
@@ -27,7 +28,7 @@ export class AuthorsComponent {
   selectedAuthorId = '';
   searchTerm: string = '';
 
-  constructor(private fb: FormBuilder, private authorService: AuthorService) {
+  constructor(private fb: FormBuilder, private authorService: AuthorService, private toastr: ToastrService) {
     this.authorForm = this.fb.group({
       firstName: ['', [Validators.required]],
       lastName: [''],
@@ -123,7 +124,6 @@ export class AuthorsComponent {
   openModal(author: any = null) {
     this.openAddEditModal = true;
     if (author) {
-      debugger
       this.selectedAuthorId = author.authorId;
       this.modalTitle = 'Edit Author';
       this.authorForm.patchValue(author);
@@ -188,6 +188,7 @@ export class AuthorsComponent {
       }
       , (err: any) => {
         console.error(err);
+        this.toastr.error(err, "Error");
       });
     }
     else {
@@ -198,6 +199,7 @@ export class AuthorsComponent {
       }
       , (err: any) => {
         console.error(err);
+        this.toastr.error(err, "Error");
       });
     }
     console.log(this.authorForm.value);

@@ -4,40 +4,25 @@
   <div class="flex items-center justify-between mb-6">
     <div class="flex items-center">
       <div class="relative">
-        <input
-          type="text"
-          name="search"
-          id="search"
-          placeholder="Search author"
-          [(ngModel)]="searchTerm"
-          class="bg-[#FFF7E7] rounded-s-md py-2.5 px-4 w-[300px] text-[#553B08] focus:outline-[#553B08] text-[14px] outline-2 outline-[#553B0850]"
-        />
+        <input type="text" name="search" id="search" placeholder="Search author" [(ngModel)]="searchTerm"
+          class="bg-[#FFF7E7] rounded-s-md py-2.5 px-4 w-[300px] text-[#553B08] focus:outline-[#553B08] text-[14px] outline-2 outline-[#553B0850]" />
 
-        <button
-        *ngIf="searchTerm"
-        type="button"
-        (click)="clearSearch()"
-        class="absolute right-2 top-1/2 -translate-y-1/2 text-[#553B08] text-[25px] font-semibold hover:text-red-500 focus:outline-none"
-      >
-        &times;
-      </button>
+        <button *ngIf="searchTerm" type="button" (click)="clearSearch()"
+          class="absolute right-2 top-1/2 -translate-y-1/2 text-[#553B08] text-[25px] font-semibold hover:text-red-500 focus:outline-none">
+          &times;
+        </button>
       </div>
       <div>
-        <button
-          type="button"
+        <button type="button"
           class="bg-[#553B08] text-[#E8E0C6] px-4 py-2.5 rounded-e-md hover:text-white cursor-pointer"
-          (click)="searchAuthors()"
-        >
+          (click)="searchAuthors()">
           Search
         </button>
       </div>
     </div>
     <div>
-      <button
-        type="button"
-        class="bg-[#553B08] text-[#E8E0C6] px-4 py-2.5 rounded-md hover:text-white cursor-pointer"
-        (click)="openModal()"
-      >
+      <button type="button" class="bg-[#553B08] text-[#E8E0C6] px-4 py-2.5 rounded-md hover:text-white cursor-pointer"
+        (click)="openModal()">
         Add new author
       </button>
     </div>
@@ -45,107 +30,63 @@
 
   <!-- data table -->
   <div class="bg-[#E8E0C6] rounded-md shadow-md">
-    <ngx-datatable
-      class="container striped border border-[#553B0850] rounded-md"
-      [rows]="rows"
-      [columnMode]="'flex'"
-      [headerHeight]="50"
-      [footerHeight]="30"
-      [rowHeight]="50"
-      [count]="rows.length"
-      [limit]="pageSize"
-      [offset]="currentPage"
-      (page)="onPageChange($event)"
-    >
+    <ngx-datatable class="container striped border border-[#553B0850] rounded-md" [rows]="rows" [columnMode]="'flex'"
+      [headerHeight]="50" [footerHeight]="30" [rowHeight]="50" [count]="rows.length" [limit]="pageSize"
+      [offset]="currentPage" (page)="onPageChange($event)">
       <!-- Table Header Styling -->
-      <ngx-datatable-column
-        name="#"
-        [flexGrow]="0.5"
-        headerClass="bg-[#553B08] text-white text-center px-4 py-3 border-e border-[#E8E0C6]"
-      >
-        <ng-template
-          let-rowIndex="rowIndex"
-          let-row="row"
-          ngx-datatable-cell-template
-        >
-          <span
-            class="block py-2 px-4 border-b border-e border-[#553B0850] text-center"
-            >{{ rowIndex + 1 }}</span
-          >
+      <ngx-datatable-column name="#" [flexGrow]="0.5"
+        headerClass="bg-[#553B08] text-white text-center px-4 py-3 border-e border-[#E8E0C6]">
+        <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
+          <span class="block py-2 px-4 border-b border-e border-[#553B0850] text-center">{{ rowIndex + 1 }}</span>
         </ng-template>
       </ngx-datatable-column>
 
-      <ngx-datatable-column
-        name="Author Name"
-        [flexGrow]="2"
-        headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]"
-      >
+      <ngx-datatable-column name="Author Name" [flexGrow]="2"
+        headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
+          <span class="block py-2 px-4 border-b border-e border-[#553B0850] min-h-[42px]">{{
             row?.fullName | titlecase
-          }}</span>
+            }}</span>
         </ng-template>
       </ngx-datatable-column>
 
-      <ngx-datatable-column
-        name="Pen Name"
-        [flexGrow]="2"
-        headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]"
-      >
+      <ngx-datatable-column name="Pen Name" [flexGrow]="2"
+        headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
+          <span class="block py-2 px-4 border-b border-e border-[#553B0850] min-h-[42px]">{{
             row?.penName
-          }}</span>
+            }}</span>
         </ng-template>
       </ngx-datatable-column>
 
-      <ngx-datatable-column
-        name="Email"
-        [flexGrow]="2"
-        headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]"
-      >
+      <ngx-datatable-column name="Email" [flexGrow]="2"
+        headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
+          <span class="block py-2 px-4 border-b border-e border-[#553B0850] min-h-[42px]">{{
             row?.email
-          }}</span>
+            }}</span>
         </ng-template>
       </ngx-datatable-column>
 
-      <ngx-datatable-column
-        name="Website"
-        [flexGrow]="2"
-        headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]"
-      >
+      <ngx-datatable-column name="Website" [flexGrow]="2"
+        headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          <span class="block py-2 px-4 border-b border-e border-[#553B0850]">{{
+          <span class="block py-2 px-4 border-b border-e border-[#553B0850] min-h-[42px]">{{
             row?.website
-          }}</span>
+            }}</span>
         </ng-template>
       </ngx-datatable-column>
 
       <!-- Column: Actions -->
-      <ngx-datatable-column
-        name="Actions"
-        [flexGrow]="2"
-        headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]"
-      >
+      <ngx-datatable-column name="Actions" [flexGrow]="2"
+        headerClass="bg-[#553B08] text-white px-4 py-3 border-e border-[#E8E0C6]">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          <div
-            class="flex items-center gap-2 py-[11px] px-4 border-b border-e border-[#553B0850]"
-          >
+          <div class="flex items-center gap-2 py-[11px] px-4 border-b border-e border-[#553B0850] min-h-[42px]">
             <button class="cursor-pointer" (click)="openModal(row)">
-              <img
-                src="/icons/edit-icon.png"
-                alt="edit icon"
-                class="w-[20px] h-[20px]"
-              />
+              <img src="/icons/edit-icon.png" alt="edit icon" class="w-[20px] h-[20px]" />
             </button>
             <button class="cursor-pointer" (click)="openDeleteModal(row)">
-              <img
-                src="/icons/trash-icon.png"
-                alt="edit icon"
-                class="w-[20px] h-[20px]"
-              />
+              <img src="/icons/trash-icon.png" alt="edit icon" class="w-[20px] h-[20px]" />
             </button>
           </div>
         </ng-template>
@@ -154,30 +95,15 @@
 
     <!-- Pagination Controls -->
     <div class="flex justify-between items-center py-3 px-4">
-      <button
-        (click)="prevPage()"
-        [disabled]="currentPage === 0"
-        class="bg-transparent cursor-pointer"
-      >
-        <img
-          src="/icons/previous-icon.png"
-          alt="previous icon"
-          class="w-[22px] h-[22px]"
-        />
+      <button (click)="prevPage()" [disabled]="currentPage === 0" class="bg-transparent cursor-pointer">
+        <img src="/icons/previous-icon.png" alt="previous icon" class="w-[22px] h-[22px]" />
       </button>
       <span class="text-[14px] text-[#553B08] font-semibold">
         Page {{ currentPage + 1 }} of {{ totalPages }}
       </span>
-      <button
-        (click)="nextPage()"
-        [disabled]="(currentPage + 1) * pageSize >= rows.length"
-        class="bg-transparent cursor-pointer"
-      >
-        <img
-          src="/icons/next-icon.png"
-          alt="next icon"
-          class="w-[22px] h-[22px]"
-        />
+      <button (click)="nextPage()" [disabled]="(currentPage + 1) * pageSize >= rows.length"
+        class="bg-transparent cursor-pointer">
+        <img src="/icons/next-icon.png" alt="next icon" class="w-[22px] h-[22px]" />
       </button>
     </div>
   </div>
@@ -185,10 +111,7 @@
 
 <!-- add / edit books modal  -->
 <!-- Modal Overlay -->
-<div
-  *ngIf="openAddEditModal"
-  class="fixed inset-0 bg-[#e8e0c67d] flex justify-center items-center"
->
+<div *ngIf="openAddEditModal" class="fixed inset-0 bg-[#e8e0c67d] flex justify-center items-center">
   <!-- Modal Content -->
   <div class="bg-white p-6 rounded-lg shadow-lg w-[50%] relative">
     <h2 class="text-xl text-[#553B08] font-bold mb-4">
@@ -200,92 +123,58 @@
       <!-- first name -->
       <div class="flex gap-3 items-center mb-4">
         <div class="w-full">
-          <label class="block text-sm font-medium text-[#553B08]"
-            >First Name</label
-          >
-          <input
-            type="text"
-            formControlName="firstName"
-            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
-          />
-          <p
-            class="text-red-500 text-xs"
-            *ngIf="
+          <label class="block text-sm font-medium text-[#553B08]">First Name</label>
+          <input type="text" formControlName="firstName"
+            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]" />
+          <p class="text-red-500 text-xs" *ngIf="
               isFormSubmitted &&
               f['firstName'].invalid &&
               f['firstName'].touched
-            "
-          >
+            ">
             First Name is required.
           </p>
         </div>
         <!-- last name -->
         <div class="w-full">
-          <label class="block text-sm font-medium text-[#553B08]"
-            >Last Name</label
-          >
-          <input
-            type="text"
-            formControlName="lastName"
-            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
-          />
+          <label class="block text-sm font-medium text-[#553B08]">Last Name</label>
+          <input type="text" formControlName="lastName"
+            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]" />
         </div>
       </div>
 
       <div class="flex items-center gap-3 mb-4">
         <!-- pen name -->
         <div class="w-full">
-          <label class="block text-sm font-medium text-[#553B08]"
-            >Pen Name</label
-          >
-          <input
-            type="text"
-            formControlName="penName"
-            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
-          />
+          <label class="block text-sm font-medium text-[#553B08]">Pen Name</label>
+          <input type="text" formControlName="penName"
+            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]" />
         </div>
         <!-- email -->
         <div class="w-full">
           <label class="block text-sm font-medium text-[#553B08]">Email</label>
-          <input
-            type="email"
-            formControlName="email"
-            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
-          />
+          <input type="email" formControlName="email"
+            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]" />
         </div>
       </div>
       <!-- biography -->
       <div class="mb-4">
-        <label class="block text-sm font-medium text-[#553B08]"
-          >Biography</label
-        >
-        <textarea
-          formControlName="biography"
-          class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
-        ></textarea>
+        <label class="block text-sm font-medium text-[#553B08]">Biography</label>
+        <textarea formControlName="biography"
+          class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"></textarea>
       </div>
 
       <div class="flex items-center gap-3 mb-4">
         <!-- website -->
         <div class="w-full">
-          <label class="block text-sm font-medium text-[#553B08]"
-            >Website</label
-          >
-          <input
-            type="text"
-            formControlName="website"
-            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
-          />
+          <label class="block text-sm font-medium text-[#553B08]">Website</label>
+          <input type="text" formControlName="website"
+            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]" />
         </div>
         <!-- socialLinks -->
         <div class="w-full">
-          <label class="block text-sm font-medium text-[#553B08]"
-            >Social Links</label
-          >
-          <select
-            formControlName="socialLinks"
-            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]"
-          >
+          <label class="block text-sm font-medium text-[#553B08]">Social Links</label>
+          <select formControlName="socialLinks"
+            class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]">
             <option value="" disabled selected>Select a social platform</option>
             <option value="Instagram">Instagram</option>
             <option value="Linkedin">LinkedIn</option>
@@ -297,35 +186,23 @@
       <div class="flex items-center gap-3 mb-4">
         <!-- Image Upload -->
         <div class="w-full">
-          <label class="block text-sm font-medium text-[#553B08]"
-            >Author Profile Image</label
-          >
+          <label class="block text-sm font-medium text-[#553B08]">Author Profile Image</label>
           <div class="flex items-center space-x-4 mt-2">
             <!-- Image Preview -->
             <div *ngIf="imagePreview" class="flex flex-col items-center space-y-2">
-              <img
-                [src]="imagePreview"
-                alt="Author Profile Image"
-                class="w-20 h-20 object-cover border rounded-md shadow-md"
-              />
-          
+              <img [src]="imagePreview" alt="Author Profile Image"
+                class="w-20 h-20 object-cover border rounded-md shadow-md" />
+
               <!-- Remove Button -->
-              <button
-                type="button"
-                (click)="removeImage()"
-                class="text-red-600 text-sm underline hover:text-red-800 transition"
-              >
+              <button type="button" (click)="removeImage()"
+                class="text-red-600 text-sm underline hover:text-red-800 transition">
                 Remove Image
               </button>
             </div>
 
             <!-- File Input -->
-            <input
-              type="file"
-              (change)="onFileSelected($event)"
-              accept="image/*"
-              class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#553B0830] file:text-[#553B08] hover:file:bg-[#553B0850]"
-            />
+            <input type="file" (change)="onFileSelected($event)" accept="image/*"
+              class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#553B0830] file:text-[#553B08] hover:file:bg-[#553B0850]" />
           </div>
           <p class="text-red-500 text-xs mt-1" *ngIf="imageError">
             {{ imageError }}
@@ -335,17 +212,12 @@
 
       <!-- Buttons -->
       <div class="flex justify-end gap-2">
-        <button
-          type="button"
-          (click)="closeModal()"
-          class="border bg-transparent border-[#553B08] text-[#553B08] px-4 py-1.5 rounded-md hover:bg-[#553B08] hover:text-white cursor-pointer"
-        >
+        <button type="button" (click)="closeModal()"
+          class="border bg-transparent border-[#553B08] text-[#553B08] px-4 py-1.5 rounded-md hover:bg-[#553B08] hover:text-white cursor-pointer">
           Cancel
         </button>
-        <button
-          type="submit"
-          class="bg-[#553B08] text-[#E8E0C6] px-4 py-1.5 rounded-md hover:text-white cursor-pointer"
-        >
+        <button type="submit"
+          class="bg-[#553B08] text-[#E8E0C6] px-4 py-1.5 rounded-md hover:text-white cursor-pointer">
           Submit
         </button>
       </div>
@@ -355,10 +227,7 @@
 
 <!-- delete books modal  -->
 <!-- Modal Overlay -->
-<div
-  *ngIf="DeleteModal"
-  class="fixed inset-0 bg-[#e8e0c67d] flex justify-center items-center"
->
+<div *ngIf="DeleteModal" class="fixed inset-0 bg-[#e8e0c67d] flex justify-center items-center">
   <!-- Modal Content -->
   <div class="bg-white p-6 rounded-lg shadow-lg w-[30%] relative">
     <h2 class="text-xl text-[#553B08] font-bold mb-2">Delete book</h2>
@@ -369,18 +238,12 @@
     </div>
     <!-- Buttons -->
     <div class="flex justify-end gap-2">
-      <button
-        type="button"
-        (click)="closeDeleteModal()"
-        class="border bg-transparent border-[#553B08] text-[#553B08] px-4 py-1.5 rounded-md hover:bg-[#553B08] hover:text-white cursor-pointer"
-      >
+      <button type="button" (click)="closeDeleteModal()"
+        class="border bg-transparent border-[#553B08] text-[#553B08] px-4 py-1.5 rounded-md hover:bg-[#553B08] hover:text-white cursor-pointer">
         Cancel
       </button>
-      <button
-        (click)="DeleteAuthor()"
-        type="button"
-        class="bg-[#553B08] text-[#E8E0C6] px-4 py-1.5 rounded-md hover:text-white cursor-pointer"
-      >
+      <button (click)="DeleteAuthor()" type="button"
+        class="bg-[#553B08] text-[#E8E0C6] px-4 py-1.5 rounded-md hover:text-white cursor-pointer">
         Delete
       </button>
     </div>

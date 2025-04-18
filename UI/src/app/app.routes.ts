@@ -15,6 +15,7 @@ import { SignupComponent } from './pages/admin/signup/signup.component';
 import { BookslistingComponent } from './pages/user/bookslisting/bookslisting.component';
 import { BookDetailComponent } from './pages/user/book-detail/book-detail.component';
 import { WishlistComponent } from './pages/user/wishlist/wishlist.component';
+import { ProfileComponent } from './pages/user/profile/profile.component';
 
 export const routes: Routes = [
     {
@@ -27,6 +28,7 @@ export const routes: Routes = [
             { path: 'book-details/:bookId', component: BookDetailComponent },
             { path: 'bookshelf', component: WishlistComponent },
             { path: 'home', component: HomeComponent },
+            { path: 'profile', component: ProfileComponent },
         ]
     },
     {

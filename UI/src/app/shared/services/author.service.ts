@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AuthorService {
   apiUrl = `${environment.apiUrl}/Authors`;
+  publishersApiUrl = `${environment.apiUrl}/Publisher`;
   
   constructor(private http: HttpClient) { }
 
@@ -34,4 +35,10 @@ export class AuthorService {
     return this.http.get(`${this.apiUrl}/search-authors?searchTerm=${searchTerm}`);
   }
 
+
+  // publishers
+
+  getAllPublishers() {
+    return this.http.get(`${this.publishersApiUrl}/getAllPublishers`);
+  }
 }

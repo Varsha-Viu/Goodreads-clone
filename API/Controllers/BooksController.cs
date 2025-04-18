@@ -45,7 +45,9 @@ namespace API.Controllers
                                        book.CreatedAt,
                                        book.UpdatedAt,
                                        AuthorId = book.AuthorId,
-                                       AuthorName = author != null ? author.PenName : null,
+                                       AuthorName = author != null
+                               ? (author.PenName ?? (author.FirstName + " " + author.LastName))
+                               : null,
                                        GenreId = book.GenreId,
                                        GenreName = genre != null ? genre.Name : null,
                                        PublisherId = book.PublisherId,
@@ -114,20 +116,8 @@ namespace API.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var genre = await _context.Genres.FindAsync(model.GenreId);
-            if (genre == null)
-                return NotFound(new { message = "Genre not found " });
-
-            var existingAuthor = await _context.Authors.FindAsync(model.AuthorId);
-            if (existingAuthor == null)
-                return NotFound(new { message = "Author not found " });
-
-            var existingPublishers = await _context.Publishers.FindAsync(model.PublisherId);
-            if (existingPublishers == null)
-                return NotFound(new { message = "Publisher not found " });
-
             var imageUrl = "";
-            if (model.CoverImageUrl.Length != 0)
+            if (model.CoverImageUrl != null)
             {
                 imageUrl = await UploadImage(model.CoverImageUrl);
 
@@ -140,19 +130,19 @@ namespace API.Controllers
                 Description = model.Description,
                 CoverImageUrl = imageUrl,
                 AuthorId = model.AuthorId,
-                GenreId = model.GenreId,
+                GenreId = model.GenreId != null ? model.GenreId : null,
                 PublicationYear = model.PublicationYear,
                 Language = model.Language,
                 PageCount = model.PageCount,
                 ISBN = model.ISBN,
-                PublisherId = model.PublisherId,
+                PublisherId = model.PublisherId != null ? model.PublisherId : null,
                 CreatedAt = DateTime.Now,
             };
 
             _context.Books.Add(book);
             await _context.SaveChangesAsync();
 
-            return Ok(new {message = "book created successfully", isSuccess = true});
+            return Ok(new { message = "book created successfully", isSuccess = true });
         }
 
         // PUT: api/Books/{id}
@@ -163,20 +153,8 @@ namespace API.Controllers
             if (existingBook == null)
                 return NotFound();
 
-            var genre = await _context.Genres.FindAsync(model.GenreId);
-            if (genre == null)
-                return NotFound(new { message = "Genre not found " });
-
-            var existingAuthor = await _context.Authors.FindAsync(model.AuthorId);
-            if (existingAuthor == null)
-                return NotFound(new { message = "Author not found " });
-
-            var existingPublishers = await _context.Publishers.FindAsync(model.PublisherId);
-            if (existingPublishers == null)
-                return NotFound(new { message = "Publisher not found " });
-
             var imageUrl = "";
-            if (model.CoverImageUrl.Length != 0)
+            if (model.CoverImageUrl != null)
             {
                 imageUrl = await UploadImage(model.CoverImageUrl);
 
@@ -190,8 +168,8 @@ namespace API.Controllers
             existingBook.PublicationYear = model.PublicationYear;
             existingBook.PageCount = model.PageCount;
             existingBook.ISBN = model.ISBN;
-            existingBook.GenreId = model.GenreId;
-            existingBook.PublisherId = model.PublisherId;
+            existingBook.GenreId = model.GenreId != null ? model.GenreId : null;
+            existingBook.PublisherId = model.PublisherId != null ? model.PublisherId : null;
             existingBook.UpdatedAt = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
@@ -212,6 +190,54 @@ namespace API.Controllers
 
             return Ok(new { message = "Book deleted successfully" });
         }
+
+        [HttpGet("searchBooks")]
+        public async Task<IActionResult> SearchBooks([FromQuery] string searchTerm, [FromQuery] string? userId = null)
+        {
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                return BadRequest("Search term is required.");
+            }
+
+            var booksList = await (from book in _context.Books
+                                   join author in _context.Authors on book.AuthorId equals author.AuthorId into authorJoin
+                                   from author in authorJoin.DefaultIfEmpty()
+
+                                   join genre in _context.Genres on book.GenreId equals genre.GenreId into genreJoin
+                                   from genre in genreJoin.DefaultIfEmpty()
+
+                                   join publisher in _context.Publishers on book.PublisherId equals publisher.PublisherId into pubJoin
+                                   from publisher in pubJoin.DefaultIfEmpty()
+
+                                   where EF.Functions.Like(book.Title.ToLower(), $"%{searchTerm.ToLower()}%")
+
+                                   select new
+                                   {
+                                       book.BookId,
+                                       book.Title,
+                                       book.Description,
+                                       book.CoverImageUrl,
+                                       book.Language,
+                                       book.PublicationYear,
+                                       book.PageCount,
+                                       book.ISBN,
+                                       book.CreatedAt,
+                                       book.UpdatedAt,
+                                       AuthorId = book.AuthorId,
+                                       AuthorName = author != null
+                                           ? (author.PenName ?? (author.FirstName + " " + author.LastName))
+                                           : null,
+                                       GenreId = book.GenreId,
+                                       GenreName = genre != null ? genre.Name : null,
+                                       PublisherId = book.PublisherId,
+                                       PublisherName = publisher != null ? publisher.Name : null,
+                                       IsWishlisted = userId != null && _context.WishList
+                                            .Any(w => w.BookId == book.BookId && w.UserId == userId)
+                                   }).ToListAsync();
+
+            return Ok(booksList);
+        }
+
 
         private async Task<string> UploadImage(IFormFile authorprofile)
         {

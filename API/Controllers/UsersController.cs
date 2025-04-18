@@ -58,6 +58,8 @@ namespace API.Controllers
                 return NotFound("User not found");
 
             user.FirstName = model.FirstName;
+            user.Email = model.Email;
+            user.UserName = model.UserName;
             user.LastName = model.LastName;
             user.Address = model.Address;
             user.PhoneNumber = model.PhoneNumber;

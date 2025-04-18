@@ -70,19 +70,18 @@ namespace API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromForm] LoginModel model)
         {
-            if (!ModelState.IsValid) 
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user == null) 
+            if (user == null)
                 return BadRequest("Email is not registered.");
+            if (!user.IsUserActive)
+                return BadRequest("You are not an active user.");
 
             var passwordValid = await _userManager.CheckPasswordAsync(user, model.Password);
-            if (!passwordValid) 
+            if (!passwordValid)
                 return BadRequest("Invalid password.");
-
-            if(!user.IsUserActive)
-                return BadRequest("You are not an active user.");
 
             // Get user roles
             var isUser = true;

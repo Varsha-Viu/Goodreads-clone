@@ -35,7 +35,7 @@ namespace API.Controllers
 
         // POST: api/BookProgress
         [HttpPost]
-        public async Task<IActionResult> AddProgress(BookProgress model)
+        public async Task<IActionResult> AddProgress([FromForm] BookProgress model)
         {
             model.ProgressId = Guid.NewGuid().ToString();
             model.UpdatedAt = DateTime.Now;
