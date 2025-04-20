@@ -1,3 +1,4 @@
+import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -18,6 +19,7 @@ export class WishlistComponent {
   allBooks: any[] = []; // from API, includes wishlist and category info
   filteredBooks: any[] = [];
   page: number = 1;
+  bookImageError: { [bookId: string]: boolean } = {};
 
   tagLabels: { [key: string]: string } = {
     all: 'All',
@@ -27,7 +29,7 @@ export class WishlistComponent {
     wishlist: 'Wishlist'
   };
 
-  constructor(private bookService: BooksService, private authService: AuthService) { }
+  constructor(private bookService: BooksService, private authService: AuthService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
@@ -87,26 +89,82 @@ export class WishlistComponent {
     }
   }
   
-  
-
   clearSearch() {
     this.searchInput = '';
     this.getUserBookShelf();
+  }
+
+  resetFilters() {
+    this.searchInput = '';
+    this.activeTag = 'all';
+    this.filterBooks();
+  }
+  
+  onImageError(bookId: string) {
+    this.bookImageError[bookId] = true;
   }
 
   searchBook() {
     const searchTerm = this.searchInput.toLowerCase().trim();
   
     if (!searchTerm) {
-      this.filteredBooks = this.allBooks;
+      this.filterBooks(); // reapply tag filter
       return;
     }
   
-    this.filteredBooks = this.allBooks.filter(book =>
+    const baseBooks = this.activeTag === 'all'
+      ? this.allBooks
+      : this.allBooks.filter(book =>
+          this.activeTag === 'wishlist'
+            ? book.isWishlisted
+            : book.categoryName === this.activeTag
+        );
+  
+    this.filteredBooks = baseBooks.filter(book =>
       book.title.toLowerCase().includes(searchTerm) ||
       (book.authorName && book.authorName.toLowerCase().includes(searchTerm))
     );
   }
   
+  
+  toggleWishlist(book: any) {
+    const userId = this.authService.getUserId();
+    if (userId) {
+      if (!book.isWishlisted) {
+        this.bookService.AddtoWishlist(userId, book.bookId).subscribe({
+          next: (res) => {
+            // Success: maybe show a toast or update UI
+            this.toastr.success('Added to wishlist');
+            book.isWishlisted = true; // update local UI if needed
+            this.setActiveTag(this.activeTag);
+          },
+          error: (err) => {
+            if (err.status === 400) {
+              this.toastr.warning(err.error); // will show "Book already in wish list."
+            } else {
+              this.toastr.error('Something went wrong');
+            }
+          }
+        });
+      } else {
+        this.bookService.removeFromWishlist(userId, book.bookId).subscribe({
+          next: (res: any) => {
+            // Success: maybe show a toast or update UI
+            this.toastr.success('Removed from wishlist');
+            book.isWishlisted = false; // update local UI if needed
+            this.setActiveTag(this.activeTag)
+          },
+          error: (err: any) => {
+            if (err.status === 400) {
+              this.toastr.warning(err.error); // will show "Book already in wish list."
+            } else {
+              this.toastr.error('Something went wrong');
+            }
+          }
+        });
+      }
+    }
+
+  }
 
 }

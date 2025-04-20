@@ -3,36 +3,44 @@
   "WorkspaceRootPath": "D:\\goodreads-clone\\API\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{5C627F70-5F7D-4227-A261-14DF15A1397F}|API.csproj|d:\\goodreads-clone\\api\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5C627F70-5F7D-4227-A261-14DF15A1397F}|API.csproj|solutionrelative:controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5C627F70-5F7D-4227-A261-14DF15A1397F}|API.csproj|d:\\goodreads-clone\\api\\controllers\\bookreviewcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C627F70-5F7D-4227-A261-14DF15A1397F}|API.csproj|solutionrelative:controllers\\bookreviewcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5C627F70-5F7D-4227-A261-14DF15A1397F}|API.csproj|d:\\goodreads-clone\\api\\models\\userauthmodels.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5C627F70-5F7D-4227-A261-14DF15A1397F}|API.csproj|solutionrelative:models\\userauthmodels.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5C627F70-5F7D-4227-A261-14DF15A1397F}|API.csproj|d:\\goodreads-clone\\api\\models\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5C627F70-5F7D-4227-A261-14DF15A1397F}|API.csproj|solutionrelative:models\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5C627F70-5F7D-4227-A261-14DF15A1397F}|API.csproj|d:\\goodreads-clone\\api\\controllers\\bookprogresscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5C627F70-5F7D-4227-A261-14DF15A1397F}|API.csproj|solutionrelative:controllers\\bookprogresscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5C627F70-5F7D-4227-A261-14DF15A1397F}|API.csproj|d:\\goodreads-clone\\api\\models\\reviewandcommentmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C627F70-5F7D-4227-A261-14DF15A1397F}|API.csproj|solutionrelative:models\\reviewandcommentmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{5C627F70-5F7D-4227-A261-14DF15A1397F}|API.csproj|d:\\goodreads-clone\\api\\controllers\\bookscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5C627F70-5F7D-4227-A261-14DF15A1397F}|API.csproj|solutionrelative:controllers\\bookscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5C627F70-5F7D-4227-A261-14DF15A1397F}|API.csproj|d:\\goodreads-clone\\api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5C627F70-5F7D-4227-A261-14DF15A1397F}|API.csproj|solutionrelative:controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5C627F70-5F7D-4227-A261-14DF15A1397F}|API.csproj|d:\\goodreads-clone\\api\\controllers\\bookprogresscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C627F70-5F7D-4227-A261-14DF15A1397F}|API.csproj|solutionrelative:controllers\\bookprogresscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5C627F70-5F7D-4227-A261-14DF15A1397F}|API.csproj|d:\\goodreads-clone\\api\\entities\\bookreview.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C627F70-5F7D-4227-A261-14DF15A1397F}|API.csproj|solutionrelative:entities\\bookreview.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5C627F70-5F7D-4227-A261-14DF15A1397F}|API.csproj|d:\\goodreads-clone\\api\\controllers\\userbookcategoriescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C627F70-5F7D-4227-A261-14DF15A1397F}|API.csproj|solutionrelative:controllers\\userbookcategoriescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5C627F70-5F7D-4227-A261-14DF15A1397F}|API.csproj|d:\\goodreads-clone\\api\\models\\booksmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C627F70-5F7D-4227-A261-14DF15A1397F}|API.csproj|solutionrelative:models\\booksmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{5C627F70-5F7D-4227-A261-14DF15A1397F}|API.csproj|d:\\goodreads-clone\\api\\controllers\\authorscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5C627F70-5F7D-4227-A261-14DF15A1397F}|API.csproj|solutionrelative:controllers\\authorscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5C627F70-5F7D-4227-A261-14DF15A1397F}|API.csproj|d:\\goodreads-clone\\api\\controllers\\publishercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5C627F70-5F7D-4227-A261-14DF15A1397F}|API.csproj|solutionrelative:controllers\\publishercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5C627F70-5F7D-4227-A261-14DF15A1397F}|API.csproj|d:\\goodreads-clone\\api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C627F70-5F7D-4227-A261-14DF15A1397F}|API.csproj|solutionrelative:controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5C627F70-5F7D-4227-A261-14DF15A1397F}|API.csproj|d:\\goodreads-clone\\api\\models\\userauthmodels.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5C627F70-5F7D-4227-A261-14DF15A1397F}|API.csproj|solutionrelative:models\\userauthmodels.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -51,40 +59,53 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "UserAuthModels.cs",
-              "DocumentMoniker": "D:\\goodreads-clone\\API\\Models\\UserAuthModels.cs",
-              "RelativeDocumentMoniker": "Models\\UserAuthModels.cs",
-              "ToolTip": "D:\\goodreads-clone\\API\\Models\\UserAuthModels.cs",
-              "RelativeToolTip": "Models\\UserAuthModels.cs",
-              "ViewState": "AgIAACwAAAAAAAAAAAAWwDcAAAAsAAAAAAAAAA==",
+              "Title": "ReviewAndCommentModel.cs",
+              "DocumentMoniker": "D:\\goodreads-clone\\API\\Models\\ReviewAndCommentModel.cs",
+              "RelativeDocumentMoniker": "Models\\ReviewAndCommentModel.cs",
+              "ToolTip": "D:\\goodreads-clone\\API\\Models\\ReviewAndCommentModel.cs",
+              "RelativeToolTip": "Models\\ReviewAndCommentModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAQAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T17:49:49.465Z",
+              "WhenOpened": "2025-04-20T13:37:31.032Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "UsersController.cs",
-              "DocumentMoniker": "D:\\goodreads-clone\\API\\Controllers\\UsersController.cs",
-              "RelativeDocumentMoniker": "Controllers\\UsersController.cs",
-              "ToolTip": "D:\\goodreads-clone\\API\\Controllers\\UsersController.cs",
-              "RelativeToolTip": "Controllers\\UsersController.cs",
-              "ViewState": "AgIAACQAAAAAAAAAAAAYwDAAAAAYAAAAAAAAAA==",
+              "Title": "BookReviewController.cs",
+              "DocumentMoniker": "D:\\goodreads-clone\\API\\Controllers\\BookReviewController.cs",
+              "RelativeDocumentMoniker": "Controllers\\BookReviewController.cs",
+              "ToolTip": "D:\\goodreads-clone\\API\\Controllers\\BookReviewController.cs*",
+              "RelativeToolTip": "Controllers\\BookReviewController.cs*",
+              "ViewState": "AgIAAIgAAAAAAAAAAAAiwJgAAABaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T17:49:45.416Z",
+              "WhenOpened": "2025-04-20T13:37:02.237Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "UserDTO.cs",
-              "DocumentMoniker": "D:\\goodreads-clone\\API\\Models\\UserDTO.cs",
-              "RelativeDocumentMoniker": "Models\\UserDTO.cs",
-              "ToolTip": "D:\\goodreads-clone\\API\\Models\\UserDTO.cs",
-              "RelativeToolTip": "Models\\UserDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAsAAAAAAAAAA==",
+              "DocumentIndex": 5,
+              "Title": "UserBookCategoriesController.cs",
+              "DocumentMoniker": "D:\\goodreads-clone\\API\\Controllers\\UserBookCategoriesController.cs",
+              "RelativeDocumentMoniker": "Controllers\\UserBookCategoriesController.cs",
+              "ToolTip": "D:\\goodreads-clone\\API\\Controllers\\UserBookCategoriesController.cs",
+              "RelativeToolTip": "Controllers\\UserBookCategoriesController.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T17:46:32.176Z",
+              "WhenOpened": "2025-04-20T12:46:35.162Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "BooksModel.cs",
+              "DocumentMoniker": "D:\\goodreads-clone\\API\\Models\\BooksModel.cs",
+              "RelativeDocumentMoniker": "Models\\BooksModel.cs",
+              "ToolTip": "D:\\goodreads-clone\\API\\Models\\BooksModel.cs",
+              "RelativeToolTip": "Models\\BooksModel.cs",
+              "ViewState": "AgIAAEMAAAAAAAAAAADwv1YAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-20T12:00:44.095Z",
               "EditorCaption": ""
             },
             {
@@ -95,61 +116,73 @@
               "RelativeDocumentMoniker": "Controllers\\BookProgressController.cs",
               "ToolTip": "D:\\goodreads-clone\\API\\Controllers\\BookProgressController.cs",
               "RelativeToolTip": "Controllers\\BookProgressController.cs",
-              "ViewState": "AgIAABQAAAAAAAAAAAAiwCUAAABHAAAAAAAAAA==",
+              "ViewState": "AgIAADMAAAAAAAAAAADgv0wAAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T17:20:19.019Z",
+              "WhenOpened": "2025-04-20T12:00:30.189Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "AuthController.cs",
-              "DocumentMoniker": "D:\\goodreads-clone\\API\\Controllers\\AuthController.cs",
-              "RelativeDocumentMoniker": "Controllers\\AuthController.cs",
-              "ToolTip": "D:\\goodreads-clone\\API\\Controllers\\AuthController.cs",
-              "RelativeToolTip": "Controllers\\AuthController.cs",
-              "ViewState": "AgIAAEUAAAAAAAAAAAAYwFMAAAA3AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T17:11:20.818Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "AuthorsController.cs",
-              "DocumentMoniker": "D:\\goodreads-clone\\API\\Controllers\\AuthorsController.cs",
-              "RelativeDocumentMoniker": "Controllers\\AuthorsController.cs",
-              "ToolTip": "D:\\goodreads-clone\\API\\Controllers\\AuthorsController.cs",
-              "RelativeToolTip": "Controllers\\AuthorsController.cs",
-              "ViewState": "AgIAABEAAAAAAAAAAAAAwIwAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T16:25:02.009Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 2,
               "Title": "BooksController.cs",
               "DocumentMoniker": "D:\\goodreads-clone\\API\\Controllers\\BooksController.cs",
               "RelativeDocumentMoniker": "Controllers\\BooksController.cs",
               "ToolTip": "D:\\goodreads-clone\\API\\Controllers\\BooksController.cs",
               "RelativeToolTip": "Controllers\\BooksController.cs",
-              "ViewState": "AgIAAOUAAAAAAAAAAAAwwHMAAAAkAAAAAAAAAA==",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAAAG8AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T15:48:07.137Z",
+              "WhenOpened": "2025-04-20T11:59:50.018Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "BookReview.cs",
+              "DocumentMoniker": "D:\\goodreads-clone\\API\\Entities\\BookReview.cs",
+              "RelativeDocumentMoniker": "Entities\\BookReview.cs",
+              "ToolTip": "D:\\goodreads-clone\\API\\Entities\\BookReview.cs",
+              "RelativeToolTip": "Entities\\BookReview.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-20T13:34:04.856Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 7,
-              "Title": "PublisherController.cs",
-              "DocumentMoniker": "D:\\goodreads-clone\\API\\Controllers\\PublisherController.cs",
-              "RelativeDocumentMoniker": "Controllers\\PublisherController.cs",
-              "ToolTip": "D:\\goodreads-clone\\API\\Controllers\\PublisherController.cs",
-              "RelativeToolTip": "Controllers\\PublisherController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAiAAAAAAAAAA==",
+              "Title": "AuthorsController.cs",
+              "DocumentMoniker": "D:\\goodreads-clone\\API\\Controllers\\AuthorsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AuthorsController.cs",
+              "ToolTip": "D:\\goodreads-clone\\API\\Controllers\\AuthorsController.cs",
+              "RelativeToolTip": "Controllers\\AuthorsController.cs",
+              "ViewState": "AgIAAJ0AAAAAAAAAAADwv70AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-17T15:15:09.066Z",
+              "WhenOpened": "2025-04-20T08:50:07.801Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "UserAuthModels.cs",
+              "DocumentMoniker": "D:\\goodreads-clone\\API\\Models\\UserAuthModels.cs",
+              "RelativeDocumentMoniker": "Models\\UserAuthModels.cs",
+              "ToolTip": "D:\\goodreads-clone\\API\\Models\\UserAuthModels.cs",
+              "RelativeToolTip": "Models\\UserAuthModels.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAnwBwAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-18T14:41:09.114Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "D:\\goodreads-clone\\API\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AuthController.cs",
+              "ToolTip": "D:\\goodreads-clone\\API\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "Controllers\\AuthController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAIcAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-18T14:41:03.502Z",
               "EditorCaption": ""
             }
           ]

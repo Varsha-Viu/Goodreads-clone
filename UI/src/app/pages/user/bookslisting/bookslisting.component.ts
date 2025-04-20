@@ -25,6 +25,8 @@ export class BookslistingComponent {
   selectedGenres: string[] = [];
   searchText: string = '';
   filtered: any[] = [];
+  bookImageError: { [bookId: string]: boolean } = {};
+
 
   constructor(private genreService: GenreService, private bookService: BooksService, private searchService: SearchService, private toastr: ToastrService, private router: Router, private authService: AuthService) {
 
@@ -183,5 +185,9 @@ export class BookslistingComponent {
       }
     }
 
+  }
+
+  onImageError(bookId: string) {
+    this.bookImageError[bookId] = true;
   }
 }

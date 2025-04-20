@@ -2,9 +2,7 @@
   <div class="flex items-center h-full">
 
     <!-- login form div -->
-    <div
-      class="bg-[#FFFFFF] w-full flex items-center justify-center flex-1 py-10 px-15"
-    >
+    <div class="bg-[#FFFFFF] w-full flex items-center justify-center flex-1 py-10 px-15">
       <div class="w-[404px] flex flex-col gap-[30px]">
         <div class="mb-4">
           <div class="flex items-center gap-2 cursor-pointer mb-8" (click)="navigateToHome()">
@@ -17,28 +15,15 @@
           </p>
         </div>
         <div>
-          <form
-            [formGroup]="loginForm"
-            class="flex flex-col gap-[20px]"
-            (submit)="onSubmit()"
-          >
+          <form [formGroup]="loginForm" class="flex flex-col gap-[20px]" (submit)="onSubmit()">
             <!-- email input -->
             <div class="flex flex-col gap-1">
               <label for="email" class="text-[14px] mb-1">Email Address</label>
-              <input
-                type="email"
-                name="email"
-                id="email"
-                placeholder="Enter your email"
-                formControlName="email"
-                class="bg-transparent rounded-[4px] py-2.5 px-4 w-full text-[#000] focus:outline-none text-[14px] border border-[#D9D9D9]"
-              />
-              <div
-                *ngIf="
+              <input type="email" name="email" id="email" placeholder="Enter your email" formControlName="email"
+                class="bg-transparent rounded-[4px] py-2.5 px-4 w-full text-[#000] focus:outline-none text-[14px] border border-[#D9D9D9]" />
+              <div *ngIf="
                   isSubmitted && (f['email'].touched || f['email'].invalid)
-                "
-                class="text-red-600 text-[12px]"
-              >
+                " class="text-red-600 text-[12px]">
                 <div *ngIf="f['email'].errors && f['email'].errors['required']">
                   Email is required.
                 </div>
@@ -49,30 +34,20 @@
             <div class="flex flex-col gap-1">
               <div class="flex items-center justify-between">
                 <label for="password" class="text-[14px] mb-1">Password</label>
-                <a href="" class="text-[#0F3DDE] text-[14px] lowercase font-light">
+                <a (click)="openModal()" class="text-[#0F3DDE] text-[14px] lowercase font-light cursor-pointer">
                   Forgot Password
                 </a>
               </div>
-              <input
-                type="password"
-                name="password"
-                id="password"
-                placeholder="Enter your password"
+              <input type="password" name="password" id="password" placeholder="Enter your password"
                 formControlName="password"
-                class="bg-transparent rounded-[4px] py-2.5 px-4 w-full text-[#000] focus:outline-none text-[14px] border border-[#D9D9D9]"
-              />
-              <div
-                *ngIf="
+                class="bg-transparent rounded-[4px] py-2.5 px-4 w-full text-[#000] focus:outline-none text-[14px] border border-[#D9D9D9]" />
+              <div *ngIf="
                   isSubmitted &&
                   (f['password'].touched || f['password'].invalid)
-                "
-                class="text-red-600 text-[12px]"
-              >
-                <div
-                  *ngIf="
+                " class="text-red-600 text-[12px]">
+                <div *ngIf="
                     f['password'].errors && f['password'].errors['required']
-                  "
-                >
+                  ">
                   Password is required.
                 </div>
               </div>
@@ -81,24 +56,17 @@
             <!-- remember me checkbox -->
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  name="rememberMe"
-                  id="rememberMe"
-                  formControlName="rememberMe"
-                  class="w-4 h-4 text-[#0F3DDE] border border-[#D9D9D9] rounded focus:ring-0 focus:outline-none cursor-pointer"
-                />
+                <input type="checkbox" name="rememberMe" id="rememberMe" formControlName="rememberMe"
+                  class="w-4 h-4 text-[#0F3DDE] border border-[#D9D9D9] rounded focus:ring-0 focus:outline-none cursor-pointer" />
                 <label for="rememberMe" class="text-[14px] font-light">Remember me</label>
               </div>
-              
+
             </div>
 
             <!-- login button -->
             <div class="flex items-center">
-              <button
-                type="submit"
-                class="bg-[#875C1A] w-full p-2.5 rounded-md text-[#FFF7E7] cursor-pointer focus:outline-none focus:border-none"
-              >
+              <button type="submit"
+                class="bg-[#875C1A] w-full p-2.5 rounded-md text-[#FFF7E7] cursor-pointer focus:outline-none focus:border-none">
                 Sign up
               </button>
             </div>
@@ -112,12 +80,106 @@
     </div>
 
     <!-- image div -->
-    <div
-      class="bg-[#F3D2A1] w-full h-full flex items-center justify-center flex-1 py-10 px-15 rounded-s-2xl"
-    >
+    <div class="bg-[#F3D2A1] w-full h-full flex items-center justify-center flex-1 py-10 px-15 rounded-s-2xl">
       <div class="w-full flex items-center justify-center">
         <img src="/images/login-bookshelf.png" alt="login-bookshelf">
       </div>
     </div>
+  </div>
+</div>
+
+
+
+<!-- forgot password modal  -->
+
+<div *ngIf="openForgotPasswordModal" class="fixed inset-0 bg-[#e8e0c6ad] flex justify-center items-center">
+  <!-- Modal Content -->
+  <div class="bg-white p-10 rounded-lg shadow-lg w-[35%] relative">
+    <h2 class="text-xl text-[#553B08] font-bold mb-6">
+      Forgot Password
+    </h2>
+
+    <!-- Form -->
+    <form [formGroup]="forgotPasswordForm" (ngSubmit)="submitForgotPassword()">
+      <div class="mb-6">
+        <label class="block text-sm font-medium text-[#553B08]">
+          Recovery Email
+        </label>
+        <input type="email" formControlName="email"
+          class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]" />
+        <!-- Validation Errors -->
+        <p class="text-red-500 text-xs" *ngIf="isForgotPasswordFormSubmitted && f['email'].errors?.['required']">
+          Email is required.
+        </p>
+        <p class="text-red-500 text-xs" *ngIf="isForgotPasswordFormSubmitted && f['email'].errors?.['pattern']">
+          Please enter a valid email address.
+        </p>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex justify-end gap-2">
+        <button type="button" (click)="closeModal()"
+          class="border bg-transparent border-[#553B08] text-[#553B08] px-4 py-1.5 rounded-md hover:bg-[#553B08] hover:text-white cursor-pointer text-[13px]">
+          Cancel
+        </button>
+        <button type="submit"
+          class="bg-[#553B08] text-[#E8E0C6] px-4 py-1.5 rounded-md hover:text-white cursor-pointer text-[13px]">
+          Send Reset Link
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<!-- reset password modal -->
+<div *ngIf="openResetPasswordModal" class="fixed inset-0 bg-[#e8e0c6ad] flex justify-center items-center">
+  <!-- Modal Content -->
+  <div class="bg-white p-10 rounded-lg shadow-lg w-[35%] relative">
+    <h2 class="text-xl text-[#553B08] font-bold mb-6">
+      Reset password
+    </h2>
+
+    <!-- Form -->
+    <form [formGroup]="ResetPasswordForm" (ngSubmit)="submitResetPassword()">
+      <div class="mb-6">
+        <label class="block text-sm font-medium text-[#553B08]">
+          New Password
+        </label>
+        <input type="password" formControlName="newPassword"
+          class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]" />
+        <!-- Validation Errors -->
+        <p class="text-red-500 text-xs" *ngIf="isResetPasswordFormSubmitted && p['newPassword'].errors?.['required']">
+          New Password is required.
+        </p>
+        <p class="text-red-500 text-xs" *ngIf="isResetPasswordFormSubmitted && p['newPassword'].errors?.['pattern']">
+          Minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special
+          character:
+        </p>
+      </div>
+      <div class="mb-6">
+        <label class="block text-sm font-medium text-[#553B08]">
+          Confirm New Password
+        </label>
+        <input type="password" formControlName="confirmPassword"
+          class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]" />
+        <!-- Validation Errors -->
+        <p class="text-red-500 text-xs"
+          *ngIf="isResetPasswordFormSubmitted && p['confirmPassword'].errors?.['required']">
+          New Password is required.
+        </p>
+      </div>
+      <!-- Buttons -->
+      <div class="flex justify-end gap-2">
+        <button type="button" (click)="closeModal()"
+          class="border bg-transparent border-[#553B08] text-[#553B08] px-4 py-1.5 rounded-md hover:bg-[#553B08] hover:text-white cursor-pointer text-[13px]">
+          Cancel
+        </button>
+        <button type="submit"
+          class="bg-[#553B08] text-[#E8E0C6] px-4 py-1.5 rounded-md hover:text-white cursor-pointer text-[13px]">
+          Send Reset Link
+        </button>
+      </div>
+    </form>
   </div>
 </div>

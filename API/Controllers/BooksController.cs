@@ -62,10 +62,12 @@ namespace API.Controllers
 
         // GET: api/Books/{id}
         [HttpGet("getBookById/{bookId}")]
+        [HttpGet("{bookId}")]
         public async Task<IActionResult> GetBookById(string bookId, string? userId = null)
         {
             var book = await (from b in _context.Books
                               where b.BookId == bookId
+
                               join author in _context.Authors on b.AuthorId equals author.AuthorId into aJoin
                               from author in aJoin.DefaultIfEmpty()
 
@@ -76,8 +78,12 @@ namespace API.Controllers
                               from publisher in pJoin.DefaultIfEmpty()
 
                               join userCategory in _context.UserBookCategories
-                     .Where(uc => uc.UserId == userId) on b.BookId equals userCategory.BookId into ucJoin
+                                  .Where(uc => uc.UserId == userId) on b.BookId equals userCategory.BookId into ucJoin
                               from userCategory in ucJoin.DefaultIfEmpty()
+
+                              join progress in _context.BookProgress
+                                  .Where(p => p.UserId == userId) on b.BookId equals progress.BookId into progJoin
+                              from progress in progJoin.DefaultIfEmpty()
 
                               select new
                               {
@@ -91,16 +97,25 @@ namespace API.Controllers
                                   b.ISBN,
                                   b.CreatedAt,
                                   b.UpdatedAt,
+
                                   AuthorId = b.AuthorId,
                                   AuthorName = author != null ? author.PenName : null,
+
                                   GenreId = b.GenreId,
                                   GenreName = genre != null ? genre.Name : null,
+
                                   PublisherId = b.PublisherId,
                                   PublisherName = publisher != null ? publisher.Name : null,
-                                  IsWishlisted = userId != null && _context.WishList
-                                       .Any(w => w.BookId == b.BookId && w.UserId == userId),
-                                  CategoryName = userCategory != null ? userCategory.CategoryName : null
 
+                                  IsWishlisted = userId != null && _context.WishList
+                                      .Any(w => w.BookId == b.BookId && w.UserId == userId),
+
+                                  CategoryName = userCategory != null ? userCategory.CategoryName : null,
+
+                                  // New fields from BookProgress
+                                  ProgressPercent = progress != null ? progress.ProgressPercent : 0,
+                                  Status = progress != null ? progress.Status : null,
+                                  LastPageRead = progress != null ? progress.LastPageRead : null
                               }).FirstOrDefaultAsync();
 
             if (book == null)
@@ -108,6 +123,7 @@ namespace API.Controllers
 
             return Ok(book);
         }
+
 
         // POST: api/Books
         [HttpPost("createBook")]

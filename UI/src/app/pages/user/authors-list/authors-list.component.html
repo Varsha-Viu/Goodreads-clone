@@ -1,0 +1,31 @@
+<div class="py-6 px-10">
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-md md:text-2xl font-semibold">Authors</h1>
+        <div class="flex items-center justify-end gap-2 cursor-pointer" (click)="navigateBackToLandingPage()">
+            <img src="/icons/left-arrow-black.png" alt="left icon" class="w-4 h-4">
+            <p class="text-[12px] hover:underline hover:text-[#875C1A]">Back to listing</p>
+        </div>
+    </div>
+
+    <!-- Author list grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div *ngFor="let author of AuthorList" class="bg-white rounded-lg shadow-md p-8 border border-[#e0d8c0]">
+            <div class="flex items-center justify-center mb-6">
+                <div
+                    class="w-28 h-28 rounded-full ring-2 ring-[#875C1A] overflow-hidden flex items-center justify-center bg-[#875C1A] text-white">
+                    <img *ngIf="author?.profileImageUrl && !authorImageBroken" [src]="author.profileImageUrl"
+                        alt="Author Image" (error)="authorImageBroken = true" class="w-full h-full object-cover" />
+                    <span *ngIf="!author?.profileImageUrl || authorImageBroken"
+                        class="text-sm font-medium text-center px-2">
+                        {{ author?.penName || author?.fullName || 'Unknown Author' }}
+                    </span>
+                </div>
+            </div>
+            <h2 class="text-lg font-semibold mb-1 capitalize cursor-pointer hover:underline" (click)="OpenAuthorDetails(author.authorId)">
+                {{ author.penName != null ? author.penName :
+                author.fullName
+                }} </h2>
+            <p class="text-sm text-gray-700 line-clamp-4">{{ author.biography }}</p>
+        </div>
+    </div>
+</div>

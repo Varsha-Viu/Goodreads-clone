@@ -3,8 +3,9 @@ import { Component } from '@angular/core';
 import { GenreGradientService } from '../../../shared/genre-gradient.service';
 import { CommonModule } from '@angular/common';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { GenreService } from '../../../shared/services/genre.service';
+import { AuthorService } from '../../../shared/services/author.service';
 
 @Component({
   selector: 'app-landing-page',
@@ -15,13 +16,10 @@ import { GenreService } from '../../../shared/services/genre.service';
 export class LandingPageComponent {
 
   backgroundGradient: string = "";
-  // allGenres: string[] = [
-  //   "Art", "Biography", "Business", "Children's", "Christian", "Classics",
-  //   "Comics", "Cookbooks", "Ebooks", "Fantasy", "Fiction", "Graphic Novels",
-  //   "Historical Fiction", "History", "Horror", "Memoir", "Music", "Mystery",
-  //   "Nonfiction", "Poetry", "Psychology", "Romance", "Science", "Science Fiction",
-  //   "Self Help", "Sports", "Thriller", "Travel", "Young Adult"
-  // ];
+  bookImageError: { [bookId: string]: boolean } = {};
+  authorImageBroken: boolean = false;
+
+
   allGenres: any;
   genres: any; //this.allGenres.slice(0, 8);
   testimonials = [
@@ -87,13 +85,19 @@ export class LandingPageComponent {
   };
 
   booksList: any[] = [];
-  constructor(private router: Router, private bookService: BooksService, private genreService: GenreService) {
+  AuthorList: any[] =[];
+  constructor(private router: Router, private bookService: BooksService, private genreService: GenreService, private authorService: AuthorService) {
     
   }
 
   ngOnInit(): void {
+    const hastoken = sessionStorage.getItem('token');
+    if(hastoken != null) {
+      this.router.navigate(['/home'])
+    }
     this.getAllBooks();
     this.getAllGenres();
+    this.getAllAuthors();
   }
 
   // Function to get gradient
@@ -111,10 +115,28 @@ export class LandingPageComponent {
     });
   }
 
+  getAllAuthors() {
+    this.authorService.getAllAuthors().subscribe(
+      (res: any) =>  {
+        this.AuthorList = res;
+      }
+    )
+  }
+
   getAllGenres() {
     this.genreService.getAllGenres().subscribe((response: any) => {
       this.allGenres = response;
       this.genres = this.allGenres.slice(0, 8);
     });
+  }
+
+  onImageError(bookId: string) {
+    this.bookImageError[bookId] = true;
+  }
+
+  goToAuthorsDetails(authorId: string) {
+  
+    sessionStorage.setItem('redirectPath', this.router.url);
+    this.router.navigate([`author-details/${authorId}`])
   }
 }

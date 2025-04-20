@@ -140,6 +140,54 @@ namespace API.Controllers
             return Ok(new { success = true, data = authors });
         }
 
+        [HttpGet("getBooksAuthorById/{authorId}")]
+        public async Task<IActionResult> GetBooksByAuthor(string authorId)
+        {
+            // Get the author
+            var author = await _context.Authors
+                .Where(a => a.AuthorId == authorId)
+                .Select(author => new
+                {
+                    author.AuthorId,
+                    author.FullName,
+                    author.Biography,
+                    author.ProfileImageUrl,
+                    author.PenName,
+                    author.Website,
+                    author.SocialLinks
+                })
+                .FirstOrDefaultAsync();
+
+            if (author == null)
+                return NotFound(new { message = "Author not found." });
+
+            // Get books (if any)
+            var books = await _context.Books
+                .Where(b => b.AuthorId == authorId)
+                .Select(book => new
+                {
+                    book.BookId,
+                    book.Title,
+                    book.Description,
+                    book.CoverImageUrl,
+                    book.Language,
+                    book.PublicationYear,
+                    book.PageCount,
+                    book.ISBN,
+                    book.GenreId,
+                    book.CreatedAt,
+                    book.UpdatedAt
+                })
+                .ToListAsync();
+
+            // Return author + books
+            return Ok(new
+            {
+                Author = author,
+                Books = books
+            });
+        }
+
 
 
         private async Task<string> UploadImage(IFormFile authorprofile)

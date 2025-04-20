@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using API.Data;
 using Microsoft.EntityFrameworkCore;
+using API.Models;
 
 namespace API.Controllers
 {
@@ -31,6 +32,60 @@ namespace API.Controllers
                 .ToListAsync();
 
             return Ok(progress);
+        }
+
+        [HttpPost("addUpdateBookProgress")]
+        public async Task<IActionResult> AddOrUpdateProgress([FromBody] BookProgressDTo dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                var existingProgress = await _context.BookProgress
+                    .FirstOrDefaultAsync(p => p.UserId == dto.UserId && p.BookId == dto.BookId);
+
+                if (existingProgress == null)
+                {
+                    var newProgress = new BookProgress
+                    {
+                        UserId = dto.UserId,
+                        BookId = dto.BookId,
+                        ProgressPercent = dto.ProgressPercent,
+                        Status = dto.Status,
+                        LastPageRead = dto.LastPageRead
+                    };
+
+                    _context.BookProgress.Add(newProgress);
+                }
+                else
+                {
+                    existingProgress.ProgressPercent = dto.ProgressPercent;
+                    existingProgress.Status = dto.Status;
+                    existingProgress.LastPageRead = dto.LastPageRead;
+
+                    _context.BookProgress.Update(existingProgress);
+                }
+
+                if (dto.ProgressPercent == 100)
+                {
+                    var userCategory = await _context.UserBookCategories
+                        .FirstOrDefaultAsync(uc => uc.UserId == dto.UserId && uc.BookId == dto.BookId);
+
+                    if (userCategory != null)
+                    {
+                        userCategory.CategoryName = "finished";
+                        _context.UserBookCategories.Update(userCategory);
+                    }
+                }
+
+                await _context.SaveChangesAsync();
+                return Ok(new { message = "Progress saved successfully.", isSuccess = true });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         // POST: api/BookProgress

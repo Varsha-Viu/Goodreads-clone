@@ -30,21 +30,41 @@ namespace API.Controllers
         }
 
 
-        [HttpGet("geteviewByBookId/{bookId}")]
+        //[HttpGet("getReviewByBookId/{bookId}")]
+        [HttpGet("getReviewByBookId/{bookId}")]
         public async Task<IActionResult> GetReviewByBookId(string bookId)
         {
             var book = await _context.Books.FindAsync(bookId);
 
             if (book == null)
-                return NotFound(new { message = "Book didn't found" });
+                return NotFound(new { message = "Book not found" });
 
-            var result = await _context.BookReview.Where(m => m.BookId == bookId).ToListAsync();
+            var result = await (from review in _context.BookReview
+                                join user in _context.Users
+                                    on review.UserId equals user.Id
+                                where review.BookId == bookId
+                                select new
+                                {
+                                    review.ReviewId,
+                                    review.BookId,
+                                    review.Rating,
+                                    review.Comment,
+                                    review.CreatedAt,
+                                    User = new
+                                    {
+                                        user.Id,
+                                        user.UserName,
+                                        user.FirstName,
+                                        user.LastName
+                                    }
+                                }).ToListAsync();
 
-            if (result == null)
-                return NotFound(new { message = "No review found" });
+            //if (result == null || result.Count == 0)
+            //    return Ok(new { message = "No reviews found" });
 
             return Ok(result);
         }
+
 
         [HttpGet("getReviewByUserId/{userId}")]
         public async Task<IActionResult> GetReviewByUserId(string userId)
@@ -81,7 +101,7 @@ namespace API.Controllers
         }
 
         [HttpPost("createReview")]
-        public async Task<IActionResult> CreateReview([FromForm] AddReviewModel model)
+        public async Task<IActionResult> CreateReview([FromBody] AddReviewModel model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -99,11 +119,11 @@ namespace API.Controllers
             _context.BookReview.Add(review);
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Book review created successfully" });
+            return Ok(new { message = "Book review created successfully", isSuccess = true });
         }
 
         [HttpPut("updateReview/{reviewId}")]
-        public async Task<IActionResult> UpdateReview(string reviewId, [FromForm] AddReviewModel model)
+        public async Task<IActionResult> UpdateReview(string reviewId, [FromBody] AddReviewModel model)
         {
             var existingReview = await _context.BookReview.FindAsync(reviewId);
             if (existingReview == null)
@@ -117,7 +137,7 @@ namespace API.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Book review updated successfully" });
+            return Ok(new { message = "Book review updated successfully", isSuccess = true });
         }
 
         [HttpDelete("deleteReview/{reviewId}")]
@@ -130,7 +150,7 @@ namespace API.Controllers
             _context.BookReview.Remove(review);
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Book review deleted successfully" });
+            return Ok(new { message = "Book review deleted successfully", isSuccess = true });
         }
 
     }

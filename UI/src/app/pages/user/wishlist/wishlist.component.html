@@ -17,21 +17,25 @@
     </div>
 
     <!-- bookshelf -->
-    <div class="grid grid-cols-[250px_1fr] gap-10">
+    <div class="grid grid-cols-[220px_1fr] gap-14">
+        <!-- tag list -->
         <div>
-            <h4 class="text-sm md:text-base font-semibold mb-3">Bookshelves</h4>
+            <div class="flex items-center justify-between mb-5">
+                <h4 class="text-sm md:text-base font-semibold">Bookshelves</h4>
+                <button href="" class="text-[#875C1A] text-[12px] hover:underline" (click)="resetFilters()">
+                    Reset all
+                </button>
+            </div>
             <ul class="flex flex-col gap-2">
-                <li
-                  *ngFor="let tag of ['all', 'currentlyReading', 'wantToRead', 'finished', 'wishlist']"
-                  class="py-1 text-sm rounded-md cursor-pointer hover:text-[#875C1A] hover:underline"
-                  [class.text-[#875C1A]]="activeTag === tag"
-                  (click)="setActiveTag(tag)"
-                >
-                  {{ tagLabels[tag] }}
+                <li *ngFor="let tag of ['all', 'currentlyReading', 'wantToRead', 'finished', 'wishlist']"
+                    class="py-1 text-sm rounded-md cursor-pointer hover:text-[#875C1A] hover:underline"
+                    [class.text-[#875C1A]]="activeTag === tag" (click)="setActiveTag(tag)">
+                    {{ tagLabels[tag] }}
                 </li>
-              </ul>
+            </ul>
         </div>
 
+        <!-- books -->
         <div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-6">
                 <ng-container *ngFor="
@@ -40,13 +44,20 @@
                 ">
                     <div class="bg-white shadow-md rounded-lg p-4 flex flex-col gap-2">
                         <div class="relative">
-                            <!-- <button (click)="toggleWishlist(book)"
-                      class="absolute top-2 right-2 bg-white p-1 rounded-full shadow-md z-10 cursor-pointer">
-                      <img *ngIf="!book.isWishlisted" src="/icons/heart-icon-outline.png" alt="wishlist" class="w-5 h-5" />
-                      <img *ngIf="book.isWishlisted" src="/icons/heart-icon-filled.png" alt="added" class="w-5 h-5" />
-                    </button> -->
-                            <img [src]="book.coverImageUrl" alt="book-cover"
-                                class="w-full h-38 object-cover rounded-md mb-2 border border-gray-200" />
+                            <button (click)="toggleWishlist(book)"
+                                class="absolute top-2 right-2 bg-white p-1 rounded-full shadow-md z-10 cursor-pointer">
+                                <img *ngIf="!book.isWishlisted" src="/icons/heart-icon-outline.png" alt="wishlist"
+                                    class="w-5 h-5" />
+                                <img *ngIf="book.isWishlisted" src="/icons/heart-icon-filled.png" alt="added"
+                                    class="w-5 h-5" />
+                            </button>
+                            <img *ngIf="!bookImageError[book.bookId]" [src]="book.coverImageUrl" alt="{{ book.title }}"
+                    class="w-full h-40 object-cover" (error)="onImageError(book.bookId)" />
+
+                <div *ngIf="bookImageError[book.bookId]"
+                    class="w-full h-40 flex items-center justify-center bg-yellow-600 text-md font-semibold rounded-md text-[#F5EEDC]">
+                    {{ book.title }}
+                </div>
                         </div>
                         <!-- <img src="/books-img/funny-story-cover.jpg" alt="book-cover" class=" h-38 object-cover rounded-md mb-2"> -->
                         <a [routerLink]="['/book-details', book.bookId]"

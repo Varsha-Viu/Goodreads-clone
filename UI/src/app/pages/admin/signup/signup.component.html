@@ -79,25 +79,52 @@
               </div>
             </div>
 
-            <!-- email input -->
-            <div class="flex flex-col gap-1">
-              <label for="email" class="text-[14px] mb-1">Email Address</label>
-              <input
-                type="email"
-                name="email"
-                id="email"
-                placeholder="Enter your email"
-                formControlName="email"
-                class="bg-transparent rounded-[4px] py-2.5 px-4 w-full text-[#000] focus:outline-none text-[14px] border border-[#D9D9D9]"
-              />
-              <div
-                *ngIf="
-                  isSubmitted && (f['email'].touched || f['email'].invalid)
-                "
-                class="text-red-600 text-[12px]"
-              >
-                <div *ngIf="f['email'].errors && f['email'].errors['required']">
-                  Email is required.
+            <div class="flex items-center gap-5">
+              <!-- email input -->
+              <div class="flex flex-col gap-1">
+                <label for="email" class="text-[14px] mb-1">Email Address</label>
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  placeholder="Enter your email"
+                  formControlName="email"
+                  class="bg-transparent rounded-[4px] py-2.5 px-4 w-full text-[#000] focus:outline-none text-[14px] border border-[#D9D9D9]"
+                />
+                <div
+                  *ngIf="
+                    isSubmitted && (f['email'].touched || f['email'].invalid)
+                  "
+                  class="text-red-600 text-[12px]"
+                >
+                  <div *ngIf="f['email'].errors && f['email'].errors['required']">
+                    Email is required.
+                  </div>
+                  <div *ngIf="f['email'].errors && f['email'].errors['pattern']">
+                    Enter valid email address
+                  </div>
+                </div>
+              </div>
+              <!-- username input -->
+              <div class="flex flex-col gap-1">
+                <label for="userName" class="text-[14px] mb-1">User Name</label>
+                <input
+                  type="userName"
+                  name="userName"
+                  id="userName"
+                  placeholder="Enter your username"
+                  formControlName="userName"
+                  class="bg-transparent rounded-[4px] py-2.5 px-4 w-full text-[#000] focus:outline-none text-[14px] border border-[#D9D9D9]"
+                />
+                <div
+                  *ngIf="
+                    isSubmitted && (f['userName'].touched || f['userName'].invalid)
+                  "
+                  class="text-red-600 text-[12px]"
+                >
+                  <div *ngIf="f['userName'].errors && f['userName'].errors['required']">
+                    userName is required.
+                  </div>
                 </div>
               </div>
             </div>
@@ -127,6 +154,9 @@
                   "
                 >
                   Password is required.
+                </div>
+                <div *ngIf="f['password'].errors && f['password'].errors['pattern']">
+                  Password must contain 8 characters. 1 uppercase, 1 lowercase, 1 special character and 1 number
                 </div>
               </div>
             </div>

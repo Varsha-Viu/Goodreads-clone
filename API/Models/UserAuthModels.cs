@@ -13,8 +13,8 @@ namespace API.Models
         public string UserName { get; set; }
         [Required]
         public string Password { get; set; }
-        public string Address { get; set; }
-        public string PhoneNumber { get; set; }
+        public string? Address { get; set; }
+        public string? PhoneNumber { get; set; }
     }
 
     public class LoginModel

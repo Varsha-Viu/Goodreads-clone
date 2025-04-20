@@ -1,0 +1,75 @@
+<div class="max-w-7xl mx-auto p-4">
+
+    <!-- back to authors listing  -->
+    <div class="flex items-center justify-end gap-2 cursor-pointer mb-6 " (click)="navigateBacktoListing()">
+        <img src="/icons/left-arrow-black.png" alt="left icon" class="w-4 h-4">
+        <p class="text-[12px] hover:underline hover:text-[#875C1A]">Back to listing</p>
+    </div>
+
+    <!-- Author Details -->
+    <div class="flex flex-col md:flex-row items-start gap-10 mb-14 bg-white shadow-md rounded-xl p-6">
+        <div
+            class="w-32 h-32 rounded-full ring-2 ring-[#875C1A] overflow-hidden flex items-center justify-center flex-shrink-0">
+            <div
+                class="w-32 h-32 rounded-full ring-2 ring-[#875C1A] overflow-hidden flex items-center justify-center bg-[#875C1A] text-white">
+                <img *ngIf="author?.profileImageUrl && !authorImageBroken" [src]="author.profileImageUrl"
+                    alt="Author Image" (error)="authorImageBroken = true" class="w-full h-full object-cover" />
+                <span *ngIf="!author?.profileImageUrl || authorImageBroken"
+                    class="text-sm font-semibold text-center px-2">
+                    {{ author?.penName || author?.fullName || 'Unknown Author' }}
+                </span>
+            </div>
+
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <div class="text-center md:text-left">
+                <h2 class="text-2xl font-bold text-gray-800">{{ author.penName != null ? author.penName :
+                    author.fullName }}</h2>
+                <p class="mt-2 text-gray-600 text-[12px]">
+                    <span class="font-semibold">Website: </span>
+                    {{ author.website || 'N/A' }}
+                </p>
+            </div>
+            <div>
+                <p class="mt-2 text-gray-600" *ngIf="author?.biography">{{ author.biography }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- book details -->
+    <div class="flex flex-col gap-10">
+        <p class="text-xl font-bold">Books By Author</p>
+        <!-- Books Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+            *ngIf="books.length > 0; else noBooksTemplate">
+            <div *ngFor="let book of books"
+                class="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition">
+                <img *ngIf="!bookImageError[book.bookId]" [src]="book.coverImageUrl" alt="{{ book.title }}"
+                    class="w-full h-40 object-cover" (error)="onImageError(book.bookId)" />
+
+                <div *ngIf="bookImageError[book.bookId]"
+                    class="w-full h-40 flex items-center justify-center bg-yellow-600 text-md font-semibold text-[#F5EEDC]">
+                    {{ book.title }}
+                </div>
+
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold text-gray-800 cursor-pointer hover:underline"
+                        (click)="goToBooksDetail(book.bookId)">{{ book.title }}</h3>
+                    <p class="text-sm text-gray-600 mt-1 line-clamp-2">
+                        {{ book.description }}
+                    </p>
+                    <p class="mt-2 text-xs text-gray-500">
+                        Published: {{ book.publicationYear || 'N/A' }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <ng-template #noBooksTemplate>
+            <p class="text-md font-medium text-gray-400 text-center">No books available on this author</p>
+        </ng-template>
+
+    </div>
+
+</div>

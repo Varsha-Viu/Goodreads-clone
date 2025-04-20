@@ -11,6 +11,7 @@ export class BooksService {
   wishlistUrl = `${environment.apiUrl}/WishList`;
   AssignCategoryUrl = `${environment.apiUrl}/UserBookCategories`;
   BookProgressUrl = `${environment.apiUrl}/BookProgress`;
+  BookReviewUrl = `${environment.apiUrl}/BookReview`;
 
   constructor(private http: HttpClient) { }
 
@@ -70,9 +71,24 @@ export class BooksService {
     return this.http.get<any[]>(`${this.AssignCategoryUrl}/currently-reading/${userId}`);
   }
 
-  addBookProgress(data: FormData) {
-    return this.http.post(`${this.BookProgressUrl}`, data);
+  addUpdateBookProgress(data: any) {
+    return this.http.post(`${this.BookProgressUrl}/addUpdateBookProgress`, data);
   }
   
+  createReview(payload:any): Observable<any> {
+    return this.http.post(`${this.BookReviewUrl}/createReview`, payload);
+  }
+
+  getReviewsByBookId(bookId: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.BookReviewUrl}/getReviewByBookId/${bookId}`);
+  }
+
+  updateBookReview(reviewId: string, formData: any): Observable<any> {
+    return this.http.put(`${this.BookReviewUrl}/updateReview/${reviewId}`, formData);
+  }
+  
+  deleteBookReview(reviewId: string): Observable<any> {
+    return this.http.delete(`${this.BookReviewUrl}/deleteReview/${reviewId}`);
+  }
   
 }

@@ -57,6 +57,6 @@ export class HeaderComponent {
   logout() {
     // Clear session, redirect to login
     sessionStorage.clear();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/landingPage']);
   }
 }

@@ -64,7 +64,7 @@ namespace API.Controllers
                 await _userManager.AddToRoleAsync(user, UserRolesEnum.User.ToString());
             }
 
-            return Ok(new { message = "User registered successfully!" });
+            return Ok(new { message = "User registered successfully!", isSuccess = true });
         }
 
         [HttpPost("login")]
@@ -107,8 +107,8 @@ namespace API.Controllers
         public async Task<IActionResult> ForgotPassword(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
-            if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
-                return BadRequest("User not found or email not confirmed.");
+            if (user == null)
+                return BadRequest("User not found.");
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
@@ -117,12 +117,13 @@ namespace API.Controllers
             {
                 message = "Password reset token generated.",
                 email = user.Email,
-                resetToken = token
+                resetToken = token,
+                isSuccess = true
             });
         }
 
         [HttpPost("reset-password")]
-        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto model)
+        public async Task<IActionResult> ResetPassword([FromForm] ResetPasswordDto model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)

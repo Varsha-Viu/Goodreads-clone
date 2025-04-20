@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../shared/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { error } from 'jquery';
 
 @Component({
   selector: 'app-book-detail',
@@ -19,6 +20,9 @@ export class BookDetailComponent {
   selectedBookId: number | null = null;
   bookProgress: any;
   bookProgressPercent: number = 0;
+  reviews: any;
+  totalReviews: number = 0;
+  bookImageError: { [key: string]: boolean } = {};
 
   categorySelections = {
     all: false,
@@ -28,11 +32,22 @@ export class BookDetailComponent {
   };
 
   selectedCategory: string = '';
+  showReviewModal = false;
+  review = {
+    rating: 0,
+    comment: ''
+  };
+  selectedReviewId: any;
+  hoverRating = 0;
+  loggedInUserId: any;
+  isEditMode: boolean = false;
+
 
   constructor(private route: ActivatedRoute, private bookService: BooksService, private authService: AuthService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.getBookDetail();
+    this.loggedInUserId = this.authService.getUserId();
   }
 
   getBookDetail() {
@@ -43,6 +58,9 @@ export class BookDetailComponent {
       this.bookService.getBookById(bookId, uid).subscribe((res: any) => {
         console.log(res);
         this.bookDetails = res;
+        this.getAllReviewsByBookId(bookId);
+        this.bookProgress = res.lastPageRead;
+        this.bookProgressPercent = res.progressPercent
       });
     }
   }
@@ -85,6 +103,11 @@ export class BookDetailComponent {
       categories: [this.selectedCategory]  // wrap in array to match API DTO
     };
 
+    this.saveCategory(payload);
+    
+  }
+
+  saveCategory(payload: any) {
     this.bookService.assignCategory(payload).subscribe({
       next: () => {
         this.toastr.success('Added to bookshelf', 'Success');
@@ -142,18 +165,182 @@ export class BookDetailComponent {
 
   }
 
-  updateBookProgress(totalPage: any) {
-    if(this.bookProgress > totalPage){
+  addUpdateBookProgress(totalPage: number) {
+    if (this.bookProgress > totalPage) {
       this.toastr.error("Pages cannot be greater than total page count", "Error");
       this.bookProgress = 0;
       this.bookProgressPercent = 0;
       return;
     }
+
     this.bookProgressPercent = Math.round((this.bookProgress / totalPage) * 100);
-    
+    const userId = this.authService.getUserId();
+
+    const progressDto = {
+      userId: userId,
+      bookId: this.bookDetails.bookId,
+      progressPercent: this.bookProgressPercent,
+      lastPageRead: this.bookProgress,
+      status: this.bookProgressPercent === 100 ? "Completed" : "Reading"
+    };
+
+    this.saveProgress(progressDto);
+  }
+
+  alreadyFinished() {
+    const userId = this.authService.getUserId();
+
+    const progressDto = {
+      userId: userId,
+      bookId: this.bookDetails.bookId,
+      progressPercent: 100,
+      lastPageRead: this.bookDetails.pageCount,
+      status: "Completed"
+    };
+
+    this.saveProgress(progressDto);
+  }
+
+  saveProgress(progressDto: any) {
+    this.bookService.addUpdateBookProgress(progressDto).subscribe(
+      (res: any) => {
+        if (res.isSuccess) {
+          this.toastr.success("Progress updated successfully!", "Success");
+        }
+        else {
+          this.toastr.error("Failed to update progress", "Error");
+        }
+      },
+      (err: any) => {
+        this.toastr.error(err.Error, "Error");
+      }
+    );
   }
 
   navigateBack() {
     this.router.navigate(['/book-listing']);
+  }
+
+  openReviewModal() {
+    this.showReviewModal = true;
+  }
+
+  closeReviewModal() {
+    this.showReviewModal = false;
+    this.review = { rating: 0, comment: '' }; // reset
+  }
+
+  setRating(star: number) {
+    this.review.rating = star;
+  }
+
+  submitReview() {
+    if (!this.review.rating && !this.review.comment) {
+      this.toastr.error('Please fill in the review (rating or comment)');
+      return;
+    }    
+
+    const userId = this.authService.getUserId();
+
+    // Replace with your actual API call
+    const payload = {
+      bookId: this.bookDetails.bookId,
+      userId: userId,
+      rating: this.review.rating,
+      comment: this.review.comment
+    };
+
+    if(this.selectedReviewId) {
+      this.bookService.updateBookReview(this.selectedReviewId, payload).subscribe(
+        (res: any) => {
+          if (res.isSuccess) {
+            this.toastr.success("Review submitted!", "Success");
+            this.closeReviewModal();
+            this.getBookDetail();
+          }
+          else {
+            this.toastr.error("Failed to submit review", "Error");
+          }
+        },
+        (err: any) => {
+          this.toastr.error(err.Error, "Error");
+        }
+      );
+    }
+    else {
+      this.bookService.createReview(payload).subscribe(
+        (res: any) => {
+          if (res.isSuccess) {
+            this.toastr.success("Review submitted!", "Success");
+            this.closeReviewModal();
+            this.getBookDetail();
+          }
+          else {
+            this.toastr.error("Failed to submit review", "Error");
+          }
+        },
+        (err: any) => {
+          this.toastr.error(err.Error, "Error");
+        }
+      );
+    }
+    
+  }
+
+  onEditReview(review: any) {
+    this.review = {
+      rating: review.rating || null,
+      comment: review.comment || '',
+      //id: review.id, // keep track for update
+    };
+    this.selectedReviewId = review.reviewId;
+    this.isEditMode = true; // Optional: track if it's editing
+    this.openReviewModal(); // This opens the modal
+  }
+  
+  deleteReview(review: any) {
+    this.bookService.deleteBookReview(review.reviewId).subscribe(
+      (res: any) => {
+        if (res.isSuccess) {
+          this.toastr.success("Review deleted!", "Success");
+          // this.closeReviewModal();
+          this.getBookDetail();
+        }
+        else {
+          this.toastr.error("Failed to delete review", "Error");
+        }
+      },
+      (err: any) => {
+        this.toastr.error(err.Error, "Error");
+      }
+    )
+  }
+
+  moveToCurrentlyReading(bookId: string) {
+    const userId = this.authService.getUserId(); // make sure it fetches from session or token
+
+    const payload = {
+      userId: userId,
+      bookId: bookId,
+      categories: "currentlyReading"  // wrap in array to match API DTO
+    };
+
+    this.saveCategory(payload);
+  }
+
+  getAllReviewsByBookId(bookId: string) {
+    this.bookService.getReviewsByBookId(bookId).subscribe(
+      (res:any) => {
+        // debugger
+        // console.log(res);
+        this.reviews = res
+        this.totalReviews = res.length;
+      },
+      (err: any) => this.toastr.error(err, "Error")
+    );
+  }
+
+  handleImageError(bookId: string) {
+    this.bookImageError[bookId] = true;
   }
 }

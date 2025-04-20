@@ -10,7 +10,7 @@ namespace API.Models
         [Required]
         public string UserId { get; set; }
 
-        [Range(1, 5)]
+        [Range(0, 5)]
         public int? Rating { get; set; }
 
         [MaxLength(1000)]

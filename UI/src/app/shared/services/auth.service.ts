@@ -15,6 +15,18 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/auth/login`, data);
   }
 
+  Register(data: FormData) {
+    return this.http.post(`${this.apiUrl}/auth/register`, data);
+  }
+  
+  ForgotPassword(email: string) {
+    return this.http.post(`${this.apiUrl}/auth/forgot-password?email=${email}`, null);
+  }
+  
+  ResetPassword(data: FormData) {
+    return this.http.post(`${this.apiUrl}/Auth/reset-password`, data);
+  }
+
   logout() {
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('isUser');

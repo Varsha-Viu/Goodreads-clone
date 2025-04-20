@@ -40,11 +40,18 @@
           </div>
         </div>
       </div>
-      <div class="flex items-center gap-6">
-        <img src="/books-img/funny-story-cover.jpg" alt="book image" class="w-[100px] h-[130px] rounded-md mt-4" />
-        <img src="/books-img/funny-story-cover.jpg" alt="book image" class="w-[100px] h-[130px] rounded-md mt-4" />
-        <img src="/books-img/funny-story-cover.jpg" alt="book image" class="w-[100px] h-[130px] rounded-md mt-4" />
-        <img src="/books-img/funny-story-cover.jpg" alt="book image" class="w-[100px] h-[130px] rounded-md mt-4" />
+      <div class="flex gap-6" *ngIf="booksList.length">
+        <ng-container *ngFor="let book of booksList | slice:0:4">
+          <div>
+            <img *ngIf="!bookImageError[book.bookId]" [src]="book.coverImageUrl" alt="{{ book.title }}"
+              class="w-[100px] h-[130px] rounded-md mt-4" (error)="onImageError(book.bookId)" />
+      
+            <div *ngIf="bookImageError[book.bookId]"
+              class="w-[100px] h-[130px] flex items-center justify-center text-center bg-[#875C1A] text-[12px] rounded-md text-[#F5EEDC] mt-4">
+              {{ book.title }}
+            </div>
+          </div>
+        </ng-container>
       </div>
     </div>
   </div>
@@ -53,11 +60,20 @@
   <div ngxSlickItem class="px-4">
     <div
       class="bg-[#FFF2DE] max-w-5xl mx-auto min-h-[250px] gap-20 flex items-center justify-evenly text-center transition-transform duration-300 hover:-translate-y-1">
-      <div class="flex items-center gap-6">
-        <img src="/books-img/funny-story-cover.jpg" alt="book image" class="w-[100px] h-[130px] rounded-md mt-4" />
-        <img src="/books-img/funny-story-cover.jpg" alt="book image" class="w-[100px] h-[130px] rounded-md mt-4" />
-
+      <div class="flex gap-6" *ngIf="booksList.length">
+        <ng-container *ngFor="let book of booksList | slice:0:2">
+          <div>
+            <img *ngIf="!bookImageError[book.bookId]" [src]="book.coverImageUrl" alt="{{ book.title }}"
+              class="w-[100px] h-[130px] rounded-md mt-4" (error)="onImageError(book.bookId)" />
+      
+            <div *ngIf="bookImageError[book.bookId]"
+              class="w-[100px] h-[130px] flex items-center justify-center text-center bg-[#875C1A] text-[12px] rounded-md text-[#F5EEDC] mt-4">
+              {{ book.title }}
+            </div>
+          </div>
+        </ng-container>
       </div>
+      
       <div class="flex items-center flex-col gap-6">
         <p class="text-sm md:text-base font-semibold mb-4">
           New books waiting for you to discover ! <br />
@@ -86,14 +102,20 @@
     <div class="w-full">
       <div class="flex items-center justify-between mb-[50px]">
         <h2 class="text-xl font-bold">Most Popular Now</h2>
-        <a (click)="gotToBookListing()" class="text-[#875C1A] font-semibold hover:underline cursor-pointer">
+        <a (click)="gotToBookListing()" class="text-[#d35b38] font-semibold hover:underline cursor-pointer">
           Show all
         </a>
       </div>
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
         <div class="flex gap-8 items-center bg-[#FFF2DE] p-5 flex-1" *ngFor="let book of booksList | slice:0:2">
           <div>
-            <img src="/books-img/funny-story-cover.jpg" alt="book image" class="w-[100px] h-[130px] rounded-md" />
+            <img *ngIf="!bookImageError[book.bookId]" [src]="book.coverImageUrl" alt="{{ book.title }}"
+              class="w-[100px] h-[130px] rounded-md object-cover" (error)="onImageError(book.bookId)" />
+
+            <div *ngIf="bookImageError[book.bookId]"
+              class="w-[100px] h-[130px] flex items-center justify-center text-center bg-[#875C1A] text-[12px] rounded-md text-[#F5EEDC]">
+              {{ book.title }}
+            </div>
           </div>
           <div class="flex flex-col gap-0.5">
             <small class="block uppercase text-[#d35b38] text-semibold">best seller</small>
@@ -101,23 +123,6 @@
             <small class="text-[#d35b38] text-semibold" *ngIf="book.authorName">by {{book.authorName}}</small>
           </div>
         </div>
-
-        <!-- <div class="flex gap-8 items-center bg-[#FFF2DE] p-5 flex-1">
-          <div>
-            <img
-              src="/books-img/funny-story-cover.jpg"
-              alt="book image"
-              class="w-[100px] h-[130px] rounded-md"
-            />
-          </div>
-          <div class="flex flex-col gap-0.5">
-            <small class="block uppercase text-[#d35b38] text-semibold"
-              >best seller</small
-            >
-            <p class="text-[20px] font-semibold">Funny Story</p>
-            <small class="text-[#d35b38] text-semibold">by Emily Henry</small>
-          </div>
-        </div> -->
       </div>
     </div>
 
@@ -125,45 +130,26 @@
     <div class="">
       <div class="flex items-center justify-between mb-[50px]">
         <h2 class="text-xl font-bold">Popular Authors</h2>
-        <a href="" class="text-[#875C1A] font-semibold hover:underline">
+        <a href="/author-list" class="text-[#d35b38] font-semibold hover:underline">
           Show all
         </a>
       </div>
       <div class="flex flex-col gap-4 items-center bg-[#FFF2DE] p-5">
-        <div class="flex gap-8 items-center border-b border-b-[#553B0850] py-2">
-          <div>
-            <img src="/images/avatar.jpg" alt="author image avatar" class="w-[50px] h-[50px] rounded-full" />
+        <div class="flex gap-6 items-center border-b border-b-[#553B0850] py-2"
+          *ngFor="let author of AuthorList | slice:0:3">
+          <div *ngIf="author?.profileImageUrl && !authorImageBroken">
+            <img [src]="author.profileImageUrl" (error)="authorImageBroken = true" alt="author image avatar" class="w-[50px] h-[50px] rounded-full" />
+          </div>
+          <div class="bg-[#875C1A] p-2 rounded-full" *ngIf="!author?.profileImageUrl || authorImageBroken">
+            <img src="/icons/author-white-icon.png" alt="author image avatar" class="w-[30px] h-[30px] rounded-full" />
           </div>
           <div>
-            <p>Emily Henry</p>
+            <p>{{author.penName }}</p>
             <small>2563 reads this week</small>
           </div>
           <div>
-            <a href="" class="bg-[#875C1A] py-2 px-3 rounded-sm text-white">Follow</a>
-          </div>
-        </div>
-        <div class="flex gap-8 items-center border-b border-b-[#553B0850] py-2">
-          <div>
-            <img src="/images/avatar.jpg" alt="author image avatar" class="w-[50px] h-[50px] rounded-full" />
-          </div>
-          <div>
-            <p>Emily Henry</p>
-            <small>2563 reads this week</small>
-          </div>
-          <div>
-            <a href="" class="bg-[#875C1A] py-2 px-3 rounded-sm text-white">Follow</a>
-          </div>
-        </div>
-        <div class="flex gap-8 items-center border-b border-b-[#553B0850] py-2">
-          <div>
-            <img src="/images/avatar.jpg" alt="author image avatar" class="w-[50px] h-[50px] rounded-full" />
-          </div>
-          <div>
-            <p>Emily Henry</p>
-            <small>2563 reads this week</small>
-          </div>
-          <div>
-            <a href="" class="bg-[#875C1A] py-2 px-3 rounded-sm text-white">Follow</a>
+            <a (click)="goToAuthorsDetails(author.authorId)"
+              class="bg-[#875C1A] py-2 px-3 rounded-sm text-white text-sm capitalize cursor-pointer">See details</a>
           </div>
         </div>
       </div>
@@ -178,7 +164,7 @@
       <h2 class="text-xl text-[#553B08] font-bold">Genre</h2>
       <a href="" class="bg-[#875C1A] py-2 px-3 rounded-sm text-white">Show all</a>
     </div>
-    <div class="flex items-center gap-10" >
+    <div class="flex items-center gap-10">
       <div class="h-[180px] w-[130px] bg-red-500 flex items-center justify-center" *ngFor="let genre of genres">
         <p class="text-center">{{ genre.name }}</p>
       </div>

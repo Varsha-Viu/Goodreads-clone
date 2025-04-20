@@ -16,6 +16,8 @@ import { BookslistingComponent } from './pages/user/bookslisting/bookslisting.co
 import { BookDetailComponent } from './pages/user/book-detail/book-detail.component';
 import { WishlistComponent } from './pages/user/wishlist/wishlist.component';
 import { ProfileComponent } from './pages/user/profile/profile.component';
+import { AuthorsListComponent } from './pages/user/authors-list/authors-list.component';
+import { AuthorsDetailsComponent } from './pages/user/authors-details/authors-details.component';
 
 export const routes: Routes = [
     {
@@ -29,6 +31,8 @@ export const routes: Routes = [
             { path: 'bookshelf', component: WishlistComponent },
             { path: 'home', component: HomeComponent },
             { path: 'profile', component: ProfileComponent },
+            { path: 'author-list', component: AuthorsListComponent },
+            { path: 'author-details/:authorId', component: AuthorsDetailsComponent },
         ]
     },
     {
