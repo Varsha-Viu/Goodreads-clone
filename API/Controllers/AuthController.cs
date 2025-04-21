@@ -139,12 +139,13 @@ namespace API.Controllers
 
         private string GenerateJwtToken(Users user, IList<string> roles)
         {
+            string fullname = user.FirstName + " " + user.LastName;
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim(ClaimTypes.Name, user.UserName)
+                new Claim(ClaimTypes.Name, fullname)
             };
 
             foreach (var role in roles)

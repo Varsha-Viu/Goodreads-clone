@@ -1,46 +1,61 @@
 <div class="py-6 px-[5rem]">
-    <h2 class="text-2xl font-semibold mb-6 ">Account Settings</h2>
-    <div class="max-w-[80%] mx-auto p-6 bg-white rounded-2xl shadow-md mt-10">
+    <h2 class="text-2xl font-semibold mb-6">Account Settings</h2>
 
+    <!-- Tabs -->
+    <div class="flex gap-4 border-b border-[#d4b17a] mb-6 text-sm font-medium text-[#553B08]">
+        <button class="py-2 px-4 focus:outline-none cursor-pointer" [class.border-b-4]="activeTab === 'profile'"
+            (click)="openProfileTab()">
+            Profile Settings
+        </button>
+        <button class="py-2 px-4 focus:outline-none cursor-pointer" [class.border-b-4]="activeTab === 'challenge'"
+            (click)="activeTab = 'challenge'">
+            Reading Challenge
+        </button>
+    </div>
+
+    <!-- Profile Settings Tab -->
+    <div *ngIf="activeTab === 'profile'" class="max-w-[80%] mx-auto p-6 bg-white rounded-2xl shadow-md">
         <form [formGroup]="profileForm" (ngSubmit)="updateProfile()" class="space-y-4">
-            <div class="flex items-center gap-4">
-                <div class="w-full">
-                    <label class="block text-sm font-medium text-[#553B08]" for="firstName">First Name</label>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="text-sm font-medium text-[#553B08]">First Name</label>
                     <input formControlName="firstName" placeholder="First Name"
-                        class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]" />
+                        class="mt-1 p-2 w-full border border-[#ccc] rounded-md focus:border-[#875C1A]" />
                 </div>
-                <div class="w-full">
-                    <label class="block text-sm font-medium text-[#553B08]" for="lastName">Last Name</label>
+                <div>
+                    <label class="text-sm font-medium text-[#553B08]">Last Name</label>
                     <input formControlName="lastName" placeholder="Last Name"
-                        class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]" />
+                        class="mt-1 p-2 w-full border border-[#ccc] rounded-md focus:border-[#875C1A]" />
                 </div>
-            </div>
-            <div class="flex items-center gap-4">
-                <div class="w-full">
-                    <label class="block text-sm font-medium text-[#553B08]" for="firstName">Email</label>
-                    <input formControlName="email" placeholder="Email" class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]" />
+                <div>
+                    <label class="text-sm font-medium text-[#553B08]">Email</label>
+                    <input type="email" formControlName="email" placeholder="Email"
+                        class="mt-1 p-2 w-full border border-[#ccc] rounded-md focus:border-[#875C1A]" />
+                    <div *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched"
+                        class="text-red-600 text-sm mt-1">Enter a valid email.</div>
                 </div>
-                <div class="w-full">
-                    <label class="block text-sm font-medium text-[#553B08]" for="lastName">User Name</label>
+                <div>
+                    <label class="text-sm font-medium text-[#553B08]">Username</label>
                     <input formControlName="userName" placeholder="Username"
-                        class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]" />
+                        class="mt-1 p-2 w-full border border-[#ccc] rounded-md focus:border-[#875C1A]" />
                 </div>
-            </div>
-            <div class="flex items-center gap-4">
-                <div class="w-full">
-                    <label class="block text-sm font-medium text-[#553B08]" for="firstName">Address</label>
-                    <input formControlName="address" placeholder="Address" class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]" />
+                <div>
+                    <label class="text-sm font-medium text-[#553B08]">Address</label>
+                    <input formControlName="address" placeholder="Address"
+                        class="mt-1 p-2 w-full border border-[#ccc] rounded-md focus:border-[#875C1A]" />
                 </div>
-                <div class="w-full">
-                    <label class="block text-sm font-medium text-[#553B08]" for="lastName">Phone Number</label>
-                    <input formControlName="phoneNumber" placeholder="Phone Number"
-                        class="mt-1 p-2 w-full border border-[#553B0870] rounded-md focus:border-[#553B08]" />
+                <div>
+                    <label class="text-sm font-medium text-[#553B08]">Phone Number</label>
+                    <input type="text" formControlName="phoneNumber" placeholder="Phone Number"
+                        class="mt-1 p-2 w-full border border-[#ccc] rounded-md focus:border-[#875C1A]" />
+                    <div *ngIf="profileForm.get('phoneNumber')?.invalid && profileForm.get('phoneNumber')?.touched"
+                        class="text-red-600 text-sm mt-1">Enter a valid 10-digit phone number.</div>
                 </div>
             </div>
 
-            <div class="flex items-center justify-end">
-                <button type="submit" 
-                    class="bg-[#875C1A] py-3 px-6 rounded-xs text-[#FFF7E7] text-xs cursor-pointer focus:outline-none focus:border-none">
+            <div class="flex justify-end pt-4">
+                <button type="submit"
+                    class="bg-[#875C1A] hover:bg-[#6b4815] py-2 px-6 text-white text-sm rounded-md shadow focus:outline-none">
                     Update Profile
                 </button>
             </div>
@@ -49,5 +64,64 @@
         <div *ngIf="message" class="mt-4 text-green-600 text-center">
             {{ message }}
         </div>
+    </div>
+
+    <!-- Reading Challenge Tab -->
+    <div *ngIf="activeTab === 'challenge'" class="max-w-[80%] mx-auto p-6 bg-white rounded-2xl shadow-md">
+
+        <h2 class="text-xl font-semibold mb-6">📚 Your 2025 Reading Challenge</h2>
+
+        <div class="text-sm mb-6">
+            <p>🎯 Goal: <strong>{{ readingChallenge?.targetBooks || 0 }}</strong> books</p>
+            <p>✅ Completed: <strong>{{ readingChallenge?.completedBooks || 0 }}</strong> books</p>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="w-full bg-[#f5e6c8] rounded-full h-3">
+            <div class="bg-[#875C1A] h-3 rounded-full transition-all duration-500"
+                [style.width.%]="readingChallengeProgress"></div>
+        </div>
+        <p class="text-xs text-right text-gray-600">
+            {{ readingChallengeProgress.toFixed(0) }}% completed
+        </p>
+
+        <!-- Update Button -->
+        <div class="flex justify-end mt-6">
+            <button
+                class="bg-[#875C1A] hover:bg-[#6c4a18] text-white text-sm py-2 px-4 rounded-md shadow cursor-pointer"
+                (click)="openAddChallengeModal()">
+                ✏️ Update Challenge
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- 📚 Add Challenge Modal -->
+<div *ngIf="isAddChallengeModalOpen"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-[#e8e0c6c6] bg-opacity-50">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
+        <!-- Close button -->
+        <button class="absolute top-2 right-3 text-gray-600 hover:text-gray-900 text-xl"
+            (click)="closeAddChallengeModal()">
+            &times;
+        </button>
+
+        <h2 class="text-xl font-semibold text-[#875C1A] mb-4 text-center">
+            📚 Set Your 2025 Reading Challenge
+        </h2>
+
+        <form (ngSubmit)="submitReadingChallenge()">
+            <label for="targetBooks" class="block mb-2 text-sm font-medium text-gray-700">
+                Number of books you want to read:
+            </label>
+            <input type="number" id="targetBooks" [(ngModel)]="targetBooks" name="targetBooks" min="1" required
+                class="w-full border border-gray-300 rounded px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-[#875C1A] cursor-pointer" />
+
+            <button type="submit"
+                class="w-full bg-[#875C1A] hover:bg-[#6d4715] text-white font-medium py-2 px-4 rounded cursor-pointer outline-0 border-0">
+                Save Challenge
+            </button>
+        </form>
     </div>
 </div>

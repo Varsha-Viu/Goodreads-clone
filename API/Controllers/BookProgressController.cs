@@ -34,7 +34,7 @@ namespace API.Controllers
             return Ok(progress);
         }
 
-        [HttpPost("addUpdateBookProgress")]
+        [HttpPost("update-progress")]
         public async Task<IActionResult> AddOrUpdateProgress([FromBody] BookProgressDTo dto)
         {
             if (!ModelState.IsValid)
@@ -44,6 +44,8 @@ namespace API.Controllers
             {
                 var existingProgress = await _context.BookProgress
                     .FirstOrDefaultAsync(p => p.UserId == dto.UserId && p.BookId == dto.BookId);
+
+                bool isNewlyFinished = false;
 
                 if (existingProgress == null)
                 {
@@ -57,9 +59,20 @@ namespace API.Controllers
                     };
 
                     _context.BookProgress.Add(newProgress);
+
+                    if (dto.ProgressPercent == 100)
+                    {
+                        isNewlyFinished = true;
+                    }
                 }
                 else
                 {
+                    // Check if the book was not previously finished but now is
+                    if (existingProgress.ProgressPercent < 100 && dto.ProgressPercent == 100)
+                    {
+                        isNewlyFinished = true;
+                    }
+
                     existingProgress.ProgressPercent = dto.ProgressPercent;
                     existingProgress.Status = dto.Status;
                     existingProgress.LastPageRead = dto.LastPageRead;
@@ -67,6 +80,7 @@ namespace API.Controllers
                     _context.BookProgress.Update(existingProgress);
                 }
 
+                // Update user book category if finished
                 if (dto.ProgressPercent == 100)
                 {
                     var userCategory = await _context.UserBookCategories
@@ -79,7 +93,21 @@ namespace API.Controllers
                     }
                 }
 
+                // If book just finished, update ReadingChallenge
+                if (isNewlyFinished)
+                {
+                    var challenge = await _context.UserReadingChallenge
+                        .FirstOrDefaultAsync(c => c.UserId == dto.UserId);
+
+                    if (challenge != null)
+                    {
+                        challenge.CompletedBooks += 1;
+                        _context.UserReadingChallenge.Update(challenge);
+                    }
+                }
+
                 await _context.SaveChangesAsync();
+
                 return Ok(new { message = "Progress saved successfully.", isSuccess = true });
             }
             catch (Exception ex)

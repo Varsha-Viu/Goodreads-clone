@@ -70,4 +70,14 @@ export class AuthService {
     return null;
   }
 
+  getUserName(): string | null {
+    const decodedToken = this.DecodedToken();
+    if(decodedToken == null) return null;
+    var userId = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'];
+    if (decodedToken && userId) {
+      return userId;
+    }
+    return null;
+  }
+
 }

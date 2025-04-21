@@ -85,4 +85,18 @@ namespace API.Models
         public int? LastPageRead { get; set; }
 
     }
+
+    public class ReadingChallengeDto
+    {
+        [Required]
+        public string UserId { get; set; }
+
+        [Required]
+        public int Year { get; set; }
+
+        [Required]
+        public int TargetBooks { get; set; }
+
+        public int CompletedBooks { get; set; } = 0;
+    }
 }

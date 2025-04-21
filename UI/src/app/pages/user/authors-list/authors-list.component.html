@@ -13,7 +13,7 @@
             <div class="flex items-center justify-center mb-6">
                 <div
                     class="w-28 h-28 rounded-full ring-2 ring-[#875C1A] overflow-hidden flex items-center justify-center bg-[#875C1A] text-white">
-                    <img *ngIf="author?.profileImageUrl && !authorImageBroken" [src]="author.profileImageUrl"
+                    <img *ngIf="author?.profileImageUrl && !authorImageBroken" [src]="imageBaseUrl + author.profileImageUrl"
                         alt="Author Image" (error)="authorImageBroken = true" class="w-full h-full object-cover" />
                     <span *ngIf="!author?.profileImageUrl || authorImageBroken"
                         class="text-sm font-medium text-center px-2">

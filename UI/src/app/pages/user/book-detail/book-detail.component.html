@@ -185,7 +185,7 @@
                     <h2 class="text-xl font-semibold text-[#875C1A]">You’ve Finished This Book!</h2>
                     <p class="text-gray-600">Great job completing <strong>{{ bookDetails.title }}</strong> 🎉</p>
                     <button
-                        class="bg-[#3E7D4D] hover:bg-[#33653F] text-white text-sm px-5 py-2 rounded-md cursor-pointer"
+                        class="bg-[#875C1A] text-white text-sm px-5 py-2 rounded-md cursor-pointer"
                         (click)="openReviewModal()">
                         Leave a Review
                     </button>
@@ -199,7 +199,7 @@
                     <h2 class="text-lg font-semibold text-[#875C1A]">This Book Is on Your "Want to Read" List</h2>
                     <p class="text-sm text-gray-600">Ready to start? Move it to your reading list when you're ready.</p>
                     <button
-                        class="bg-[#3E7D4D] hover:bg-[#33653F] text-white text-sm px-5 py-2 rounded-md cursor-pointer"
+                        class="bg-[#875C1A] text-white text-sm px-5 py-2 rounded-md cursor-pointer"
                         (click)="moveToCurrentlyReading(bookDetails.bookId)">
                         Start Reading
                     </button>
@@ -208,7 +208,7 @@
 
             <!-- leave review container -->
             <div class="bg-white shadow-lg p-10 rounded-md flex flex-col items-center text-center mt-6 gap-4"
-                *ngIf="bookDetails.categoryName !== 'finished'">
+                *ngIf="bookDetails.categoryName !== 'finished' && loggedInUserId">
 
                 <img src="/icons/review-icon.png" alt="Review Icon" class="w-16 h-16" />
 
@@ -220,7 +220,7 @@
                     Drop a few lines about what you’re expecting or how it’s going so far!
                 </p>
 
-                <button class="bg-[#3E7D4D] hover:bg-[#33653F] text-white text-sm px-5 py-2 rounded-md cursor-pointer"
+                <button class="bg-[#875C1A] text-white text-sm px-5 py-2 rounded-md cursor-pointer"
                     (click)="openReviewModal()">
                     Leave a Review
                 </button>
@@ -312,7 +312,7 @@
                 (click)="closeReviewModal()">
                 Cancel
             </button>
-            <button class="bg-[#3E7D4D] hover:bg-[#33653F] text-white px-4 py-1 rounded-md cursor-pointer"
+            <button class="bg-[#875C1A] text-white px-4 py-1 rounded-md cursor-pointer"
                 (click)="submitReview()">
                 Submit
             </button>

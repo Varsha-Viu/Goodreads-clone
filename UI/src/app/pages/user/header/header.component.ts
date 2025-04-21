@@ -20,6 +20,7 @@ export class HeaderComponent {
 
   ngOnInit(): void {
     this.showDropdown = false;
+    this.searchInput = '';
   }
   
   searchBook() {

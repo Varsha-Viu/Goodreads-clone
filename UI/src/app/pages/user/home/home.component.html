@@ -1,54 +1,127 @@
-<div class="py-6 px-[5rem]">
-    <!-- ifuser has current reading -->
-    <div *ngIf="currentBooksCount > 0; else elseTemplate"
-        class="bg-[#FFF2DE] p-6 md:p-8 max-w-6xl mx-auto min-h-[250px] gap-20 flex items-center justify-center text-center transition-transform duration-300 hover:-translate-y-1">
-        <div>
-            <h4 class="text-sm md:text-base font-semibold mb-7">
-                Currently Reading Books ({{currentBooksCount}})
-            </h4>
-            <div class="flex items-center justify-center bg-[#875C1A] cursor-pointer" (click)="gotToBookListing()">
-                <button type="button" class="py-3 px-4 bg-transparent ps-4 cursor-pointer text-white">
-                    Add books
-                </button>
-            </div>
-
-        </div>
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            <div *ngFor="let book of currentlyReadingBooks.slice(0, 4)" class="bg-white p-3 shadow rounded">
-                <img [src]="book.coverImageUrl" alt="{{ book.title }}" class="w-full h-[130px] object-cover rounded">
-                <a [routerLink]="['/book-details', book.bookId]"
-              class=" font-semibold hover:underline cursor-pointer mt-2">{{ book.title }}</a>
-                <p class="text-sm text-gray-500">by {{ book.authorName || 'Unknown Author' }}</p>
-            </div>
-        </div>
+<div class="px-4 md:px-12 py-10 space-y-10">
+    <!-- 1. Welcome Message -->
+    <div class="text-center mb-12">
+        <h1 class="text-2xl md:text-3xl font-bold text-[#875C1A]">
+            Welcome back, {{ userName }} 👋
+        </h1>
+        <p class="text-sm md:text-base text-gray-600 mt-2">
+            Here’s your reading journey at a glance.
+        </p>
     </div>
 
-    <ng-template #elseTemplate>
-        <div 
-        class="bg-[#FFF2DE] p-6 md:p-8 max-w-6xl mx-auto min-h-[250px] gap-20 flex items-center justify-center text-center transition-transform duration-300 hover:-translate-y-1">
-        <div>
-            <h4 class="text-sm md:text-base font-semibold mb-7">
-                Your 'Currently Reading' shelf is empty. Start reading something new!
-            </h4>
-            <div class="flex items-center justify-center bg-[#875C1A] cursor-pointer" (click)="gotToBookListing()">
-                <button type="button" class="bg-transparent ps-4 cursor-pointer text-white">
-                    Explore now
-                </button>
-                <div class="py-3 px-4">
-                    <img src="/icons/right-arrow-white.png" alt="search icon" class="w-[20px] h-[20px]" />
+    <div class="mb-15">
+        <!-- Currently Reading Section -->
+        <div *ngIf="currentBooksCount > 0; else elseTemplate" class="max-w-6xl mx-auto ">
+            <p class="text-lg font-semibold mb-6">Continue</p>
+            <div
+                class="bg-[#FFF2DE] p-6 md:p-8 min-h-[250px] gap-20 flex flex-col lg:flex-row items-center justify-between text-center transition-transform duration-300 hover:-translate-y-1">
+                <!-- Info and CTA -->
+                <div class="mb-6 lg:mb-0">
+                    <h4 class="text-sm md:text-base font-semibold mb-4">
+                        Currently Reading Books ({{ currentBooksCount }})
+                    </h4>
+                    <div class="flex items-center justify-center bg-[#875C1A] cursor-pointer"
+                        (click)="gotToBookListing()">
+                        <button type="button" class="py-3 px-4 bg-transparent ps-4 text-white">
+                            Add books
+                        </button>
+                    </div>
+                </div>
+                <!-- Book Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full lg:w-auto">
+                    <div *ngFor="let book of currentlyReadingBooks.slice(0, 4)"
+                        class="bg-white p-3 shadow rounded text-left">
+                        <img [src]="book.coverImageUrl" alt="{{ book.title }}"
+                            class="w-full h-[130px] object-cover rounded mb-2">
+                        <a [routerLink]="['/book-details', book.bookId]"
+                            class="block font-semibold hover:underline cursor-pointer">{{ book.title }}</a>
+                        <p class="text-sm text-gray-500">by {{ book.authorName || 'Unknown Author' }}</p>
+                    </div>
                 </div>
             </div>
-
         </div>
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            <div *ngFor="let book of books.slice(0, 4)" class="bg-white p-3 shadow rounded">
-                <img [src]="book.coverImageUrl" alt="{{ book.title }}" class="w-full h-[130px] object-cover rounded">
-                <a [routerLink]="['/book-details', book.bookId]"
-              class=" font-semibold hover:underline cursor-pointer mt-2">{{ book.title }}</a>
-                <p class="text-sm text-gray-500">by {{ book.authorName || 'Unknown Author' }}</p>
+        <ng-template #elseTemplate>
+            <div class="text-center text-gray-500 italic">
+                You have no books currently being read.
+            </div>
+        </ng-template>
+    </div>
+
+    <div class="mb-15">
+        <div *ngIf="readingChallenge; else noChallengeTemplate" class="max-w-6xl mx-auto">
+            <div class="mb-8">
+                <p class="text-lg font-semibold">Reading goals</p>
+                <p class="text-sm">Read everyday, see your stats soar and finish more books!</p>
+            </div>
+            <!-- 2. Reading Challenge Card -->
+            <div class="bg-[#FFF7E7] border-l-4 border-[#875C1A] p-6 rounded shadow max-w-6xl mx-auto">
+                <h2 class="text-lg font-semibold text-[#875C1A] mb-4">📚 Your 2025 Reading Challenge</h2>
+                <div class="mb-4">
+                    <p class="mt-2 text-gray-700">
+                        Goal: <strong>{{ readingChallenge.targetBooks || 0}}</strong> books
+                    </p>
+                    <p class="text-gray-700">
+                        Completed: <strong>{{ readingChallenge.completedBooks || 0 }}</strong> books
+                    </p>
+                </div>
+                <div class="flex items-center justify-center">
+                    <div class="w-full bg-gray-200 rounded-full h-2 mt-3">
+                        <div class="bg-[#875C1A] h-2 rounded-full" [style.width.%]="readingChallengeProgress"></div>
+                    </div>
+                    
+                </div>
+                <div class="flex items-center justify-end ">
+                    <p class="text-right text-xs mt-1 text-gray-500 w-full">
+                        {{ readingChallengeProgress.toFixed(0) }}% completed
+                    </p>
+                </div>
+                
             </div>
         </div>
+        <!-- 👇 Else Template for No Challenge -->
+        <ng-template #noChallengeTemplate>
+            <div
+                class="bg-white border border-[#E3B577] rounded shadow max-w-4xl mx-auto p-6 text-center flex flex-col items-center gap-4">
+                <h2 class="text-lg font-semibold text-[#875C1A]">📖 Start Your 2025 Reading Challenge</h2>
+                <p class="text-gray-600">You haven't set a reading goal yet. Challenge yourself and set a goal for the
+                    year!
+                </p>
+                <button class="bg-[#875C1A] hover:bg-[#6d4715] text-white px-5 py-2 rounded cursor-pointer"
+                    (click)="openAddChallengeModal()">
+                    Set Your Challenge
+                </button>
+            </div>
+        </ng-template>
     </div>
-    </ng-template>
+</div>
 
+
+
+<!-- 📚 Add Challenge Modal -->
+<div *ngIf="isAddChallengeModalOpen"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-[#e8e0c6c6] bg-opacity-50">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
+        <!-- Close button -->
+        <button class="absolute top-2 right-3 text-gray-600 hover:text-gray-900 text-xl"
+            (click)="closeAddChallengeModal()">
+            &times;
+        </button>
+
+        <h2 class="text-xl font-semibold text-[#875C1A] mb-4 text-center">
+            📚 Set Your 2025 Reading Challenge
+        </h2>
+
+        <form (ngSubmit)="submitReadingChallenge()">
+            <label for="targetBooks" class="block mb-2 text-sm font-medium text-gray-700">
+                Number of books you want to read:
+            </label>
+            <input type="number" id="targetBooks" [(ngModel)]="targetBooks" name="targetBooks" min="1" required
+                class="w-full border border-gray-300 rounded px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-[#875C1A] cursor-pointer" />
+
+            <button type="submit"
+                class="w-full bg-[#875C1A] hover:bg-[#6d4715] text-white font-medium py-2 px-4 rounded cursor-pointer outline-0 border-0">
+                Save Challenge
+            </button>
+        </form>
+    </div>
 </div>

@@ -17,6 +17,7 @@ namespace API.Data
         public DbSet<WishList> WishList { get; set; }
         public DbSet<UserBookCategory> UserBookCategories { get; set; }
         public DbSet<BookProgress> BookProgress { get; set; }
+        public DbSet<ReadingChallenge> UserReadingChallenge { get; set; }
 
     }
 }

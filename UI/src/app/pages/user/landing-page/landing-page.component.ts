@@ -6,6 +6,7 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { Router, RouterLink } from '@angular/router';
 import { GenreService } from '../../../shared/services/genre.service';
 import { AuthorService } from '../../../shared/services/author.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-landing-page',
@@ -18,6 +19,7 @@ export class LandingPageComponent {
   backgroundGradient: string = "";
   bookImageError: { [bookId: string]: boolean } = {};
   authorImageBroken: boolean = false;
+  imageBaseUrl = environment.imageUrl;
 
 
   allGenres: any;

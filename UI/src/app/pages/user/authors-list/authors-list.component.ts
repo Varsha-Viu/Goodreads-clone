@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { AuthorService } from '../../../shared/services/author.service';
 import { Router } from '@angular/router';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-authors-list',
@@ -12,6 +13,7 @@ import { Router } from '@angular/router';
 export class AuthorsListComponent {
   AuthorList: any[] =[];
   authorImageBroken: boolean = false;
+  imageBaseUrl = environment.imageUrl;
 
   constructor(private authorService: AuthorService, private router: Router) {}
 

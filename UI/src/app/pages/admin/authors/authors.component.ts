@@ -4,6 +4,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-authors',
@@ -27,6 +28,7 @@ export class AuthorsComponent {
   selectedFile: File | null = null;
   selectedAuthorId = '';
   searchTerm: string = '';
+  imageBaseUrl = environment.imageUrl;
 
   constructor(private fb: FormBuilder, private authorService: AuthorService, private toastr: ToastrService) {
     this.authorForm = this.fb.group({
