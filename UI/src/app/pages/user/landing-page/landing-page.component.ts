@@ -10,7 +10,7 @@ import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-landing-page',
-  imports: [CommonModule, SlickCarouselModule],
+  imports: [CommonModule, SlickCarouselModule, RouterLink],
   templateUrl: './landing-page.component.html',
   styleUrl: './landing-page.component.css'
 })
@@ -130,6 +130,10 @@ export class LandingPageComponent {
       this.allGenres = response;
       this.genres = this.allGenres.slice(0, 8);
     });
+  }
+
+  goToBookListing(genre: string) {
+    this.router.navigate(['/book-listing'], { queryParams: { genre } });
   }
 
   onImageError(bookId: string) {

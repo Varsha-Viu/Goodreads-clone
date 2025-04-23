@@ -6,7 +6,7 @@ import { NgxPaginationModule } from 'ngx-pagination'; // <-- import the module
 import { FormsModule } from '@angular/forms';
 import { SearchService } from '../../../shared/search.service';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../shared/services/auth.service';
 
 @Component({
@@ -28,16 +28,21 @@ export class BookslistingComponent {
   bookImageError: { [bookId: string]: boolean } = {};
 
 
-  constructor(private genreService: GenreService, private bookService: BooksService, private searchService: SearchService, private toastr: ToastrService, private router: Router, private authService: AuthService) {
+  constructor(private genreService: GenreService, private bookService: BooksService, private searchService: SearchService, private toastr: ToastrService, private router: Router, private authService: AuthService, private route: ActivatedRoute) {
 
   }
 
   ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
+    this.clearAllFilters();
     this.getAllGenres();
     this.getAllBooks();
-    this.clearAllFilters();
+    this.route.queryParams.subscribe(params => {
+      const genreParam = params['genre'];
+      if (genreParam) {
+        this.selectedGenres = [genreParam]; // or split(',') if multiple genres
+      }
+    });
+    
     this.searchBook();
     
   }
@@ -139,6 +144,19 @@ export class BookslistingComponent {
     this.selectedGenres = [];
     this.authorInput = '';
     this.searchText = '';
+    
+    this.filterBooks(); // ✅ add this
+  }
+  ResetFilters() {
+    this.router.navigate([], {
+      queryParams: {},
+      replaceUrl: true,
+    });
+    this.selectedAuthors = [];
+    this.selectedGenres = [];
+    this.authorInput = '';
+    this.searchText = '';
+    
     this.filterBooks(); // ✅ add this
   }
 

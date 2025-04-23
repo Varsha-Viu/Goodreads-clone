@@ -72,7 +72,7 @@ export class BooksService {
   }
 
   addUpdateBookProgress(data: any) {
-    return this.http.post(`${this.BookProgressUrl}/addUpdateBookProgress`, data);
+    return this.http.post(`${this.BookProgressUrl}/update-progress`, data);
   }
   
   createReview(payload:any): Observable<any> {
